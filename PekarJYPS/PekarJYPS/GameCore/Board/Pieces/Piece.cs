@@ -13,11 +13,17 @@ namespace PekarJYPS
         public PieceColor Color { get; private set; }
         public Coordinates Coordinates { get; set; }
         public int Value { get; protected set; }
-        public Piece(Coordinates coordinates, PieceColor color)
+        public Game Game { get; private set; }
+        public Piece(Game game, Coordinates coordinates, PieceColor color)
         {
+            Game = game;
             Coordinates = coordinates;
             Color = color;
         }
+
+        public abstract Move[] GetPossibleMoves();
+
+        public abstract Move[] GetPossibleAttacks();
     }
 
     public enum PieceColor

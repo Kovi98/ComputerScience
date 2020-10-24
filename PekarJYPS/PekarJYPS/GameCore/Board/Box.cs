@@ -20,15 +20,14 @@ namespace PekarJYPS
             set
             {
                 piece = value;
-                Redraw();
+                piece.Coordinates = Coordinates;
             }
         }
         public Button Button { get; private set; }
         public Grid Grid { get; set; }
 
-        public Box(Button button, Coordinates coordinates)
+        public Box(Coordinates coordinates)
         {
-            Button = button;
             Coordinates = coordinates;
             Grid = new Grid();
             Grid.IsHitTestVisible = false;
@@ -41,6 +40,10 @@ namespace PekarJYPS
                 Button.Background = Brushes.White;
             }
             Button.Tag = Coordinates;
+        }
+
+        public Box()
+        {
         }
 
         private void Redraw()

@@ -24,5 +24,15 @@ namespace PekarJYPS
         {
             InitializeComponent();
         }
+
+        private void closeWindow_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void grid_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+
+        }
     }
 }

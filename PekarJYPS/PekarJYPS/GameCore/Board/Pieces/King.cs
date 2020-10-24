@@ -10,9 +10,9 @@ using System.Windows.Media.Imaging;
 
 namespace PekarJYPS
 {
-    class King : Piece
+    public class King : Piece
     {
-        public King(Coordinates coordinates, PieceColor pieceColor) : base(coordinates, pieceColor)
+        public King(Game game, Coordinates coordinates, PieceColor pieceColor) : base(game, coordinates, pieceColor)
         {
             Value = 3;
 
@@ -30,6 +30,16 @@ namespace PekarJYPS
             }
             Icon.Source = new BitmapImage(new Uri(uriString, UriKind.Relative));
             Icon.SetValue(RenderOptions.BitmapScalingModeProperty, BitmapScalingMode.Fant); 
+        }
+
+        public override Move[] GetPossibleAttacks()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override Move[] GetPossibleMoves()
+        {
+            throw new NotImplementedException();
         }
     }
 }

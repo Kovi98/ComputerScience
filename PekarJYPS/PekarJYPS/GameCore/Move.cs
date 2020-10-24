@@ -11,8 +11,9 @@ namespace PekarJYPS
         public Box CurrentPosition { get; private set; }
         public Box NextPosition { get; private set; }
         public int Value { get; set; }
+        public Box AttackedPosition { get; private set; }
 
-        public Move(Box currentPosition, Box nextPosition)
+        public Move(Box currentPosition, Box nextPosition, Box attackedPosition = null)
         {
             CurrentPosition = currentPosition;
             NextPosition = nextPosition;

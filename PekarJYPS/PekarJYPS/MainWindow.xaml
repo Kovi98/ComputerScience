@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PekarJYPS"
         mc:Ignorable="d"
-        Title="Gotická dáma" Height="580" Width="740" WindowStartupLocation="CenterScreen" FontSize="15" BorderBrush="Black" Icon="favicon.ico">
+        Title="Gotická dáma" Height="580" Width="740" WindowStartupLocation="CenterScreen" FontSize="15" BorderBrush="Black" Icon="Images/favicon.ico">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="0"/>
@@ -27,8 +27,8 @@
         </Grid.RowDefinitions>
         <Menu Grid.ColumnSpan="8" FontWeight="Bold" FontSize="17.5" Margin="0,-1,0,1">
             <MenuItem Header="_Hra" IsHitTestVisible="True" FontSize="15">
-                <MenuItem FontSize="15" FontWeight="Normal" x:Name="novaMenuItem" Header="_Nová" Click="novaMenuItem_Click"/>
-                <MenuItem FontSize="15" FontWeight="Normal" x:Name="konecMenuItem" Header="_Konec" Foreground="Black" Click="konecMenuItem_Click"/>
+                <MenuItem FontSize="15" FontWeight="Normal" x:Name="zatimNic" Header="_Zatím nic" Click="closeWindow_Click"/>
+                <MenuItem FontSize="15" FontWeight="Normal" x:Name="closeWindow" Header="_Zavřít okno" Foreground="Black" Click="closeWindow_Click"/>
             </MenuItem>
             <MenuItem Header="_Nápověda" FontSize="15"/>
         </Menu>

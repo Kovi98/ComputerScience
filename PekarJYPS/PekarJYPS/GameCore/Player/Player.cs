@@ -8,5 +8,11 @@ namespace PekarJYPS
 {
     public abstract class Player
     {
+        public PieceColor Color { get; protected set; }
+    }
+
+    public enum Players
+    {
+        Human, AI
     }
 }
