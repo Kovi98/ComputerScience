@@ -32,6 +32,15 @@ namespace PekarJYPS
         }
 
         /// <summary>
+        /// Evoluce kamene v dámu
+        /// </summary>
+        /// <returns>Vyvinutá dáma</returns>
+        public King Evolve()
+        {
+            return new King(Game, Coordinates, Color);
+        }
+
+        /// <summary>
         /// Vrací Array všech možných útoků - přeskoků (Move)
         /// </summary>
         /// <returns>Move Array</returns>

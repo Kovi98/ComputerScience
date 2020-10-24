@@ -9,6 +9,12 @@ namespace PekarJYPS
     public abstract class Player
     {
         public PieceColor Color { get; protected set; }
+
+        public Player(PieceColor color)
+        {
+            Color = color;
+        }
+
     }
 
     public enum Players

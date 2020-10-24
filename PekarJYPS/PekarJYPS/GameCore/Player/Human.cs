@@ -8,5 +8,8 @@ namespace PekarJYPS
 {
     public class Human : Player
     {
+        public Human(PieceColor color) : base(color)
+        {
+        }
     }
 }

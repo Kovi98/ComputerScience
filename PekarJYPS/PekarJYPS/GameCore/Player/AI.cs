@@ -8,5 +8,8 @@ namespace PekarJYPS
 {
     public class AI : Player
     {
+        public AI(PieceColor color) : base(color)
+        {
+        }
     }
 }

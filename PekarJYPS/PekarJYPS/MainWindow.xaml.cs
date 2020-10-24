@@ -27,12 +27,12 @@ namespace PekarJYPS
 
         private void closeWindow_Click(object sender, RoutedEventArgs e)
         {
-
+            this.Close();
         }
 
         private void grid_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-
+            this.Close();
         }
     }
 }

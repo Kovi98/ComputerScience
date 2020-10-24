@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Media;
 
 namespace PekarJYPS
 {
@@ -38,7 +39,18 @@ namespace PekarJYPS
         /// <param name="move"></param>
         public void DoMove(Move move)
         {
+            move.NextPosition.Piece = move.CurrentPosition.Piece;
+            move.CurrentPosition.Piece = null;
 
+            if (move.AttackedPosition is object)
+                DropPiece(move.AttackedPosition);
+
+            //Evoluce kámen -> dáma pokud je kámen na posledním řádku své barvy
+            if ((move.NextPosition.Piece is Man) && ((move.NextPosition.Piece.Color.Equals(PieceColor.White) && move.NextPosition.Coordinates.Row == 7) || (move.NextPosition.Piece.Color.Equals(PieceColor.Black) && move.NextPosition.Coordinates.Row == 0)))
+            {
+                Man man = (Man)move.NextPosition.Piece;
+                move.NextPosition.Piece = man.Evolve();
+            }
         }
 
         /// <summary>

@@ -44,24 +44,55 @@ namespace PekarJYPS
             switch (whitePlayer)
             {
                 case Players.Human:
-                    WhitePlayer = new Human();
+                    WhitePlayer = new Human(PieceColor.White);
                     break;
                 case Players.AI:
-                    WhitePlayer = new AI();
+                    WhitePlayer = new AI(PieceColor.White);
                     break;
             }
 
             switch (blackPlayer)
             {
                 case Players.Human:
-                    BlackPlayer = new Human();
+                    BlackPlayer = new Human(PieceColor.Black);
                     break;
                 case Players.AI:
-                    BlackPlayer = new AI();
+                    BlackPlayer = new AI(PieceColor.Black);
                     break;
             }
 
             IsActive = true;
+        }
+
+        public void ChangePlayer(PieceColor color, Players player)
+        {
+            switch (color)
+            {
+                case PieceColor.White:
+                    switch (player)
+                    {
+                        case Players.Human:
+                            WhitePlayer = new Human(color);
+                            break;
+                        case Players.AI:
+                            WhitePlayer = new AI(color);
+                            break;
+                    }
+                    break;
+
+                case PieceColor.Black:
+                    switch (player)
+                    {
+                        case Players.Human:
+                            BlackPlayer = new Human(color);
+                            break;
+                        case Players.AI:
+                            BlackPlayer = new AI(color);
+                            break;
+                    }
+                    break;
+
+            }
         }
     }
 }
