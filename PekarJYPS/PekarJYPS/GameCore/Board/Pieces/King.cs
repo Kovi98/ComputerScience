@@ -12,7 +12,7 @@ namespace PekarJYPS
 {
     public class King : Piece
     {
-        public King(Game game, Coordinates coordinates, PieceColor pieceColor) : base(game, coordinates, pieceColor)
+        public King(Coordinates coordinates, PieceColor pieceColor) : base(coordinates, pieceColor)
         {
             Value = 3;
 
@@ -32,12 +32,12 @@ namespace PekarJYPS
             Icon.SetValue(RenderOptions.BitmapScalingModeProperty, BitmapScalingMode.Fant); 
         }
 
-        public override Move[] GetPossibleAttacks()
+        public override Move[] GetPossibleAttacks(Board board)
         {
             throw new NotImplementedException();
         }
 
-        public override Move[] GetPossibleMoves()
+        public override Move[] GetPossibleMoves(Board board)
         {
             throw new NotImplementedException();
         }

@@ -23,39 +23,14 @@ namespace PekarJYPS
                 piece.Coordinates = Coordinates;
             }
         }
-        public Button Button { get; private set; }
+        public Button Button { get; set; }
         public Grid Grid { get; set; }
 
         public Box(Coordinates coordinates)
         {
             Coordinates = coordinates;
-            Grid = new Grid();
-            Grid.IsHitTestVisible = false;
-            if (Coordinates.Column % 2 != Coordinates.Row % 2)
-            {
-                Button.Background = Brushes.Black;
-            }
-            else
-            {
-                Button.Background = Brushes.White;
-            }
-            Button.Tag = Coordinates;
         }
 
-        public Box()
-        {
-        }
-
-        private void Redraw()
-        {
-            if (Grid.Children.Count > 0)
-                Grid.Children.RemoveAt(0);
-            if (Piece != null)
-            {
-                Grid.Children.Add(Piece.Icon);
-            }
-            Button.Content = Grid;
-        }
 
         public void Mark()
         {

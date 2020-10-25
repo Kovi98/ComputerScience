@@ -73,6 +73,7 @@
     <Compile Include="GameCore\Move.cs" />
     <Compile Include="GameCore\Player\Player.cs" />
     <Compile Include="GameCore\Game.cs" />
+    <Compile Include="GameUI.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>

@@ -11,18 +11,18 @@ namespace PekarJYPS
         public Board Board { get; private set; }
         public bool IsActive { get; private set; }
         public int Round { get; private set; }
-        private int difficulty;
+        private int _difficulty;
         /// <summary>
         /// Obtížnost hry - 1, 2 nebo 3
         /// </summary>
         public int Difficulty
         {
-            get => difficulty;
+            get => _difficulty;
             set
             {
                 if (value>=1 && value<=3)
                 {
-                    difficulty = value;
+                    _difficulty = value;
                 }
                 else
                 {
@@ -30,10 +30,19 @@ namespace PekarJYPS
                 }
             }
         }
-        public Player WhitePlayer { get; set; }
-        public Player BlackPlayer { get; set; }
+        public Player WhitePlayer { get; private set; }
+        public Player BlackPlayer { get; private set; }
         public int RoundWithoutDead { get; private set; }
-
+        private Player _playerOnMove;
+        public Player PlayerOnMove 
+        { 
+            get => _playerOnMove;
+            private set
+            {
+                _playerOnMove = value;
+                Round++;
+            }
+        }
         public Game(int diff, Players whitePlayer, Players blackPlayer)
         {
             Round = 1;

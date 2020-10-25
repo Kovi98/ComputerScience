@@ -20,9 +20,15 @@ namespace PekarJYPS
     /// </summary>
     public partial class MainWindow : Window
     {
+        public GameUI GameUI { get; private set; }
+        public Game Game => GameUI.Game;
+        public bool IsGameCreated => !(GameUI is null);
+
         public MainWindow()
         {
             InitializeComponent();
+
+            GameUI = new GameUI(this, new Game(1, Players.Human, Players.AI));
         }
 
         private void closeWindow_Click(object sender, RoutedEventArgs e)
@@ -30,7 +36,12 @@ namespace PekarJYPS
             this.Close();
         }
 
-        private void grid_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        public void NewGame()
+        {
+            //GameUI = new GameUI(this, new Game());
+        }
+
+        private void grdBoard_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             this.Close();
         }

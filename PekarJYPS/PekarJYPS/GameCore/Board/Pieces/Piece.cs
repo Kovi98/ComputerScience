@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,21 +14,22 @@ namespace PekarJYPS
         public PieceColor Color { get; private set; }
         public Coordinates Coordinates { get; set; }
         public int Value { get; protected set; }
-        public Game Game { get; private set; }
-        public Piece(Game game, Coordinates coordinates, PieceColor color)
+        public Piece(Coordinates coordinates, PieceColor color)
         {
-            Game = game;
             Coordinates = coordinates;
             Color = color;
         }
 
-        public abstract Move[] GetPossibleMoves();
+        public abstract Move[] GetPossibleMoves(Board board);
 
-        public abstract Move[] GetPossibleAttacks();
+        public abstract Move[] GetPossibleAttacks(Board board);
     }
 
     public enum PieceColor
     {
-        White, Black
+        [Description("bílá")]
+        White,
+        [Description("černá")]
+        Black
     }
 }

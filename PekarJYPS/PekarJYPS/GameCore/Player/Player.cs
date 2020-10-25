@@ -15,6 +15,11 @@ namespace PekarJYPS
             Color = color;
         }
 
+        public override string ToString()
+        {
+            return Color.ToString();
+        }
+
     }
 
     public enum Players

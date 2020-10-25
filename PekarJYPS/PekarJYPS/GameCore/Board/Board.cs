@@ -19,6 +19,7 @@ namespace PekarJYPS
             WhiteDead = 0;
             BlackDead = 0;
 
+            Boxes = new Box[8, 8];
             for (int i = 0; i <= 7; i++)
             {
                 for (int j = 0; j <= 7; j++)
@@ -26,9 +27,9 @@ namespace PekarJYPS
                     Coordinates coor = new Coordinates(i, j);
                     Boxes[i, j] = new Box(coor);
                     if (i == 0 || i == 1)
-                        Boxes[i, j].Piece = new Man(Game, coor, PieceColor.White);
+                        Boxes[i, j].Piece = new Man(coor, PieceColor.White);
                     if (i == 6 || i == 7)
-                        Boxes[i, j].Piece = new Man(Game, coor, PieceColor.Black);
+                        Boxes[i, j].Piece = new Man(coor, PieceColor.Black);
                 }
             }
         }

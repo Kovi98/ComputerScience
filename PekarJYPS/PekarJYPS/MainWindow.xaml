@@ -116,7 +116,7 @@
             <TextBlock Text="2" Foreground="White" FontSize="10" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Row="6"/>
             <TextBlock Text="1" Foreground="White" FontSize="10" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Row="7"/>
         </Grid>
-        <Grid x:Name="grdBoard" Grid.Row="2" Grid.Column="2" PreviewMouseLeftButtonDown="grid_PreviewMouseLeftButtonDown" Grid.ColumnSpan="4" Grid.RowSpan="2">
+        <Grid x:Name="grdBoard" Grid.Row="2" Grid.Column="2" PreviewMouseLeftButtonDown="grdBoard_PreviewMouseLeftButtonDown" Grid.ColumnSpan="4" Grid.RowSpan="2">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="*"/>
