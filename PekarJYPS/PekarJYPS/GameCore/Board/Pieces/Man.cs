@@ -21,10 +21,10 @@ namespace PekarJYPS
             switch (this.Color)
             {
                 case PieceColor.White:
-                    uriString = "Images/man_white.png";
+                    uriString = "Images/white_man.bmp";
                     break;
                 case PieceColor.Black:
-                    uriString = "Images/man_black.png";
+                    uriString = "Images/black_man.bmp";
                     break;
             }
             Icon.Source = new BitmapImage(new Uri(uriString, UriKind.Relative));

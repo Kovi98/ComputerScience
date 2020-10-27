@@ -107,13 +107,13 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\black_man.png" />
-    <Resource Include="Images\king_black.png" />
-    <Resource Include="Images\king_white.png" />
-    <Resource Include="Images\white_man.png" />
+    <Resource Include="Images\favicon.ico" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\favicon.ico" />
+    <Resource Include="Images\black_man.bmp" />
+    <Resource Include="Images\king_black.bmp" />
+    <Resource Include="Images\king_white.bmp" />
+    <Resource Include="Images\white_man.bmp" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

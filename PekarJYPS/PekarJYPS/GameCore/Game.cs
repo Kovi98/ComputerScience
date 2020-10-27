@@ -9,8 +9,21 @@ namespace PekarJYPS
     public class Game
     {
         public Board Board { get; private set; }
-        public bool IsActive { get; private set; }
-        public int Round { get; private set; }
+        public bool IsActive { get; set; }
+        /// <summary>
+        /// Kolo hry
+        /// </summary>
+        public int Round
+        {
+            get => _round;
+            private set
+            {
+                BackupBoard();
+                _round = value;
+            }
+        }
+        private int _round = 1;
+        public Dictionary<int, Board> BoardHistory { get; private set; }
         private int _difficulty;
         /// <summary>
         /// Obtížnost hry - 1, 2 nebo 3
@@ -45,7 +58,6 @@ namespace PekarJYPS
         }
         public Game(int diff, Players whitePlayer, Players blackPlayer)
         {
-            Round = 1;
             Difficulty = diff;
 
             Board = new Board(this);
@@ -103,5 +115,7 @@ namespace PekarJYPS
 
             }
         }
+
+        private void BackupBoard() => BoardHistory.Add(Round, (Board)Board.Clone());
     }
 }

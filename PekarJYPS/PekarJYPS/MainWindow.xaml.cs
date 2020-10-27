@@ -43,7 +43,32 @@ namespace PekarJYPS
 
         private void grdBoard_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            this.Close();
+            if (e.Source is Button)
+            {
+                MessageBox.Show("Button");
+            }
+            else
+            {
+                MessageBox.Show("Něco");
+            }
+        }
+
+        private void cbOn_Click(object sender, RoutedEventArgs e)
+        {
+            if (cbOn.IsChecked == true)
+            {
+                cmbDiff.IsEnabled = false;
+                cmbPlayer.IsEnabled = false;
+                lsBxHistory.IsEnabled = false;
+                GameUI.Game.IsActive = true;
+            }
+            else
+            {
+                cmbDiff.IsEnabled = true;
+                cmbPlayer.IsEnabled = true;
+                lsBxHistory.IsEnabled = true;
+                GameUI.Game.IsActive = false;
+            }
         }
     }
 }

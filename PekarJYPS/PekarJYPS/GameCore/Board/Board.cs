@@ -7,7 +7,7 @@ using System.Windows.Media;
 
 namespace PekarJYPS
 {
-    public class Board
+    public class Board : ICloneable
     {
         public Box[,] Boxes { get; private set; }
         public int WhiteDead { get; private set; }
@@ -71,6 +71,11 @@ namespace PekarJYPS
             }
 
             box.Piece = null;
+        }
+
+        public object Clone()
+        {
+            throw new NotImplementedException();
         }
     }
 }

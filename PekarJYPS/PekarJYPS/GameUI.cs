@@ -35,9 +35,10 @@ namespace PekarJYPS
                     {
                         Game.Board.Boxes[i, j].Grid.Children.Add(Game.Board.Boxes[i, j].Piece.Icon);
                     }
-                    Game.Board.Boxes[i, j].Button.Content = Game.Board.Boxes[i, j].Grid;
                 }
             }
+
+            GUI.lsBxHistory.ItemsSource = Game.BoardHistory;
         }
 
         public void DrawBoard(Board board, bool HasToDrawAllBoard)
@@ -65,11 +66,13 @@ namespace PekarJYPS
                         {
                             Game.Board.Boxes[i, j].Button.Background = Brushes.White;
                         }
+                        // TODO: Opravit načítání ikon figurek na GUI
                         GUI.grdBoard.Children.Add(Game.Board.Boxes[i, j].Button);
                         Game.Board.Boxes[i, j].Button.Tag = Game.Board.Boxes[i, j].Coordinates;
 
                         Game.Board.Boxes[i, j].Grid = new Grid();
                         Game.Board.Boxes[i, j].Grid.IsHitTestVisible = false;
+                        Game.Board.Boxes[i, j].Button.Content = Game.Board.Boxes[i, j].Grid;
                     }
                 }
             }
