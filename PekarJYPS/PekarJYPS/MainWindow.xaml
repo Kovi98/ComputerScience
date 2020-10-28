@@ -27,10 +27,14 @@
         </Grid.RowDefinitions>
         <Menu Grid.ColumnSpan="8" FontWeight="Bold" FontSize="17.5" Margin="0,-1,0,1">
             <MenuItem Header="_Hra" IsHitTestVisible="True" FontSize="15">
-                <MenuItem FontSize="15" FontWeight="Normal" x:Name="zatimNic" Header="_Zatím nic" Click="closeWindow_Click"/>
+                <MenuItem FontSize="15" FontWeight="Normal" x:Name="zatimNic" Header="_Zpět" Click="closeWindow_Click" IsEnabled="False"/>
+                <MenuItem Header="_Vrátit zpět" IsEnabled="False" FontWeight="Normal"/>
                 <MenuItem FontSize="15" FontWeight="Normal" x:Name="closeWindow" Header="_Zavřít okno" Foreground="Black" Click="closeWindow_Click"/>
             </MenuItem>
-            <MenuItem Header="_Nápověda" FontSize="15"/>
+            <MenuItem Header="_Nápověda" FontSize="15">
+                <MenuItem Header="_Nejlepší tah"/>
+                <MenuItem Header="_Nápověda ke hře"/>
+            </MenuItem>
         </Menu>
         <Rectangle Fill="Gray" Grid.ColumnSpan="7" Grid.Row="1"/>
         <Grid Grid.Column="2" Grid.Row="1" Grid.ColumnSpan="4">
@@ -154,8 +158,8 @@
                 <Label Content="Obtížnost" HorizontalAlignment="Left" VerticalAlignment="Top" Height="25" Width="80" FontSize="10" Margin="10,30,0,0"/>
             </Grid>
             <StackPanel Height="375">
-                <Label Content="Historie" HorizontalAlignment="Center" VerticalAlignment="Top" Height="25" Margin="5" FontSize="10" Width="180"/>
-                <ListBox x:Name="lsBxHistory" HorizontalAlignment="Center" Height="350" Margin="5" VerticalAlignment="Center" Width="180"/>
+                <Label Content="Historie tahů" HorizontalAlignment="Center" VerticalAlignment="Top" Height="25" Margin="5" FontSize="10" Width="180"/>
+                <ListBox x:Name="lsBxHistory" HorizontalAlignment="Center" Height="325" Margin="11,5" VerticalAlignment="Center" Width="180"/>
             </StackPanel>
         </StackPanel>
         <TextBlock x:Name="txtWhoPlays" FontStyle="Italic" FontSize="17.5" Grid.Row="5" Grid.Column="2" Grid.ColumnSpan="4"/>

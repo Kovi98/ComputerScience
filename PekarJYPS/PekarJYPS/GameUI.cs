@@ -13,7 +13,6 @@ namespace PekarJYPS
     {
         public Game Game { get; private set; }
         public MainWindow GUI { get; private set; }
-
         public GameUI(MainWindow gui, Game game)
         {
             Game = game;
@@ -23,7 +22,7 @@ namespace PekarJYPS
         }
         public void DrawBoard(Board board)
         {
-            GUI.txtWhoPlays.Text = "Na tahu je hráč s figurkami barvy DOPLNIT";
+            GUI.txtWhoPlays.Text = "Na tahu je hráč s " + (Game.PlayerOnMove.Color.Equals(PieceColor.White) ? "bílými" : "černými") + " figurkami";
 
             for (int i = 0; i <= 7; i++)
             {
@@ -37,8 +36,7 @@ namespace PekarJYPS
                     }
                 }
             }
-
-            GUI.lsBxHistory.ItemsSource = Game.BoardHistory;
+            GUI.lsBxHistory.ItemsSource = Game.BoardHistory.Keys;
         }
 
         public void DrawBoard(Board board, bool HasToDrawAllBoard)
@@ -54,7 +52,7 @@ namespace PekarJYPS
                         // Tlačítka pro ovládání hrací desky v GUI
                         Game.Board.Boxes[i, j].Button = new Button();
                         Game.Board.Boxes[i, j].Button.SetValue(Grid.ColumnProperty, j);
-                        Game.Board.Boxes[i, j].Button.SetValue(Grid.RowProperty, i);
+                        Game.Board.Boxes[i, j].Button.SetValue(Grid.RowProperty, 7-i);
                         Game.Board.Boxes[i, j].Button.SetValue(Border.BorderThicknessProperty, new Thickness(0));
                         Game.Board.Boxes[i, j].Button.Focusable = false;
                         Game.Board.Boxes[i, j].Button.Padding = new Thickness(0);

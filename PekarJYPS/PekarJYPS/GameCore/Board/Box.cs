@@ -10,7 +10,7 @@ using System.Windows.Shapes;
 
 namespace PekarJYPS
 {
-    public class Box
+    public class Box : ICloneable
     {
         public Coordinates Coordinates { get; private set; }
         public Piece piece;
@@ -20,6 +20,7 @@ namespace PekarJYPS
             set
             {
                 piece = value;
+                if (!(piece is null))
                 piece.Coordinates = Coordinates;
             }
         }
@@ -54,6 +55,24 @@ namespace PekarJYPS
             Grid.Children.RemoveRange(0, Grid.Children.Count);
             if (Piece != null)
                 Grid.Children.Add(Piece.Icon);
+        }
+
+        public object Clone()
+        {
+            Box clonedBox = new Box(this.Coordinates);
+            clonedBox.Button = this.Button;
+            clonedBox.Grid = this.Grid;
+
+            if (this.Piece is null)
+            {
+                clonedBox.Piece = null;
+            }
+            else
+            {
+                clonedBox.Piece = (Piece)this.Piece.Clone();
+            }
+
+            return clonedBox;
         }
     }
 }

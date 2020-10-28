@@ -8,7 +8,7 @@ using System.Windows.Controls;
 
 namespace PekarJYPS
 {
-    public abstract class Piece
+    public abstract class Piece : ICloneable
     {
         public Image Icon { get; protected set; }
         public PieceColor Color { get; private set; }
@@ -23,6 +23,8 @@ namespace PekarJYPS
         public abstract Move[] GetPossibleMoves(Board board);
 
         public abstract Move[] GetPossibleAttacks(Board board);
+
+        public abstract object Clone();
     }
 
     public enum PieceColor

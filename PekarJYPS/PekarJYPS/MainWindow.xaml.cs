@@ -23,6 +23,7 @@ namespace PekarJYPS
         public GameUI GameUI { get; private set; }
         public Game Game => GameUI.Game;
         public bool IsGameCreated => !(GameUI is null);
+        private List<Box> toMark = new List<Box>();
 
         public MainWindow()
         {
@@ -45,7 +46,29 @@ namespace PekarJYPS
         {
             if (e.Source is Button)
             {
-                MessageBox.Show("Button");
+                Button button = (Button)e.Source;
+                if (GameUI.Game.MarkedBox is null)
+                {
+                    if (!(GameUI.Game.Board.Boxes[((Coordinates)button.Tag).Row, ((Coordinates)button.Tag).Column].Piece is null) && GameUI.Game.Board.Boxes[((Coordinates)button.Tag).Row, ((Coordinates)button.Tag).Column].Piece.Color.Equals(GameUI.Game.PlayerOnMove.Color))
+                    {
+                        GameUI.Game.MarkedBox = GameUI.Game.Board.Boxes[((Coordinates)button.Tag).Row, ((Coordinates)button.Tag).Column];
+                        toMark.Add(GameUI.Game.MarkedBox);
+                        toMark.AddRange(GameUI.Game.MovesMarkedBox.Select(x => x.NextPosition));
+                        foreach ( Box box in toMark)
+                        {
+                            box.Mark();
+                        }
+                    }
+                }
+                else
+                {
+                    foreach (Box box in toMark)
+                    {
+                        box.Unmark();
+                    }
+                    toMark.RemoveRange(0, toMark.Count);
+                    GameUI.Game.MarkedBox = null;
+                }
             }
             else
             {

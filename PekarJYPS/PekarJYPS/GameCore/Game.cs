@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Navigation;
 
 namespace PekarJYPS
 {
@@ -56,11 +57,33 @@ namespace PekarJYPS
                 Round++;
             }
         }
+        public Box MarkedBox { get; set; }
+        public Move[] MovesMarkedBox
+        {
+            get
+            {
+                if (!(MarkedBox is null)) 
+                {
+                    Move[] attacks = GetPossibleAttacks(Board, MarkedBox);
+                    Move[] moves = GetPossibleMoves(Board, MarkedBox);
+                    if (attacks.Length > 0)
+                    {
+                        return attacks;
+                    }
+                    else if (moves.Length > 0)
+                    {
+                        return moves;
+                    }
+                    else { return new Move[0]; }
+                }
+                else { return new Move[0]; }
+            }
+        }
         public Game(int diff, Players whitePlayer, Players blackPlayer)
         {
             Difficulty = diff;
 
-            Board = new Board(this);
+            Board = new Board();
 
             switch (whitePlayer)
             {
@@ -83,6 +106,12 @@ namespace PekarJYPS
             }
 
             IsActive = true;
+            BoardHistory = new Dictionary<int, Board>();
+            _playerOnMove = WhitePlayer;
+            for (int i = 0; i < 25; i++)
+            {
+                Round++;
+            }
         }
 
         public void ChangePlayer(PieceColor color, Players player)
@@ -117,5 +146,37 @@ namespace PekarJYPS
         }
 
         private void BackupBoard() => BoardHistory.Add(Round, (Board)Board.Clone());
+
+        public void Undo()
+        {
+            Board newBoard;
+            if (!BoardHistory.TryGetValue(Round--, out newBoard))
+                throw new InvalidOperationException("Nejdá dát UNDO když není v historii desek záznam s this.Round-1");
+
+            Round--;
+            Board = (Board)newBoard.Clone();
+        }
+
+        public void Redo()
+        {
+            Board newBoard;
+            if (!BoardHistory.TryGetValue(Round++, out newBoard))
+                throw new InvalidOperationException("Nejdá dát REDO když není v historii desek záznam s this.Round+1");
+
+            Round++;
+            Board = (Board)newBoard.Clone();
+        }
+
+        public Move[] GetPossibleMoves(Board board, Box box)
+        {
+            return board.GetPossibleMoves(box);
+        }
+
+        public Move[] GetPossibleAttacks(Board board, Box box)
+        {
+            return board.GetPossibleAttacks(box);
+        }
+
+
     }
 }

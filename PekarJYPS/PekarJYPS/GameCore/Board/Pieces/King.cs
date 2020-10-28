@@ -32,6 +32,11 @@ namespace PekarJYPS
             Icon.SetValue(RenderOptions.BitmapScalingModeProperty, BitmapScalingMode.Fant); 
         }
 
+        public override object Clone()
+        {
+            return new King(this.Coordinates, this.Color);
+        }
+
         public override Move[] GetPossibleAttacks(Board board)
         {
             throw new NotImplementedException();

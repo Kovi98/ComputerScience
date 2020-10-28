@@ -31,6 +31,11 @@ namespace PekarJYPS
             Icon.SetValue(RenderOptions.BitmapScalingModeProperty, BitmapScalingMode.Fant);
         }
 
+        public override object Clone()
+        {
+            return new Man(this.Coordinates, this.Color);
+        }
+
         /// <summary>
         /// Evoluce kamene v dámu
         /// </summary>
@@ -56,7 +61,7 @@ namespace PekarJYPS
                 if (Color.Equals(PieceColor.White))
                 {
                     //Útok nahoru
-                    if (Coordinates.Row < 6 && board.Boxes[Coordinates.Row + 1, Coordinates.Column].Piece.Color.Equals(PieceColor.Black) && board.Boxes[Coordinates.Row + 2, Coordinates.Column].Piece == null)
+                    if (Coordinates.Row < 6 && !(board.Boxes[Coordinates.Row + 1, Coordinates.Column].Piece is null) && board.Boxes[Coordinates.Row + 1, Coordinates.Column].Piece.Color.Equals(PieceColor.Black) && board.Boxes[Coordinates.Row + 2, Coordinates.Column].Piece is null)
                     {
                         moves.Add(new Move(board.Boxes[Coordinates.Row, Coordinates.Column], board.Boxes[Coordinates.Row + 2, Coordinates.Column], board.Boxes[Coordinates.Row + 1, Coordinates.Column]));
                     }
@@ -65,13 +70,13 @@ namespace PekarJYPS
                     if (Coordinates.Column != 7)
                     {
                         //Diagonalne doprava
-                        if (Coordinates.Column < 6 && Coordinates.Row < 6 && board.Boxes[Coordinates.Row + 1, Coordinates.Column + 1].Piece.Color.Equals(PieceColor.Black) && board.Boxes[Coordinates.Row + 2, Coordinates.Column + 2].Piece == null)
+                        if (Coordinates.Column < 6 && Coordinates.Row < 6 && !(board.Boxes[Coordinates.Row + 1, Coordinates.Column + 1].Piece is null) && board.Boxes[Coordinates.Row + 1, Coordinates.Column + 1].Piece.Color.Equals(PieceColor.Black) && board.Boxes[Coordinates.Row + 2, Coordinates.Column + 2].Piece is null)
                         {
                             moves.Add(new Move(board.Boxes[Coordinates.Row, Coordinates.Column], board.Boxes[Coordinates.Row + 2, Coordinates.Column + 2], board.Boxes[Coordinates.Row + 1, Coordinates.Column + 1]));
                         }
 
                         //Doprava
-                        if (Coordinates.Column < 6 && board.Boxes[Coordinates.Row, Coordinates.Column + 1].Piece.Color.Equals(PieceColor.Black) && board.Boxes[Coordinates.Row, Coordinates.Column + 2].Piece == null)
+                        if (Coordinates.Column < 6 && board.Boxes[Coordinates.Row, Coordinates.Column + 1].Piece.Color.Equals(PieceColor.Black) && board.Boxes[Coordinates.Row, Coordinates.Column + 2].Piece is null)
                         {
                             moves.Add(new Move(board.Boxes[Coordinates.Row, Coordinates.Column], board.Boxes[Coordinates.Row, Coordinates.Column + 2], board.Boxes[Coordinates.Row, Coordinates.Column + 1]));
                         }
@@ -82,13 +87,13 @@ namespace PekarJYPS
                     else if (Coordinates.Column != 0)
                     {
                         //Diagonalne doleva
-                        if (Coordinates.Column > 1 && Coordinates.Row < 6 && board.Boxes[Coordinates.Row + 1, Coordinates.Column - 1].Piece.Color.Equals(PieceColor.Black) && board.Boxes[Coordinates.Row + 2, Coordinates.Column - 2].Piece == null)
+                        if (Coordinates.Column > 1 && Coordinates.Row < 6 && !(board.Boxes[Coordinates.Row + 1, Coordinates.Column - 1].Piece is null) && board.Boxes[Coordinates.Row + 1, Coordinates.Column - 1].Piece.Color.Equals(PieceColor.Black) && board.Boxes[Coordinates.Row + 2, Coordinates.Column - 2].Piece is null)
                         {
                             moves.Add(new Move(board.Boxes[Coordinates.Row, Coordinates.Column], board.Boxes[Coordinates.Row + 2, Coordinates.Column - 2], board.Boxes[Coordinates.Row + 1, Coordinates.Column - 1]));
                         }
 
                         //Doleva
-                        if (Coordinates.Column > 1 && board.Boxes[Coordinates.Row, Coordinates.Column - 1].Piece.Color.Equals(PieceColor.Black) && board.Boxes[Coordinates.Row, Coordinates.Column - 2].Piece == null)
+                        if (Coordinates.Column > 1 && !(board.Boxes[Coordinates.Row, Coordinates.Column - 1].Piece is null) && board.Boxes[Coordinates.Row, Coordinates.Column - 1].Piece.Color.Equals(PieceColor.Black) && board.Boxes[Coordinates.Row, Coordinates.Column - 2].Piece is null)
                         {
                             moves.Add(new Move(board.Boxes[Coordinates.Row, Coordinates.Column], board.Boxes[Coordinates.Row, Coordinates.Column - 2], board.Boxes[Coordinates.Row, Coordinates.Column - 1]));
                         }
@@ -99,7 +104,7 @@ namespace PekarJYPS
                 else if (Color.Equals(PieceColor.Black))
                 {
                     //Útok dolů
-                    if (Coordinates.Row > 1 && board.Boxes[Coordinates.Row - 1, Coordinates.Column].Piece.Color.Equals(PieceColor.White) && board.Boxes[Coordinates.Row - 2, Coordinates.Column].Piece == null)
+                    if (Coordinates.Row > 1 && board.Boxes[Coordinates.Row - 1, Coordinates.Column].Piece.Color.Equals(PieceColor.White) && board.Boxes[Coordinates.Row - 2, Coordinates.Column].Piece is null)
                     {
                         moves.Add(new Move(board.Boxes[Coordinates.Row, Coordinates.Column], board.Boxes[Coordinates.Row - 2, Coordinates.Column], board.Boxes[Coordinates.Row - 1, Coordinates.Column]));
                     }
@@ -108,13 +113,13 @@ namespace PekarJYPS
                     if (Coordinates.Column != 7)
                     {
                         //Diagonalne doprava
-                        if (Coordinates.Column < 6 && Coordinates.Row > 1 && board.Boxes[Coordinates.Row - 1, Coordinates.Column + 1].Piece.Color.Equals(PieceColor.White) && board.Boxes[Coordinates.Row - 2, Coordinates.Column + 2].Piece == null)
+                        if (Coordinates.Column < 6 && Coordinates.Row > 1 && board.Boxes[Coordinates.Row - 1, Coordinates.Column + 1].Piece.Color.Equals(PieceColor.White) && board.Boxes[Coordinates.Row - 2, Coordinates.Column + 2].Piece is null)
                         {
                             moves.Add(new Move(board.Boxes[Coordinates.Row, Coordinates.Column], board.Boxes[Coordinates.Row + 2, Coordinates.Column + 2], board.Boxes[Coordinates.Row + 1, Coordinates.Column + 1]));
                         }
 
                         //Doprava
-                        if (Coordinates.Column < 6 && board.Boxes[Coordinates.Row, Coordinates.Column + 1].Piece.Color.Equals(PieceColor.White) && board.Boxes[Coordinates.Row, Coordinates.Column + 2].Piece == null)
+                        if (Coordinates.Column < 6 && board.Boxes[Coordinates.Row, Coordinates.Column + 1].Piece.Color.Equals(PieceColor.White) && board.Boxes[Coordinates.Row, Coordinates.Column + 2].Piece is null)
                         {
                             moves.Add(new Move(board.Boxes[Coordinates.Row, Coordinates.Column], board.Boxes[Coordinates.Row, Coordinates.Column + 2], board.Boxes[Coordinates.Row, Coordinates.Column + 1]));
                         }
@@ -125,13 +130,13 @@ namespace PekarJYPS
                     else if (Coordinates.Column != 0)
                     {
                         //Diagonalne doleva
-                        if (Coordinates.Column > 1 && Coordinates.Row > 1 && board.Boxes[Coordinates.Row - 1, Coordinates.Column - 1].Piece.Color.Equals(PieceColor.White) && board.Boxes[Coordinates.Row - 2, Coordinates.Column - 2].Piece == null)
+                        if (Coordinates.Column > 1 && Coordinates.Row > 1 && board.Boxes[Coordinates.Row - 1, Coordinates.Column - 1].Piece.Color.Equals(PieceColor.White) && board.Boxes[Coordinates.Row - 2, Coordinates.Column - 2].Piece is null)
                         {
                             moves.Add(new Move(board.Boxes[Coordinates.Row, Coordinates.Column], board.Boxes[Coordinates.Row - 2, Coordinates.Column - 2], board.Boxes[Coordinates.Row - 1, Coordinates.Column - 1]));
                         }
 
                         //Doleva
-                        if (Coordinates.Column > 1 && board.Boxes[Coordinates.Row, Coordinates.Column - 1].Piece.Color.Equals(PieceColor.White) && board.Boxes[Coordinates.Row, Coordinates.Column - 2].Piece == null)
+                        if (Coordinates.Column > 1 && board.Boxes[Coordinates.Row, Coordinates.Column - 1].Piece.Color.Equals(PieceColor.White) && board.Boxes[Coordinates.Row, Coordinates.Column - 2].Piece is null)
                         {
                             moves.Add(new Move(board.Boxes[Coordinates.Row, Coordinates.Column], board.Boxes[Coordinates.Row, Coordinates.Column - 2], board.Boxes[Coordinates.Row, Coordinates.Column - 1]));
                         }
@@ -157,7 +162,7 @@ namespace PekarJYPS
                 if (Color.Equals(PieceColor.White))
                 {
                     //Pohyb nahoru - možný vždy, když je políčko volné
-                    if (board.Boxes[Coordinates.Row + 1, Coordinates.Column].Piece == null)
+                    if (board.Boxes[Coordinates.Row + 1, Coordinates.Column].Piece is null)
                     {
                         moves.Add(new Move(board.Boxes[Coordinates.Row, Coordinates.Column], board.Boxes[Coordinates.Row + 1, Coordinates.Column]));
                     }
@@ -166,13 +171,13 @@ namespace PekarJYPS
                     if (Coordinates.Column != 7)
                     {
                         //Diagonalne doprava
-                        if (board.Boxes[Coordinates.Row + 1, Coordinates.Column + 1].Piece == null)
+                        if (board.Boxes[Coordinates.Row + 1, Coordinates.Column + 1].Piece is null)
                         {
                             moves.Add(new Move(board.Boxes[Coordinates.Row, Coordinates.Column], board.Boxes[Coordinates.Row + 1, Coordinates.Column + 1]));
                         }
 
                         //Doprava
-                        if (board.Boxes[Coordinates.Row, Coordinates.Column + 1].Piece == null)
+                        if (board.Boxes[Coordinates.Row, Coordinates.Column + 1].Piece is null)
                         {
                             moves.Add(new Move(board.Boxes[Coordinates.Row, Coordinates.Column], board.Boxes[Coordinates.Row, Coordinates.Column + 1]));
                         }
@@ -183,13 +188,13 @@ namespace PekarJYPS
                     else if (Coordinates.Column != 0)
                     {
                         //Diagonalne doleva
-                        if (board.Boxes[Coordinates.Row + 1, Coordinates.Column - 1].Piece == null)
+                        if (board.Boxes[Coordinates.Row + 1, Coordinates.Column - 1].Piece is null)
                         {
                             moves.Add(new Move(board.Boxes[Coordinates.Row, Coordinates.Column], board.Boxes[Coordinates.Row + 1, Coordinates.Column - 1]));
                         }
 
                         //Doleva
-                        if (board.Boxes[Coordinates.Row, Coordinates.Column - 1].Piece == null)
+                        if (board.Boxes[Coordinates.Row, Coordinates.Column - 1].Piece is null)
                         {
                             moves.Add(new Move(board.Boxes[Coordinates.Row, Coordinates.Column], board.Boxes[Coordinates.Row, Coordinates.Column - 1]));
                         }
@@ -200,7 +205,7 @@ namespace PekarJYPS
                 else if (Color.Equals(PieceColor.Black))
                 {
                     //Pohyb dolů - možný vždy, když je políčko volné
-                    if (board.Boxes[Coordinates.Row - 1, Coordinates.Column].Piece == null)
+                    if (board.Boxes[Coordinates.Row - 1, Coordinates.Column].Piece is null)
                     {
                         moves.Add(new Move(board.Boxes[Coordinates.Row, Coordinates.Column], board.Boxes[Coordinates.Row - 1, Coordinates.Column]));
                     }
@@ -209,13 +214,13 @@ namespace PekarJYPS
                     if (Coordinates.Column != 7)
                     {
                         //Diagonalne doprava
-                        if (board.Boxes[Coordinates.Row - 1, Coordinates.Column + 1].Piece == null)
+                        if (board.Boxes[Coordinates.Row - 1, Coordinates.Column + 1].Piece is null)
                         {
                             moves.Add(new Move(board.Boxes[Coordinates.Row, Coordinates.Column], board.Boxes[Coordinates.Row - 1, Coordinates.Column + 1]));
                         }
 
                         //Doprava
-                        if (board.Boxes[Coordinates.Row, Coordinates.Column + 1].Piece == null)
+                        if (board.Boxes[Coordinates.Row, Coordinates.Column + 1].Piece is null)
                         {
                             moves.Add(new Move(board.Boxes[Coordinates.Row, Coordinates.Column], board.Boxes[Coordinates.Row, Coordinates.Column + 1]));
                         }
@@ -226,13 +231,13 @@ namespace PekarJYPS
                     else if (Coordinates.Column != 0)
                     {
                         //Diagonalne doleva
-                        if (board.Boxes[Coordinates.Row - 1, Coordinates.Column - 1].Piece == null)
+                        if (board.Boxes[Coordinates.Row - 1, Coordinates.Column - 1].Piece is null)
                         {
                             moves.Add(new Move(board.Boxes[Coordinates.Row, Coordinates.Column], board.Boxes[Coordinates.Row - 1, Coordinates.Column - 1]));
                         }
 
                         //Doleva
-                        if (board.Boxes[Coordinates.Row, Coordinates.Column - 1].Piece == null)
+                        if (board.Boxes[Coordinates.Row, Coordinates.Column - 1].Piece is null)
                         {
                             moves.Add(new Move(board.Boxes[Coordinates.Row, Coordinates.Column], board.Boxes[Coordinates.Row, Coordinates.Column - 1]));
                         }

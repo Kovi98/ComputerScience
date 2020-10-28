@@ -12,10 +12,8 @@ namespace PekarJYPS
         public Box[,] Boxes { get; private set; }
         public int WhiteDead { get; private set; }
         public int BlackDead { get; private set; }
-        public Game Game { get; private set; }
-        public Board(Game game)
+        public Board()
         {
-            Game = game;
             WhiteDead = 0;
             BlackDead = 0;
 
@@ -75,7 +73,44 @@ namespace PekarJYPS
 
         public object Clone()
         {
-            throw new NotImplementedException();
+            Board clonedBoard = new Board();
+
+            clonedBoard.BlackDead = this.BlackDead;
+            clonedBoard.WhiteDead = this.WhiteDead;
+
+            for (int i = 0; i <= 7; i++)
+            {
+                for (int j = 0; j <= 7; j++)
+                {
+                    clonedBoard.Boxes[i,j] = (Box)this.Boxes[i,j].Clone();
+                }
+            }
+
+            return clonedBoard;
+        }
+
+        public Move[] GetPossibleMoves(Box box)
+        {
+            if (!(box.Piece is null))
+            {
+                return box.Piece.GetPossibleMoves(this);
+            }
+            else
+            {
+                return new Move[0];
+            }
+        }
+
+        public Move[] GetPossibleAttacks(Box box)
+        {
+            if (!(box.Piece is null))
+            {
+                return box.Piece.GetPossibleAttacks(this);
+            }
+            else
+            {
+                return new Move[0];
+            }
         }
     }
 }
