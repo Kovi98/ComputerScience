@@ -162,6 +162,6 @@
                 <ListBox x:Name="lsBxHistory" HorizontalAlignment="Center" Height="325" Margin="11,5" VerticalAlignment="Center" Width="180"/>
             </StackPanel>
         </StackPanel>
-        <TextBlock x:Name="txtWhoPlays" FontStyle="Italic" FontSize="17.5" Grid.Row="5" Grid.Column="2" Grid.ColumnSpan="4"/>
+        <TextBlock x:Name="txtWhoPlays" FontSize="17.5" Grid.Row="5" Grid.Column="2" Grid.ColumnSpan="4"/>
     </Grid>
 </Window>

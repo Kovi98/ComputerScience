@@ -18,7 +18,13 @@ namespace PekarJYPS
             Game = game;
             GUI = gui;
             
-            RedrawBoard(Game.Board);
+            RedrawBoard(Game.board);
+        }
+        public void DoMove(Move move)
+        {
+            Game.DoMove(move);
+
+            RedrawPieces();
         }
         public void DrawBoard(Board board)
         {
@@ -28,11 +34,17 @@ namespace PekarJYPS
             {
                 for (int j = 0; j <= 7; j++)
                 {
-                    if (Game.Board.Boxes[i, j].Grid.Children.Count > 0)
-                        Game.Board.Boxes[i, j].Grid.Children.RemoveAt(0);
-                    if (!(Game.Board.Boxes[i, j].Piece is null))
+                    if (board.Boxes[i, j].Grid.Children.Count > 0)
+                        board.Boxes[i, j].Grid.Children.RemoveRange(0, board.Boxes[i, j].Grid.Children.Count);
+                }
+            }
+            for (int i = 0; i <= 7; i++)
+            {
+                for (int j = 0; j <= 7; j++)
+                {
+                    if (!(board.Boxes[i, j].Piece is null))
                     {
-                        Game.Board.Boxes[i, j].Grid.Children.Add(Game.Board.Boxes[i, j].Piece.Icon);
+                        board.Boxes[i, j].Grid.Children.Add(board.Boxes[i, j].Piece.Icon);
                     }
                 }
             }
@@ -50,27 +62,26 @@ namespace PekarJYPS
                     for (int j = 0; j <= 7; j++)
                     {
                         // Tlačítka pro ovládání hrací desky v GUI
-                        Game.Board.Boxes[i, j].Button = new Button();
-                        Game.Board.Boxes[i, j].Button.SetValue(Grid.ColumnProperty, j);
-                        Game.Board.Boxes[i, j].Button.SetValue(Grid.RowProperty, 7-i);
-                        Game.Board.Boxes[i, j].Button.SetValue(Border.BorderThicknessProperty, new Thickness(0));
-                        Game.Board.Boxes[i, j].Button.Focusable = false;
-                        Game.Board.Boxes[i, j].Button.Padding = new Thickness(0);
+                        board.Boxes[i, j].Button = new Button();
+                        board.Boxes[i, j].Button.SetValue(Grid.ColumnProperty, j);
+                        board.Boxes[i, j].Button.SetValue(Grid.RowProperty, 7-i);
+                        board.Boxes[i, j].Button.SetValue(Border.BorderThicknessProperty, new Thickness(0));
+                        board.Boxes[i, j].Button.Focusable = false;
+                        board.Boxes[i, j].Button.Padding = new Thickness(0);
                         if (i % 2 != j % 2)
                         {
-                            Game.Board.Boxes[i, j].Button.Background = Brushes.Black;
+                            board.Boxes[i, j].Button.Background = Brushes.Black;
                         }
                         else
                         {
-                            Game.Board.Boxes[i, j].Button.Background = Brushes.White;
+                            board.Boxes[i, j].Button.Background = Brushes.White;
                         }
-                        // TODO: Opravit načítání ikon figurek na GUI
-                        GUI.grdBoard.Children.Add(Game.Board.Boxes[i, j].Button);
-                        Game.Board.Boxes[i, j].Button.Tag = Game.Board.Boxes[i, j].Coordinates;
+                        GUI.grdBoard.Children.Add(Game.board.Boxes[i, j].Button);
+                        board.Boxes[i, j].Button.Tag = Game.board.Boxes[i, j].Coordinates;
 
-                        Game.Board.Boxes[i, j].Grid = new Grid();
-                        Game.Board.Boxes[i, j].Grid.IsHitTestVisible = false;
-                        Game.Board.Boxes[i, j].Button.Content = Game.Board.Boxes[i, j].Grid;
+                        board.Boxes[i, j].Grid = new Grid();
+                        board.Boxes[i, j].Grid.IsHitTestVisible = false;
+                        board.Boxes[i, j].Button.Content = board.Boxes[i, j].Grid;
                     }
                 }
             }
@@ -79,7 +90,7 @@ namespace PekarJYPS
 
         public void RedrawPieces()
         {
-            DrawBoard(Game.Board);
+            DrawBoard(Game.board);
         }
 
         public void RedrawBoard(Board board)

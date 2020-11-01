@@ -36,7 +36,7 @@ namespace PekarJYPS
         public void Mark()
         {
             Grid.Children.Add(MarkedBox(Brushes.Green));
-            Button.Content = Grid;
+            //Button.Content = Grid;
         }
 
         private Rectangle MarkedBox(Brush color)
@@ -53,7 +53,7 @@ namespace PekarJYPS
         public void Unmark()
         {
             Grid.Children.RemoveRange(0, Grid.Children.Count);
-            if (Piece != null)
+            if (!(Piece is null))
                 Grid.Children.Add(Piece.Icon);
         }
 

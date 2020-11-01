@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 using System.Windows.Media;
 
 namespace PekarJYPS
@@ -25,7 +26,7 @@ namespace PekarJYPS
                     Coordinates coor = new Coordinates(i, j);
                     Boxes[i, j] = new Box(coor);
                     if (i == 0 || i == 1)
-                        Boxes[i, j].Piece = new Man(coor, PieceColor.White);
+                        Boxes[i, j].Piece = new King(coor, PieceColor.White);
                     if (i == 6 || i == 7)
                         Boxes[i, j].Piece = new Man(coor, PieceColor.Black);
                 }
@@ -41,8 +42,11 @@ namespace PekarJYPS
             move.NextPosition.Piece = move.CurrentPosition.Piece;
             move.CurrentPosition.Piece = null;
 
-            if (move.AttackedPosition is object)
+            if (!(move.AttackedPosition is null))
+            {
+                move.AttackedPosition.Grid.Children.RemoveRange(0, move.AttackedPosition.Grid.Children.Count);
                 DropPiece(move.AttackedPosition);
+            }
 
             //Evoluce kámen -> dáma pokud je kámen na posledním řádku své barvy
             if ((move.NextPosition.Piece is Man) && ((move.NextPosition.Piece.Color.Equals(PieceColor.White) && move.NextPosition.Coordinates.Row == 7) || (move.NextPosition.Piece.Color.Equals(PieceColor.Black) && move.NextPosition.Coordinates.Row == 0)))
