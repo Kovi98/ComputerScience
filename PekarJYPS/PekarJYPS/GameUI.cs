@@ -13,18 +13,65 @@ namespace PekarJYPS
     {
         public Game Game { get; private set; }
         public MainWindow GUI { get; private set; }
+        private bool _isGameActive;
+        public bool IsGameActive
+        {
+            get => _isGameActive;
+            set
+            {
+                if (value)
+                {
+                    GUI.cmbDiff.IsEnabled = false;
+                    GUI.cmbPlayer.IsEnabled = false;
+                    GUI.lsBxHistory.IsEnabled = false;
+                    Game.IsActive = true;
+                }
+                else
+                {
+                    GUI.cmbDiff.IsEnabled = true;
+                    GUI.cmbPlayer.IsEnabled = true;
+                    GUI.lsBxHistory.IsEnabled = true;
+                    Game.IsActive = false;
+                }
+                _isGameActive = value;
+            }
+        }
+        public bool _isGameOver;
+        public bool IsGameOver
+        {
+            get => _isGameOver;
+            set
+            {
+                if (value)
+                {
+                    IsGameActive = false;
+                }
+                _isGameOver = value;
+                GUI.lsBxHistory.IsEnabled = true;
+            }
+        }
         public GameUI(MainWindow gui, Game game)
         {
             Game = game;
             GUI = gui;
             
-            RedrawBoard(Game.board);
+            RedrawBoard(Game.Board);
         }
         public void DoMove(Move move)
         {
-            Game.DoMove(move);
+            if (Game.IsActive && !Game.IsOver)
+            {
+                Game.DoMove(move);
+                RedrawPieces();
+            }
+            else
+            {
+                throw new InvalidOperationException("Nelze udělat pohyb, když je hra ukončena, nebo pozastavena");
+            }
 
-            RedrawPieces();
+            if (Game.IsOver)
+                IsGameOver = true;
+            
         }
         public void DrawBoard(Board board)
         {
@@ -76,8 +123,8 @@ namespace PekarJYPS
                         {
                             board.Boxes[i, j].Button.Background = Brushes.White;
                         }
-                        GUI.grdBoard.Children.Add(Game.board.Boxes[i, j].Button);
-                        board.Boxes[i, j].Button.Tag = Game.board.Boxes[i, j].Coordinates;
+                        GUI.grdBoard.Children.Add(Game.Board.Boxes[i, j].Button);
+                        board.Boxes[i, j].Button.Tag = Game.Board.Boxes[i, j].Coordinates;
 
                         board.Boxes[i, j].Grid = new Grid();
                         board.Boxes[i, j].Grid.IsHitTestVisible = false;
@@ -90,7 +137,7 @@ namespace PekarJYPS
 
         public void RedrawPieces()
         {
-            DrawBoard(Game.board);
+            DrawBoard(Game.Board);
         }
 
         public void RedrawBoard(Board board)

@@ -28,8 +28,6 @@ namespace PekarJYPS
         public MainWindow()
         {
             InitializeComponent();
-
-            GameUI = new GameUI(this, new Game(1, Players.Human, Players.Human));
         }
 
         private void closeWindow_Click(object sender, RoutedEventArgs e)
@@ -39,65 +37,80 @@ namespace PekarJYPS
 
         public void NewGame()
         {
-            //GameUI = new GameUI(this, new Game());
+            int diff = cmbDiff.SelectedIndex + 1;
+            Players firstPlayer = cmbPlayer.SelectedIndex == 0 ? Players.Human : Players.AI;
+
+            Game newGame = new Game(diff, firstPlayer, Players.AI);
+            GameUI = new GameUI(this, newGame);
         }
 
         private void grdBoard_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            if ((GameUI.Game.WhitePlayer is Human && GameUI.Game.PlayerOnMove.Equals(GameUI.Game.WhitePlayer)) || (GameUI.Game.BlackPlayer is Human && GameUI.Game.PlayerOnMove.Equals(GameUI.Game.BlackPlayer)))
+            if (GameUI.IsGameActive)
             {
-                if (e.Source is Button)
+                if ((GameUI.Game.WhitePlayer is Human && GameUI.Game.PlayerOnMove.Equals(GameUI.Game.WhitePlayer)) || (GameUI.Game.BlackPlayer is Human && GameUI.Game.PlayerOnMove.Equals(GameUI.Game.BlackPlayer)))
                 {
-                    Button button = (Button)e.Source;
-
-                    //Označení figurky + možných skoků
-                    if (GameUI.Game.MarkedBox is null)
+                    if (e.Source is Button)
                     {
-                        if (!(GameUI.Game.board.Boxes[((Coordinates)button.Tag).Row, ((Coordinates)button.Tag).Column].Piece is null) && GameUI.Game.board.Boxes[((Coordinates)button.Tag).Row, ((Coordinates)button.Tag).Column].Piece.Color.Equals(GameUI.Game.PlayerOnMove.Color))
+                        Button button = (Button)e.Source;
+
+                        //Označení figurky + možných skoků
+                        if (GameUI.Game.MarkedBox is null)
                         {
-                            GameUI.Game.MarkedBox = GameUI.Game.board.Boxes[((Coordinates)button.Tag).Row, ((Coordinates)button.Tag).Column];
-                            toMark.Add(GameUI.Game.MarkedBox);
-                            toMark.AddRange(GameUI.Game.MovesMarkedBox.Select(x => x.NextPosition));
-                            foreach (Box box in toMark)
+                            if (!(GameUI.Game.Board.Boxes[((Coordinates)button.Tag).Row, ((Coordinates)button.Tag).Column].Piece is null) && GameUI.Game.Board.Boxes[((Coordinates)button.Tag).Row, ((Coordinates)button.Tag).Column].Piece.Color.Equals(GameUI.Game.PlayerOnMove.Color))
                             {
-                                box.Mark();
+                                if (GameUI.Game.ForcedAttackBox is null)
+                                {
+                                    GameUI.Game.MarkedBox = GameUI.Game.Board.Boxes[((Coordinates)button.Tag).Row, ((Coordinates)button.Tag).Column];
+                                }
+                                else
+                                {
+                                    GameUI.Game.MarkedBox = GameUI.Game.ForcedAttackBox;
+                                }
+
+                                toMark.Add(GameUI.Game.MarkedBox);
+                                toMark.AddRange(GameUI.Game.MovesMarkedBox.Select(x => x.NextPosition));
+                                foreach (Box box in toMark)
+                                {
+                                    box.Mark();
+                                }
                             }
+                            return;
                         }
-                        return;
-                    }
 
-                    var result = from m in GameUI.Game.MovesMarkedBox
-                                 where (m.CurrentPosition.Equals(GameUI.Game.MarkedBox)) && (m.NextPosition.Coordinates.Row == ((Coordinates)button.Tag).Row) && (m.NextPosition.Coordinates.Column == ((Coordinates)button.Tag).Column)
-                                 select m;
+                        var result = from m in GameUI.Game.MovesMarkedBox
+                                     where (m.CurrentPosition.Equals(GameUI.Game.MarkedBox)) && (m.NextPosition.Coordinates.Row == ((Coordinates)button.Tag).Row) && (m.NextPosition.Coordinates.Column == ((Coordinates)button.Tag).Column)
+                                     select m;
 
-                    // TODO: Už je nějaká figurka označena -> provedení skoku/zrušení označení
-                    if (!(GameUI.Game.MarkedBox is null))
-                    {
-                        if (result.Count() == 1)
+                        // TODO: Už je nějaká figurka označena -> provedení skoku/zrušení označení
+                        if (!(GameUI.Game.MarkedBox is null))
                         {
-                            foreach (Box box in toMark)
+                            if (result.Count() == 1)
                             {
-                                box.Unmark();
+                                foreach (Box box in toMark)
+                                {
+                                    box.Unmark();
+                                }
+
+                                Move move = result.First();
+
+                                toMark.RemoveRange(0, toMark.Count);
+                                GameUI.Game.MarkedBox = null;
+                                GameUI.DoMove(move);
                             }
-
-                            Move move = result.First();
-
-                            toMark.RemoveRange(0, toMark.Count);
-                            GameUI.Game.MarkedBox = null;
-                            GameUI.DoMove(move);
-                        }
-                        else if (result.Count() == 0)
-                        {
-                            foreach (Box box in toMark)
+                            else if (result.Count() == 0)
                             {
-                                box.Unmark();
+                                foreach (Box box in toMark)
+                                {
+                                    box.Unmark();
+                                }
+                                toMark.RemoveRange(0, toMark.Count);
+                                GameUI.Game.MarkedBox = null;
                             }
-                            toMark.RemoveRange(0, toMark.Count);
-                            GameUI.Game.MarkedBox = null;
-                        }
-                        else
-                        {
-                            throw new InvalidOperationException("výsledkem dotazu result musí být vždy jen 1 pohyb!");
+                            else
+                            {
+                                throw new InvalidOperationException("výsledkem dotazu result musí být vždy jen 1 pohyb!");
+                            }
                         }
                     }
                 }
@@ -106,20 +119,25 @@ namespace PekarJYPS
 
         private void cbOn_Click(object sender, RoutedEventArgs e)
         {
-            if (cbOn.IsChecked == true)
+            if (cbOn.IsEnabled)
             {
-                cmbDiff.IsEnabled = false;
-                cmbPlayer.IsEnabled = false;
-                lsBxHistory.IsEnabled = false;
-                GameUI.Game.IsActive = true;
+                if (GameUI is null)
+                {
+                    NewGame();
+                }
+
+                GameUI.IsGameActive = cbOn.IsChecked.HasValue ? cbOn.IsChecked.Value : false;
             }
-            else
-            {
-                cmbDiff.IsEnabled = true;
-                cmbPlayer.IsEnabled = true;
-                lsBxHistory.IsEnabled = true;
-                GameUI.Game.IsActive = false;
-            }
+        }
+
+        private void cmbPlayer_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            GameUI.Game.WhitePlayer = cmbPlayer.SelectedIndex == 0 ? (Player)new Human(PieceColor.White) : (Player)new AI(PieceColor.White);
+        }
+
+        private void cmbDiff_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            GameUI.Game.Difficulty = cmbDiff.SelectedIndex + 1;
         }
     }
 }

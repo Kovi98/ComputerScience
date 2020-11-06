@@ -9,7 +9,7 @@ namespace PekarJYPS
 {
     public class Game
     {
-        public Board board { get; private set; }
+        public Board Board { get; private set; }
         public bool IsActive { get; set; }
         public bool IsOver { get; private set; }
         public int Round
@@ -42,8 +42,8 @@ namespace PekarJYPS
                 }
             }
         }
-        public Player WhitePlayer { get; private set; }
-        public Player BlackPlayer { get; private set; }
+        public Player WhitePlayer { get; set; }
+        public Player BlackPlayer { get; set; }
         public int RoundWithoutDead { get; private set; }
         private Player _playerOnMove;
         public Player PlayerOnMove 
@@ -51,8 +51,9 @@ namespace PekarJYPS
             get => _playerOnMove;
             private set
             {
+                if (value.Color.Equals(PieceColor.White))
+                    Round++;
                 _playerOnMove = value;
-                Round++;
             }
         }
         public Box MarkedBox { get; set; }
@@ -60,26 +61,34 @@ namespace PekarJYPS
         {
             get
             {
-                if (!(MarkedBox is null)) 
+                if (ForcedAttackBox is null)
                 {
-                    Move[] attacks = GetPossibleAttacks(board, MarkedBox);
-                    if (attacks.Length > 0)
+                    if (!(MarkedBox is null))
                     {
-                        return attacks;
+                        Move[] attacks = GetPossibleAttacks(Board, MarkedBox);
+                        if (attacks.Length > 0)
+                        {
+                            return attacks;
+                        }
+                        Move[] moves = GetPossibleMoves(Board, MarkedBox);
+                        if (moves.Length > 0)
+                        {
+                            return moves;
+                        }
                     }
-                    Move[] moves = GetPossibleMoves(board, MarkedBox);
-                    if (moves.Length > 0)
-                    {
-                        return moves;
-                    }
+                    return new Move[0];
                 }
-                return new Move[0];
+                else
+                {
+                    return GetPossibleAttacks(Board, ForcedAttackBox);
+                }
             }
         }
+        public Box ForcedAttackBox { get; set; }
         public Game(int diff, Players whitePlayer, Players blackPlayer)
         {
             Difficulty = diff;
-            board = new Board();
+            Board = new Board();
 
             switch (whitePlayer)
             {
@@ -106,7 +115,7 @@ namespace PekarJYPS
             _playerOnMove = WhitePlayer;
             for (int i = 0; i < 25; i++)
             {
-                Round++;
+                //Round++;
             }
         }
 
@@ -114,8 +123,16 @@ namespace PekarJYPS
         {
             if(IsActive && !IsOver)
             {
-                board.DoMove(move);
-                ChangePlayer();
+                Board.DoMove(move);
+                if (!(!(move.AttackedPosition is null) && Board.GetPossibleAttacks(move.NextPosition).Length > 0))
+                {
+                    ChangePlayer();
+                    ForcedAttackBox = null;
+                }
+                else
+                {
+                    ForcedAttackBox = move.NextPosition;
+                }
             }
             else
             {
@@ -139,7 +156,7 @@ namespace PekarJYPS
             }
         }
 
-        private void BackupBoard() => BoardHistory.Add(Round, (Board)board.Clone());
+        private void BackupBoard() => BoardHistory.Add(Round, (Board)Board.Clone());
 
         public void Undo()
         {
@@ -148,7 +165,7 @@ namespace PekarJYPS
                 throw new InvalidOperationException("Nejdá dát UNDO když není v historii desek záznam s this.Round-1");
 
             Round--;
-            board = (Board)newBoard.Clone();
+            Board = (Board)newBoard.Clone();
         }
 
         public void Redo()
@@ -158,7 +175,7 @@ namespace PekarJYPS
                 throw new InvalidOperationException("Nejdá dát REDO když není v historii desek záznam s this.Round+1");
 
             Round++;
-            board = (Board)newBoard.Clone();
+            Board = (Board)newBoard.Clone();
         }
 
         public Move[] GetPossibleMoves(Board board, Box box)

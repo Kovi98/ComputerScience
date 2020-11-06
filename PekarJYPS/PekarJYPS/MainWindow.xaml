@@ -145,11 +145,11 @@
         <StackPanel Grid.Column="7" Grid.Row="1" Grid.RowSpan="3" VerticalAlignment="Stretch" Margin="4">
             <Grid Height="100">
                 <CheckBox x:Name="cbOn" Content="Zapnuto" HorizontalAlignment="Right" VerticalAlignment="Bottom" Height="15" Width="60" FontSize="10" Margin="2" Click="cbOn_Click"/>
-                <ComboBox x:Name="cmbDiff" HorizontalAlignment="Right" Margin="5" VerticalAlignment="Top" Width="90" Height="16" FontSize="8">
+                <ComboBox x:Name="cmbPlayer" HorizontalAlignment="Right" Margin="5" VerticalAlignment="Top" Width="90" Height="16" FontSize="8" DataContextChanged="cmbPlayer_DataContextChanged">
                     <ComboBoxItem Content="Člověk vs. Počítač" IsSelected="True" FontSize="10"/>
                     <ComboBoxItem Content="Počítač vs. Počítač" FontSize="10"/>
                 </ComboBox>
-                <ComboBox x:Name="cmbPlayer" HorizontalAlignment="Right" Margin="5,35,5,5" VerticalAlignment="Top" Width="90" Height="16" FontSize="8">
+                <ComboBox x:Name="cmbDiff" HorizontalAlignment="Right" Margin="5,35,5,5" VerticalAlignment="Top" Width="90" Height="16" FontSize="8" DataContextChanged="cmbDiff_DataContextChanged">
                     <ComboBoxItem Content="Lehká" FontSize="10"/>
                     <ComboBoxItem Content="Střední" FontSize="10" IsSelected="True"/>
                     <ComboBoxItem Content="Těžká" FontSize="10"/>
