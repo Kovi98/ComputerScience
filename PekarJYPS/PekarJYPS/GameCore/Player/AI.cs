@@ -11,5 +11,10 @@ namespace PekarJYPS
         public AI(PieceColor color) : base(color)
         {
         }
+
+        public void Play(Game game)
+        {
+
+        }
     }
 }

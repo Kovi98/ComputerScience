@@ -126,12 +126,14 @@ namespace PekarJYPS
                 Board.DoMove(move);
                 if (!(!(move.AttackedPosition is null) && Board.GetPossibleAttacks(move.NextPosition).Length > 0))
                 {
-                    ChangePlayer();
                     ForcedAttackBox = null;
+                    ChangePlayer();
                 }
                 else
                 {
                     ForcedAttackBox = move.NextPosition;
+                    if (PlayerOnMove is AI)
+                        ((AI)PlayerOnMove).Play(this);
                 }
             }
             else
@@ -154,6 +156,8 @@ namespace PekarJYPS
             {
                 throw new InvalidOperationException("Nemůže se změnit hráč, když žádný není");
             }
+            if (PlayerOnMove is AI)
+                ((AI)PlayerOnMove).Play(this);
         }
 
         private void BackupBoard() => BoardHistory.Add(Round, (Board)Board.Clone());
