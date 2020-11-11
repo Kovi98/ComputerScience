@@ -32,8 +32,8 @@
                 <MenuItem FontSize="15" FontWeight="Normal" x:Name="closeWindow" Header="_Zavřít okno" Foreground="Black" Click="closeWindow_Click"/>
             </MenuItem>
             <MenuItem Header="_Nápověda" FontSize="15">
-                <MenuItem Header="_Nejlepší tah"/>
-                <MenuItem Header="_Nápověda ke hře"/>
+                <MenuItem Header="_Nejlepší tah" FontWeight="Normal"/>
+                <MenuItem Header="_Nápověda ke hře" FontWeight="Normal"/>
             </MenuItem>
         </Menu>
         <Rectangle Fill="Gray" Grid.ColumnSpan="7" Grid.Row="1"/>

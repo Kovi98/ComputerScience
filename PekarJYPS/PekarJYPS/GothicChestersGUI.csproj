@@ -55,11 +55,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="GameCore\Board\Board.cs" />
-    <Compile Include="GameCore\Board\Box.cs" />
-    <Compile Include="GameCore\Board\Coordinates.cs" />
-    <Compile Include="GameCore\Board\Pieces\King.cs" />
-    <Compile Include="GameCore\Board\Pieces\Man.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -68,11 +63,6 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="GameCore\Player\Human.cs" />
-    <Compile Include="GameCore\Board\Pieces\Piece.cs" />
-    <Compile Include="GameCore\Move.cs" />
-    <Compile Include="GameCore\Player\Player.cs" />
-    <Compile Include="GameCore\Game.cs" />
     <Compile Include="GameUI.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
@@ -80,7 +70,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="GameCore\Player\AI.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -105,6 +94,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\GothicChesters\GothicChesters.csproj">
+      <Project>{00ec6dcb-e463-4a60-928e-f10e68b124a7}</Project>
+      <Name>GothicChesters</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\favicon.ico" />
