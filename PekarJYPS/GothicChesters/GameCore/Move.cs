@@ -10,9 +10,9 @@ namespace PekarJYPS
     {
         public Box CurrentPosition { get; private set; }
         public Box NextPosition { get; private set; }
-        public int Value => AttackedPosition.Piece is null ? 0 : AttackedPosition.Piece.Value;
-        public Box AttackedPosition { get; private set; }
-        public Move(Box currentPosition, Box nextPosition, Box attackedPosition = null)
+        public int Value { get; private set; }
+        public Box[] AttackedPosition { get; private set; }
+        public Move(Box currentPosition, Box nextPosition, Box[] attackedPosition = null)
         {
             CurrentPosition = currentPosition;
             NextPosition = nextPosition;

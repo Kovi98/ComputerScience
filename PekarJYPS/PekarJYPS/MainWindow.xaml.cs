@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -82,7 +83,6 @@ namespace PekarJYPS
                                      where (m.CurrentPosition.Equals(GameUI.Game.MarkedBox)) && (m.NextPosition.Coordinates.Row == ((Coordinates)button.Tag).Row) && (m.NextPosition.Coordinates.Column == ((Coordinates)button.Tag).Column)
                                      select m;
 
-                        // TODO: Už je nějaká figurka označena -> provedení skoku/zrušení označení
                         if (!(GameUI.Game.MarkedBox is null))
                         {
                             if (result.Count() == 1)
@@ -138,6 +138,12 @@ namespace PekarJYPS
         private void cmbDiff_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
             GameUI.Game.Difficulty = cmbDiff.SelectedIndex + 1;
+        }
+
+        private void lsBxHistory_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ListBox listBox = (ListBox)e.Source;
+            GameUI.DrawBoard(GameUI.Game.BoardHistory[(int)listBox.SelectedItem], true);
         }
     }
 }

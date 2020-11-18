@@ -159,7 +159,7 @@
             </Grid>
             <StackPanel Height="375">
                 <Label Content="Historie tahů" HorizontalAlignment="Center" VerticalAlignment="Top" Height="25" Margin="5" FontSize="10" Width="180"/>
-                <ListBox x:Name="lsBxHistory" HorizontalAlignment="Center" Height="325" Margin="11,5" VerticalAlignment="Center" Width="180"/>
+                <ListBox x:Name="lsBxHistory" HorizontalAlignment="Center" Height="325" Margin="11,5" VerticalAlignment="Center" Width="180" SelectionChanged="lsBxHistory_SelectionChanged"/>
             </StackPanel>
         </StackPanel>
         <TextBlock x:Name="txtWhoPlays" FontSize="17.5" Grid.Row="5" Grid.Column="2" Grid.ColumnSpan="4"/>

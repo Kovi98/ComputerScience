@@ -42,10 +42,13 @@ namespace PekarJYPS
             move.NextPosition.Piece = move.CurrentPosition.Piece;
             move.CurrentPosition.Piece = null;
 
-            if (!(move.AttackedPosition is null))
+            if (!(move.AttackedPosition is null) && move.AttackedPosition.Count() > 0)
             {
-                move.AttackedPosition.Grid.Children.RemoveRange(0, move.AttackedPosition.Grid.Children.Count);
-                DropPiece(move.AttackedPosition);
+                foreach (Box box in move.AttackedPosition)
+                {
+                    box.Grid.Children.RemoveRange(0, box.Grid.Children.Count);
+                    DropPiece(box);
+                }
             }
 
             //Evoluce kámen -> dáma pokud je kámen na posledním řádku své barvy

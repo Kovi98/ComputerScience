@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Navigation;
 
@@ -46,15 +47,10 @@ namespace PekarJYPS
         public Player BlackPlayer { get; set; }
         public int RoundWithoutDead { get; private set; }
         private Player _playerOnMove;
-        public Player PlayerOnMove 
-        { 
+        public Player PlayerOnMove
+        {
             get => _playerOnMove;
-            private set
-            {
-                if (value.Color.Equals(PieceColor.White))
-                    Round++;
-                _playerOnMove = value;
-            }
+            private set => _playerOnMove = value;
         }
         public Box MarkedBox { get; set; }
         public Move[] MovesMarkedBox
@@ -113,10 +109,6 @@ namespace PekarJYPS
             IsActive = true;
             BoardHistory = new Dictionary<int, Board>();
             _playerOnMove = WhitePlayer;
-            for (int i = 0; i < 25; i++)
-            {
-                //Round++;
-            }
         }
 
         public void DoMove(Move move)
@@ -133,7 +125,12 @@ namespace PekarJYPS
                 {
                     ForcedAttackBox = move.NextPosition;
                     if (PlayerOnMove is AI)
+                    {
+                        //Thread thread = new Thread(() => ((AI)PlayerOnMove).Play(this));
+                        //thread.Start();
                         ((AI)PlayerOnMove).Play(this);
+
+                    }
                 }
             }
             else
@@ -151,6 +148,7 @@ namespace PekarJYPS
             else if (PlayerOnMove.Equals(BlackPlayer))
             {
                 PlayerOnMove = WhitePlayer;
+                Round++;
             }
             else
             {
