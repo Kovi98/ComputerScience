@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace PekarJYPS.Properties
+namespace GothicChesters.Properties
 {
 
 

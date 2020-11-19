@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace PekarJYPS
+namespace GothicChesters
 {
     public class AI : Player
     {

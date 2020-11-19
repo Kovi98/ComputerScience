@@ -1,10 +1,11 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using GothicChesters;
 
 namespace GothicChestersTest
 {
     [TestClass]
-    public class UnitTest1
+    public class GameTest
     {
         [TestMethod]
         public void TestMethod1()

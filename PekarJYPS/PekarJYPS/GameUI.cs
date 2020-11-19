@@ -7,7 +7,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 
-namespace PekarJYPS
+namespace GothicChesters
 {
     public class GameUI
     {
@@ -36,26 +36,15 @@ namespace PekarJYPS
                 _isGameActive = value;
             }
         }
-        public bool _isGameOver;
-        public bool IsGameOver
-        {
-            get => _isGameOver;
-            set
-            {
-                if (value)
-                {
-                    IsGameActive = false;
-                }
-                _isGameOver = value;
-                GUI.lsBxHistory.IsEnabled = true;
-            }
-        }
         public GameUI(MainWindow gui, Game game)
         {
             Game = game;
             GUI = gui;
             
             RedrawBoard(Game.Board);
+
+            Game.Board.OnAfterBoardChange += Refresh;
+            Game.OnAfterGameOver += End;
         }
         public void DoMove(Move move)
         {
@@ -69,9 +58,12 @@ namespace PekarJYPS
                 throw new InvalidOperationException("Nelze udělat pohyb, když je hra ukončena, nebo pozastavena");
             }
 
-            if (Game.IsOver)
-                IsGameOver = true;
-            
+            if (Game.PlayerOnMove is AI && Game.IsActive && !Game.IsOver)
+            {
+                //Thread thread = new Thread(() => ((AI)PlayerOnMove).Play(this));
+                //thread.Start();
+                //((AI)Game.PlayerOnMove).Play(Game);
+            }
         }
         public void DrawBoard(Board board)
         {
@@ -156,6 +148,16 @@ namespace PekarJYPS
                 MessageBox.Show(e.Message);
             }
                 
+        }
+        void Refresh()
+        {
+            RedrawPieces();
+        }
+        void End()
+        {
+            GUI.cbOn.IsChecked = false;
+            GUI.cbOn.IsEnabled = false;
+            GUI.lsBxHistory.IsEnabled = true;
         }
     }
 }

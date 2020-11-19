@@ -6,13 +6,15 @@ using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Media;
 
-namespace PekarJYPS
+namespace GothicChesters
 {
+    public delegate void BoardChangeHandler();
     public class Board : ICloneable
     {
         public Box[,] Boxes { get; private set; }
         public int WhiteDead { get; private set; }
         public int BlackDead { get; private set; }
+        public event BoardChangeHandler OnAfterBoardChange;
         public Board()
         {
             WhiteDead = 0;
@@ -57,6 +59,8 @@ namespace PekarJYPS
                 Man man = (Man)move.NextPosition.Piece;
                 move.NextPosition.Piece = man.Evolve();
             }
+
+            OnAfterBoardChange();
         }
 
         /// <summary>

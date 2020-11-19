@@ -6,13 +6,15 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Navigation;
 
-namespace PekarJYPS
+namespace GothicChesters
 {
+    public delegate void GameOverHandler();
     public class Game
     {
         public Board Board { get; private set; }
         public bool IsActive { get; set; }
         public bool IsOver { get; private set; }
+        public event GameOverHandler OnAfterGameOver;
         public int Round
         {
             get => _round;
@@ -46,11 +48,17 @@ namespace PekarJYPS
         public Player WhitePlayer { get; set; }
         public Player BlackPlayer { get; set; }
         public int RoundWithoutDead { get; private set; }
-        private Player _playerOnMove;
-        public Player PlayerOnMove
+        public Player PlayerOnMove { get; private set; }
+        public Player Winner
         {
-            get => _playerOnMove;
-            private set => _playerOnMove = value;
+            get
+            {
+                if (Board.WhiteDead == 24)
+                    return BlackPlayer;
+                if (Board.BlackDead == 24)
+                    return WhitePlayer;
+                return null;
+            }
         }
         public Box MarkedBox { get; set; }
         public Move[] MovesMarkedBox
@@ -108,12 +116,12 @@ namespace PekarJYPS
             IsOver = false;
             IsActive = true;
             BoardHistory = new Dictionary<int, Board>();
-            _playerOnMove = WhitePlayer;
+            PlayerOnMove = WhitePlayer;
         }
 
         public void DoMove(Move move)
         {
-            if(IsActive && !IsOver)
+            if (IsActive && !IsOver)
             {
                 Board.DoMove(move);
                 if (!(!(move.AttackedPosition is null) && Board.GetPossibleAttacks(move.NextPosition).Length > 0))
@@ -124,28 +132,33 @@ namespace PekarJYPS
                 else
                 {
                     ForcedAttackBox = move.NextPosition;
-                    if (PlayerOnMove is AI)
-                    {
-                        //Thread thread = new Thread(() => ((AI)PlayerOnMove).Play(this));
-                        //thread.Start();
-                        ((AI)PlayerOnMove).Play(this);
-
-                    }
                 }
             }
             else
             {
                 throw new InvalidOperationException("Nelze udělat pohyb, když je hra ukončena, nebo pozastavena");
             }
+            if (!(Winner is null))
+            {
+                IsOver = true;
+                OnAfterGameOver();
+            }
+            if (PlayerOnMove is AI && IsActive && !IsOver)
+            {
+                //Thread thread = new Thread(() => ((AI)PlayerOnMove).Play(this));
+                //thread.Start();
+                //((AI)PlayerOnMove).Play(this);
+            }
         }
 
         public void ChangePlayer()
         {
-            if (PlayerOnMove.Equals(WhitePlayer))
+            if (PlayerOnMove == WhitePlayer)
             {
                 PlayerOnMove = BlackPlayer;
+
             }
-            else if (PlayerOnMove.Equals(BlackPlayer))
+            else if (PlayerOnMove == BlackPlayer)
             {
                 PlayerOnMove = WhitePlayer;
                 Round++;
@@ -154,8 +167,6 @@ namespace PekarJYPS
             {
                 throw new InvalidOperationException("Nemůže se změnit hráč, když žádný není");
             }
-            if (PlayerOnMove is AI)
-                ((AI)PlayerOnMove).Play(this);
         }
 
         private void BackupBoard() => BoardHistory.Add(Round, (Board)Board.Clone());
@@ -189,7 +200,5 @@ namespace PekarJYPS
         {
             return board.GetPossibleAttacks(box);
         }
-
-
     }
 }

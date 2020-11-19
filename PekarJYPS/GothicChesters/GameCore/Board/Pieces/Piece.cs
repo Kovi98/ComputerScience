@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 
-namespace PekarJYPS
+namespace GothicChesters
 {
     public abstract class Piece : ICloneable
     {
