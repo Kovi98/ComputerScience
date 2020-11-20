@@ -45,8 +45,28 @@ namespace GothicChesters
                 }
             }
         }
-        public Player WhitePlayer { get; set; }
-        public Player BlackPlayer { get; set; }
+        private Player _whitePlayer;
+        public Player WhitePlayer
+        {
+            get => _whitePlayer;
+            set
+            {
+                _whitePlayer = value;
+                if (PlayerOnMove.Color.Equals(PieceColor.White))
+                    PlayerOnMove = value;
+            }
+        }
+        private Player _blackPlayer;
+        public Player BlackPlayer
+        {
+            get => _blackPlayer;
+            set
+            {
+                _blackPlayer = value;
+                if (PlayerOnMove.Color.Equals(PieceColor.Black))
+                    PlayerOnMove = value;
+            }
+        }
         public int RoundWithoutDead { get; private set; }
         public Player PlayerOnMove { get; private set; }
         public Player Winner
@@ -97,20 +117,20 @@ namespace GothicChesters
             switch (whitePlayer)
             {
                 case Players.Human:
-                    WhitePlayer = new Human(PieceColor.White);
+                    _whitePlayer = new Human(PieceColor.White);
                     break;
                 case Players.AI:
-                    WhitePlayer = new AI(PieceColor.White);
+                    _whitePlayer = new AI(PieceColor.White);
                     break;
             }
 
             switch (blackPlayer)
             {
                 case Players.Human:
-                    BlackPlayer = new Human(PieceColor.Black);
+                    _blackPlayer = new Human(PieceColor.Black);
                     break;
                 case Players.AI:
-                    BlackPlayer = new AI(PieceColor.Black);
+                    _blackPlayer = new AI(PieceColor.Black);
                     break;
             }
             IsOver = false;
@@ -141,7 +161,8 @@ namespace GothicChesters
             if (!(Winner is null))
             {
                 IsOver = true;
-                OnAfterGameOver();
+                if (OnAfterGameOver != null)
+                    OnAfterGameOver();
             }
             if (PlayerOnMove is AI && IsActive && !IsOver)
             {

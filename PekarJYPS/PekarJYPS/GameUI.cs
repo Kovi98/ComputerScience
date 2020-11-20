@@ -68,6 +68,9 @@ namespace GothicChesters
         public void DrawBoard(Board board)
         {
             GUI.txtWhoPlays.Text = "Na tahu je hráč s " + (Game.PlayerOnMove.Color.Equals(PieceColor.White) ? "bílými" : "černými") + " figurkami";
+            GUI.txtWhiteOff.Text = Game.Board.WhiteDead.ToString();
+            GUI.txtBlackOff.Text = Game.Board.BlackDead.ToString();
+            GUI.txtRound.Text = Game.Round.ToString();
 
             for (int i = 0; i <= 7; i++)
             {

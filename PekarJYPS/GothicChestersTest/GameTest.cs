@@ -8,8 +8,10 @@ namespace GothicChestersTest
     public class GameTest
     {
         [TestMethod]
-        public void TestMethod1()
+        public void GameCreate()
         {
+            //TODO: Napsat test na vytvoření hry
+            //Game game = new Game(1, Players.Human, Players.AI);
         }
     }
 }

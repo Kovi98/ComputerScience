@@ -39,9 +39,22 @@ namespace GothicChesters
         public void NewGame()
         {
             int diff = cmbDiff.SelectedIndex + 1;
-            Players firstPlayer = cmbPlayer.SelectedIndex == 0 ? Players.Human : Players.AI;
+            Game newGame;
 
-            Game newGame = new Game(diff, firstPlayer, Players.AI);
+            switch (cmbPlayer.SelectedIndex)
+            {
+                case 0:
+                    newGame = new Game(diff, Players.Human, Players.Human);
+                    break;
+                case 1:
+                    newGame = new Game(diff, Players.Human, Players.AI);
+                    break;
+                case 2:
+                    newGame = new Game(diff, Players.AI, Players.AI);
+                    break;
+                default:
+                    throw new InvalidOperationException("cmbPlayer nemá žádnou hodnotu");
+            }
             GameUI = new GameUI(this, newGame);
         }
 
@@ -125,19 +138,35 @@ namespace GothicChesters
                 {
                     NewGame();
                 }
+                else
+                {
+                    switch (cmbPlayer.SelectedIndex)
+                    {
+                        case 0:
+                            if (!(GameUI.Game.WhitePlayer is Human))
+                                GameUI.Game.WhitePlayer = new Human(PieceColor.White);
+                            if (!(GameUI.Game.BlackPlayer is Human))
+                                GameUI.Game.BlackPlayer = new Human(PieceColor.Black);
+                            break;
+                        case 1:
+                            if (!(GameUI.Game.WhitePlayer is Human))
+                                GameUI.Game.WhitePlayer = new Human(PieceColor.White);
+                            if (!(GameUI.Game.BlackPlayer is AI))
+                                GameUI.Game.BlackPlayer = new AI(PieceColor.Black);
+                            break;
+                        case 2:
+                            if (!(GameUI.Game.WhitePlayer is AI))
+                                GameUI.Game.WhitePlayer = new AI(PieceColor.White);
+                            if (!(GameUI.Game.BlackPlayer is AI))
+                                GameUI.Game.BlackPlayer = new AI(PieceColor.Black);
+                            break;
+                        default:
+                            throw new InvalidOperationException("cmbPlayer nemá žádnou hodnotu");
+                    }
+                }
 
-                GameUI.IsGameActive = cbOn.IsChecked.HasValue ? cbOn.IsChecked.Value : false;
+                    GameUI.IsGameActive = cbOn.IsChecked.HasValue ? cbOn.IsChecked.Value : false;
             }
-        }
-
-        private void cmbPlayer_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
-        {
-            GameUI.Game.WhitePlayer = cmbPlayer.SelectedIndex == 0 ? (Player)new Human(PieceColor.White) : (Player)new AI(PieceColor.White);
-        }
-
-        private void cmbDiff_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
-        {
-            GameUI.Game.Difficulty = cmbDiff.SelectedIndex + 1;
         }
 
         private void lsBxHistory_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -145,5 +174,5 @@ namespace GothicChesters
             ListBox listBox = (ListBox)e.Source;
             GameUI.DrawBoard(GameUI.Game.BoardHistory[(int)listBox.SelectedItem], true);
         }
+        }
     }
-}

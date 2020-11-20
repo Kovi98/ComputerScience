@@ -143,25 +143,33 @@
             </Grid.ColumnDefinitions>
         </Grid>
         <StackPanel Grid.Column="7" Grid.Row="1" Grid.RowSpan="3" VerticalAlignment="Stretch" Margin="4">
-            <Grid Height="100">
+            <Grid Height="130">
                 <CheckBox x:Name="cbOn" Content="Zapnuto" HorizontalAlignment="Right" VerticalAlignment="Bottom" Height="15" Width="60" FontSize="10" Margin="2" Click="cbOn_Click"/>
-                <ComboBox x:Name="cmbPlayer" HorizontalAlignment="Right" Margin="5" VerticalAlignment="Top" Width="90" Height="16" FontSize="8" DataContextChanged="cmbPlayer_DataContextChanged">
+                <ComboBox x:Name="cmbPlayer" HorizontalAlignment="Right" Margin="5" VerticalAlignment="Top" Width="90" Height="16" FontSize="8">
+                    <ComboBoxItem Content="Člověk vs. Člověk" FontSize="10"/>
                     <ComboBoxItem Content="Člověk vs. Počítač" IsSelected="True" FontSize="10"/>
                     <ComboBoxItem Content="Počítač vs. Počítač" FontSize="10"/>
                 </ComboBox>
-                <ComboBox x:Name="cmbDiff" HorizontalAlignment="Right" Margin="5,35,5,5" VerticalAlignment="Top" Width="90" Height="16" FontSize="8" DataContextChanged="cmbDiff_DataContextChanged">
+                <ComboBox x:Name="cmbDiff" HorizontalAlignment="Right" Margin="5,30,5,5" VerticalAlignment="Top" Width="90" Height="16" FontSize="8">
                     <ComboBoxItem Content="Lehká" FontSize="10"/>
                     <ComboBoxItem Content="Střední" FontSize="10" IsSelected="True"/>
                     <ComboBoxItem Content="Těžká" FontSize="10"/>
                 </ComboBox>
                 <Label Content="Druh hry" HorizontalAlignment="Left" VerticalAlignment="Top" Height="25" Width="80" FontSize="10" Margin="10,0,0,0"/>
-                <Label Content="Obtížnost" HorizontalAlignment="Left" VerticalAlignment="Top" Height="25" Width="80" FontSize="10" Margin="10,30,0,0"/>
+                <Label Content="Obtížnost" HorizontalAlignment="Left" VerticalAlignment="Top" Height="25" Width="80" FontSize="10" Margin="10,25,0,0"/>
+                <Label Content="Sebrané figurky" HorizontalAlignment="Left" Margin="10,50,0,0" VerticalAlignment="Top" Height="25" Width="86" FontSize="10"/>
+                <Label Content="Bílé:" HorizontalAlignment="Left" Margin="10,65,0,0" VerticalAlignment="Top" Height="25" Width="86" FontSize="10"/>
+                <Label Content="Černé:" HorizontalAlignment="Left" Margin="10,77,0,-2" VerticalAlignment="Top" Height="25" Width="86" FontSize="10"/>
+                <TextBlock x:Name="txtWhiteOff" HorizontalAlignment="Left" Margin="55,70,0,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" FontSize="10"/>
+                <TextBlock x:Name="txtBlackOff" HorizontalAlignment="Left" Margin="55,83,0,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" FontSize="10"/>
+                <Label Content="Kolo:" HorizontalAlignment="Left" Margin="101,50,0,0" VerticalAlignment="Top" Height="25" Width="41" FontSize="10"/>
+                <TextBlock x:Name="txtRound" HorizontalAlignment="Left" Margin="147,55,0,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" FontSize="10"/>
+                <TextBlock x:Name="txtWhoPlays" FontSize="10" Margin="15,96,5,17"/>
             </Grid>
-            <StackPanel Height="375">
+            <StackPanel Height="360">
                 <Label Content="Historie tahů" HorizontalAlignment="Center" VerticalAlignment="Top" Height="25" Margin="5" FontSize="10" Width="180"/>
-                <ListBox x:Name="lsBxHistory" HorizontalAlignment="Center" Height="325" Margin="11,5" VerticalAlignment="Center" Width="180" SelectionChanged="lsBxHistory_SelectionChanged"/>
+                <ListBox x:Name="lsBxHistory" HorizontalAlignment="Center" Height="290" Margin="11,5" VerticalAlignment="Center" Width="180" SelectionChanged="lsBxHistory_SelectionChanged" IsSynchronizedWithCurrentItem="True"/>
             </StackPanel>
         </StackPanel>
-        <TextBlock x:Name="txtWhoPlays" FontSize="17.5" Grid.Row="5" Grid.Column="2" Grid.ColumnSpan="4"/>
     </Grid>
 </Window>
