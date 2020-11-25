@@ -34,22 +34,30 @@ namespace GothicChesters.GameCore
                     {
                         newBoard = (Board)board.Clone(); //Naklonování herní desky
                         newBoard.DoMove(movesBox[j]); //Provedení tahu na naklonovanou herní desku
-                        Move tempMove = Minimax.GetBestMove(newBoard, isEnemy ? enemy : player, isEnemy ? player : enemy, depth--, !isEnemy);
+                        Move tempMove = Minimax.GetBestMove(newBoard, player, enemy, depth-1); //isEnemy ? Minimax.GetBestMove(newBoard, player, enemy, depth--) : Minimax.GetBestMove(newBoard, enemy, player, depth, true);
                         if (bestMove is null || bestMove.Rank < tempMove.Rank)
                         {
-                            movesBox[i].Rank += tempMove.Rank;
-                            bestMove = movesBox[i];
+                            movesBox[j].Rank += tempMove.Rank;
+                            bestMove = movesBox[j];
                         }
                     }
                     else //Pokud je hloubka 0 - konec procházení
                     {
-                        if (bestMove is null || bestMove.Rank < movesBox[i].Rank)
-                            bestMove = movesBox[i];
+                        if (bestMove is null || bestMove.Rank < movesBox[j].Rank)
+                            bestMove = movesBox[j];
                     }
                 }
             }
 
             return bestMove;
+        }
+
+        public static Task<Move> GetBestMoveAsync(Board board, Player player, Player enemy, int depth, bool isEnemy = false)
+        {
+            return Task.Run(() =>
+            {
+                return GetBestMove(board, player, enemy, depth, isEnemy);
+            });
         }
     }
 }

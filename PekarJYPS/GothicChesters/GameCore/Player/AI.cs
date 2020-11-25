@@ -15,21 +15,42 @@ namespace GothicChesters
 
         public void Play(Game game)
         {
-            Player rival = game.WhitePlayer.Equals(this) ? game.BlackPlayer : game.WhitePlayer;
-            int depth = 1;
+            Player enemy = game.WhitePlayer.Equals(this) ? game.BlackPlayer : game.WhitePlayer;
+            int depth = 0;
             switch (game.Difficulty)
             {
                 case 1:
-                    depth = 1;
+                    depth = 0;
                     break;
                 case 2: 
-                    depth = 5;
+                    depth = 1;
                     break;
                 case 3:
-                    depth = 10;
+                    depth = 2;
                     break;
             }
-            game.DoMove(GetBestMoveOnBoard(game.Board, rival, depth));
+            Move bestMove = GameCore.Minimax.GetBestMove(game.Board, this, enemy, depth);
+            game.DoMove(bestMove);
+        }
+
+        public async Task PlayAsync(Game game)
+        {
+            Player enemy = game.WhitePlayer.Equals(this) ? game.BlackPlayer : game.WhitePlayer;
+            int depth = 0;
+            switch (game.Difficulty)
+            {
+                case 1:
+                    depth = 0;
+                    break;
+                case 2:
+                    depth = 1;
+                    break;
+                case 3:
+                    depth = 2;
+                    break;
+            }
+            Move bestMove = await GameCore.Minimax.GetBestMoveAsync(game.Board, this, enemy, depth);
+            game.DoMove(bestMove);
         }
     }
 }

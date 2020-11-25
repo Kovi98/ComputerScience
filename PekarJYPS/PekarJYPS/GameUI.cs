@@ -62,7 +62,7 @@ namespace GothicChesters
             {
                 //Thread thread = new Thread(() => ((AI)PlayerOnMove).Play(this));
                 //thread.Start();
-                ((AI)Game.PlayerOnMove).Play(Game);
+                //((AI)Game.PlayerOnMove).Play(Game);
             }
         }
         public void DrawBoard(Board board)

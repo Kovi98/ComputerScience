@@ -41,15 +41,16 @@ namespace GothicChesters
         /// <param name="move"></param>
         public void DoMove(Move move)
         {
-            move.NextPosition.Piece = move.CurrentPosition.Piece;
-            move.CurrentPosition.Piece = null;
+            Boxes[move.NextPosition.Coordinates.Row, move.NextPosition.Coordinates.Column].Piece = Boxes[move.CurrentPosition.Coordinates.Row, move.CurrentPosition.Coordinates.Column].Piece;
+            Boxes[move.CurrentPosition.Coordinates.Row, move.CurrentPosition.Coordinates.Column].Piece = null;
 
             if (!(move.AttackedPosition is null) && move.AttackedPosition.Count() > 0)
             {
                 foreach (Box box in move.AttackedPosition)
                 {
-                    box.Grid.Children.RemoveRange(0, box.Grid.Children.Count);
-                    DropPiece(box);
+                    if (!(Boxes[box.Coordinates.Row, box.Coordinates.Column].Grid is null))
+                        Boxes[box.Coordinates.Row, box.Coordinates.Column].Grid.Children.RemoveRange(0, Boxes[box.Coordinates.Row, box.Coordinates.Column].Grid.Children.Count);
+                    DropPiece(Boxes[box.Coordinates.Row, box.Coordinates.Column]);
                 }
             }
 

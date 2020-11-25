@@ -139,7 +139,7 @@ namespace GothicChesters
             PlayerOnMove = WhitePlayer;
         }
 
-        public void DoMove(Move move)
+        public async void DoMove(Move move)
         {
             if (IsActive && !IsOver)
             {
@@ -166,8 +166,8 @@ namespace GothicChesters
             }
             if (PlayerOnMove is AI && IsActive && !IsOver)
             {
-                //Thread thread = new Thread(() => ((AI)PlayerOnMove).Play(this));
-                //thread.Start();
+                AI player = (AI)PlayerOnMove;
+                await player.PlayAsync(this);
                 //((AI)PlayerOnMove).Play(this);
             }
         }

@@ -20,18 +20,6 @@ namespace GothicChesters
             return Color.ToString();
         }
 
-        /// <summary>
-        /// Výpočet nejlepšího tahu
-        /// </summary>
-        /// <param name="board"></param>
-        /// <param name="enemy"></param>
-        /// <param name="depth"></param>
-        /// <returns>Nejlepší tah, pokud není možný žádný tah, tak null</returns>
-        public Move GetBestMoveOnBoard(Board board, Player enemy, int depth)
-        {
-            return GameCore.Minimax.GetBestMove(board, this, enemy, depth);
-        }
-
         public Box[] GetBoxesWithOwnedPieces(Board board)
         {
             var boxes = from Box box in board.Boxes

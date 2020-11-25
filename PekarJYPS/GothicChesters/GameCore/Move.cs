@@ -21,9 +21,9 @@ namespace GothicChesters
 
             if (!(AttackedPosition is null))
             {
-                for (int i = 0; i < AttackedPosition.Length; i++)
+                foreach (Box box in AttackedPosition)
                 {
-                    Rank += AttackedPosition[i].Piece.Value;
+                    this.Rank += box.Piece.Value;
                 }
             }
         }
