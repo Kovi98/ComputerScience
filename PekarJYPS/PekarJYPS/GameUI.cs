@@ -62,7 +62,7 @@ namespace GothicChesters
             {
                 //Thread thread = new Thread(() => ((AI)PlayerOnMove).Play(this));
                 //thread.Start();
-                //((AI)Game.PlayerOnMove).Play(Game);
+                ((AI)Game.PlayerOnMove).Play(Game);
             }
         }
         public void DrawBoard(Board board)
@@ -160,7 +160,6 @@ namespace GothicChesters
         {
             GUI.cbOn.IsChecked = false;
             GUI.cbOn.IsEnabled = false;
-            GUI.lsBxHistory.IsEnabled = true;
         }
     }
 }

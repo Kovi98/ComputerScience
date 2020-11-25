@@ -23,35 +23,13 @@ namespace GothicChesters
         /// <summary>
         /// Výpočet nejlepšího tahu
         /// </summary>
-        /// <param name="board">Hrací deska</param>
-        /// <param name="forcedAttackBox">Vynucený útok</param>
-        /// <returns>Nejlepší tah, pokud není tah tak null</returns>
-        public Move GetBestMoveOnBoard(Board board, Box forcedAttackBox = null)
+        /// <param name="board"></param>
+        /// <param name="enemy"></param>
+        /// <param name="depth"></param>
+        /// <returns>Nejlepší tah, pokud není možný žádný tah, tak null</returns>
+        public Move GetBestMoveOnBoard(Board board, Player enemy, int depth)
         {
-            List<Box> boxes = new List<Box>();
-            List<Move> moves = new List<Move>();
-            if (forcedAttackBox is null)
-            {
-                boxes.AddRange(GetBoxesWithOwnedPieces(board));
-            }
-            else
-            {
-                boxes.Add(forcedAttackBox);
-            }
-            if (boxes.Count() == 0)
-                return null;
-
-            foreach (Box box in boxes)
-            {
-                moves.AddRange(board.GetPossibleAttacks(box).Length > 0 ? board.GetPossibleAttacks(box) : board.GetPossibleMoves(box));
-            }
-
-
-            Random random = new Random();
-            //Vrátí random pohyb - nutnost dodělat MINIMAX
-            if (moves.Count > 0)
-                return moves[random.Next(moves.Count)];
-            return null;
+            return GameCore.Minimax.GetBestMove(board, this, enemy, depth);
         }
 
         public Box[] GetBoxesWithOwnedPieces(Board board)

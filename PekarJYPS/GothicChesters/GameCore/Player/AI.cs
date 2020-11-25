@@ -15,7 +15,21 @@ namespace GothicChesters
 
         public void Play(Game game)
         {
-            game.DoMove(GetBestMoveOnBoard(game.Board));
+            Player rival = game.WhitePlayer.Equals(this) ? game.BlackPlayer : game.WhitePlayer;
+            int depth = 1;
+            switch (game.Difficulty)
+            {
+                case 1:
+                    depth = 1;
+                    break;
+                case 2: 
+                    depth = 5;
+                    break;
+                case 3:
+                    depth = 10;
+                    break;
+            }
+            game.DoMove(GetBestMoveOnBoard(game.Board, rival, depth));
         }
     }
 }

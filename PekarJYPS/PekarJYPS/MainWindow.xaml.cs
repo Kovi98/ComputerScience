@@ -171,8 +171,11 @@ namespace GothicChesters
 
         private void lsBxHistory_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            ListBox listBox = (ListBox)e.Source;
-            GameUI.DrawBoard(GameUI.Game.BoardHistory[(int)listBox.SelectedItem], true);
+            if (!GameUI.Game.IsActive)
+            {
+                ListBox listBox = (ListBox)e.Source;
+                GameUI.DrawBoard(GameUI.Game.BoardHistory[(int)listBox.SelectedItem], true);
+            }
         }
         }
     }

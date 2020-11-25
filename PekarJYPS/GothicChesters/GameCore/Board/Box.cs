@@ -10,7 +10,7 @@ using System.Windows.Shapes;
 
 namespace GothicChesters
 {
-    public class Box : ICloneable
+    public class Box : ICloneable, IEquatable<Box>
     {
         public Coordinates Coordinates { get; private set; }
         public Piece piece;
@@ -64,6 +64,11 @@ namespace GothicChesters
             clonedBox.Piece = this.Piece is null ? null : (Piece)this.Piece.Clone();
 
             return clonedBox;
+        }
+
+        public bool Equals(Box other)
+        {
+            return this.Coordinates.Equals(other.Coordinates);
         }
     }
 }

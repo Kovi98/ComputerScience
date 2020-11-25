@@ -59,8 +59,8 @@ namespace GothicChesters
                 Man man = (Man)move.NextPosition.Piece;
                 move.NextPosition.Piece = man.Evolve();
             }
-
-            OnAfterBoardChange();
+            if (OnAfterBoardChange != null)
+                OnAfterBoardChange();
         }
 
         /// <summary>

@@ -51,6 +51,7 @@
     <Compile Include="GameCore\Board\Pieces\Man.cs" />
     <Compile Include="GameCore\Board\Pieces\Piece.cs" />
     <Compile Include="GameCore\Game.cs" />
+    <Compile Include="GameCore\Minimax.cs" />
     <Compile Include="GameCore\Move.cs" />
     <Compile Include="GameCore\Player\AI.cs" />
     <Compile Include="GameCore\Player\Human.cs" />

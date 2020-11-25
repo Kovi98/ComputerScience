@@ -6,19 +6,31 @@ using System.Threading.Tasks;
 
 namespace GothicChesters
 {
-    public class Move
+    public class Move : IEquatable<Move>
     {
         public Box CurrentPosition { get; private set; }
         public Box NextPosition { get; private set; }
-        public int Value { get; private set; }
+        public int Rank { get; set; }
         public Box[] AttackedPosition { get; private set; }
         public Move(Box currentPosition, Box nextPosition, Box[] attackedPosition = null)
         {
             CurrentPosition = currentPosition;
             NextPosition = nextPosition;
             AttackedPosition = attackedPosition;
+            Rank = 0;
+
+            if (!(AttackedPosition is null))
+            {
+                for (int i = 0; i < AttackedPosition.Length; i++)
+                {
+                    Rank += AttackedPosition[i].Piece.Value;
+                }
+            }
         }
 
-
+        public bool Equals(Move other)
+        {
+            return this.CurrentPosition.Equals(other.CurrentPosition) && this.NextPosition.Equals(other.NextPosition);
+        }
     }
 }
