@@ -69,56 +69,56 @@ namespace GothicChesters
                         Button button = (Button)e.Source;
 
                         //Označení figurky + možných skoků
-                        if (GameUI.Game.MarkedBox is null)
+                        if (GameUI.MarkedBox is null)
                         {
-                            if (!(GameUI.Game.Board.Boxes[((Coordinates)button.Tag).Row, ((Coordinates)button.Tag).Column].Piece is null) && GameUI.Game.Board.Boxes[((Coordinates)button.Tag).Row, ((Coordinates)button.Tag).Column].Piece.Color.Equals(GameUI.Game.PlayerOnMove.Color))
+                            if (!(GameUI.BoxesUI[((Coordinates)button.Tag).Row, ((Coordinates)button.Tag).Column].Box.Piece is null) && GameUI.BoxesUI[((Coordinates)button.Tag).Row, ((Coordinates)button.Tag).Column].Box.Piece.Color.Equals(GameUI.Game.PlayerOnMove.Color))
                             {
                                 if (GameUI.Game.ForcedAttackBox is null)
                                 {
-                                    GameUI.Game.MarkedBox = GameUI.Game.Board.Boxes[((Coordinates)button.Tag).Row, ((Coordinates)button.Tag).Column];
+                                    GameUI.MarkedBox = GameUI.BoxesUI[((Coordinates)button.Tag).Row, ((Coordinates)button.Tag).Column];
                                 }
                                 else
                                 {
-                                    GameUI.Game.MarkedBox = GameUI.Game.ForcedAttackBox;
+                                    GameUI.MarkedBox = GameUI.BoxesUI[GameUI.Game.ForcedAttackBox.Coordinates.Row, GameUI.Game.ForcedAttackBox.Coordinates.Column];
                                 }
 
-                                toMark.Add(GameUI.Game.MarkedBox);
-                                toMark.AddRange(GameUI.Game.MovesMarkedBox.Select(x => x.NextPosition));
+                                toMark.Add(GameUI.MarkedBox.Box);
+                                toMark.AddRange(GameUI.MovesMarkedBox.Select(x => x.NextPosition));
                                 foreach (Box box in toMark)
                                 {
-                                    box.Mark();
+                                    GameUI.BoxesUI[box.Coordinates.Row, box.Coordinates.Column].Mark();
                                 }
                             }
                             return;
                         }
 
-                        var result = from m in GameUI.Game.MovesMarkedBox
-                                     where (m.CurrentPosition.Equals(GameUI.Game.MarkedBox)) && (m.NextPosition.Coordinates.Row == ((Coordinates)button.Tag).Row) && (m.NextPosition.Coordinates.Column == ((Coordinates)button.Tag).Column)
+                        var result = from m in GameUI.MovesMarkedBox
+                                     where (m.CurrentPosition.Equals(GameUI.MarkedBox.Box)) && (m.NextPosition.Coordinates.Row == ((Coordinates)button.Tag).Row) && (m.NextPosition.Coordinates.Column == ((Coordinates)button.Tag).Column)
                                      select m;
 
-                        if (!(GameUI.Game.MarkedBox is null))
+                        if (!(GameUI.MarkedBox is null))
                         {
                             if (result.Count() == 1)
                             {
                                 foreach (Box box in toMark)
                                 {
-                                    box.Unmark();
+                                    GameUI.BoxesUI[box.Coordinates.Row, box.Coordinates.Column].Unmark();
                                 }
 
                                 Move move = result.First();
 
                                 toMark.RemoveRange(0, toMark.Count);
-                                GameUI.Game.MarkedBox = null;
+                                GameUI.MarkedBox = null;
                                 GameUI.DoMove(move);
                             }
                             else if (result.Count() == 0)
                             {
                                 foreach (Box box in toMark)
                                 {
-                                    box.Unmark();
+                                    GameUI.BoxesUI[box.Coordinates.Row, box.Coordinates.Column].Unmark();
                                 }
                                 toMark.RemoveRange(0, toMark.Count);
-                                GameUI.Game.MarkedBox = null;
+                                GameUI.MarkedBox = null;
                             }
                             else
                             {

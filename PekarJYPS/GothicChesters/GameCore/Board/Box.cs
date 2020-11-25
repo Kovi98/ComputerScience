@@ -24,37 +24,10 @@ namespace GothicChesters
                 piece.Coordinates = Coordinates;
             }
         }
-        public Button Button { get; set; }
-        public Grid Grid { get; set; }
 
         public Box(Coordinates coordinates)
         {
             Coordinates = coordinates;
-        }
-
-
-        public void Mark()
-        {
-            Grid.Children.Add(MarkedBox(Brushes.Green));
-            //Button.Content = Grid;
-        }
-
-        private Rectangle MarkedBox(Brush color)
-        {
-            Rectangle rectangle = new Rectangle();
-            rectangle.Fill = color;
-            rectangle.Opacity = 0.3;
-            rectangle.Stretch = Stretch.UniformToFill;
-            rectangle.HorizontalAlignment = HorizontalAlignment.Stretch;
-            rectangle.IsHitTestVisible = false;
-            return rectangle;
-        }
-
-        public void Unmark()
-        {
-            Grid.Children.RemoveRange(0, Grid.Children.Count);
-            if (!(Piece is null))
-                Grid.Children.Add(Piece.Icon);
         }
 
         public object Clone()

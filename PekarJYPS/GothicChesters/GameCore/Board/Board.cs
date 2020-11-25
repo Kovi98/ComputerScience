@@ -8,13 +8,11 @@ using System.Windows.Media;
 
 namespace GothicChesters
 {
-    public delegate void BoardChangeHandler();
     public class Board : ICloneable
     {
         public Box[,] Boxes { get; private set; }
         public int WhiteDead { get; private set; }
         public int BlackDead { get; private set; }
-        public event BoardChangeHandler OnAfterBoardChange;
         public Board()
         {
             WhiteDead = 0;
@@ -48,8 +46,6 @@ namespace GothicChesters
             {
                 foreach (Box box in move.AttackedPosition)
                 {
-                    if (!(Boxes[box.Coordinates.Row, box.Coordinates.Column].Grid is null))
-                        Boxes[box.Coordinates.Row, box.Coordinates.Column].Grid.Children.RemoveRange(0, Boxes[box.Coordinates.Row, box.Coordinates.Column].Grid.Children.Count);
                     DropPiece(Boxes[box.Coordinates.Row, box.Coordinates.Column]);
                 }
             }
@@ -60,8 +56,6 @@ namespace GothicChesters
                 Man man = (Man)move.NextPosition.Piece;
                 move.NextPosition.Piece = man.Evolve();
             }
-            if (OnAfterBoardChange != null)
-                OnAfterBoardChange();
         }
 
         /// <summary>

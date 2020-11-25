@@ -10,7 +10,7 @@ namespace GothicChesters
 {
     public abstract class Piece : ICloneable
     {
-        public Image Icon { get; protected set; }
+        public string IconPath { get; protected set; }
         public PieceColor Color { get; private set; }
         public Coordinates Coordinates { get; set; }
         public int Value { get; protected set; }

@@ -8,12 +8,14 @@ using System.Windows.Navigation;
 
 namespace GothicChesters
 {
+    public delegate void BoardChangeHandler();
     public delegate void GameOverHandler();
     public class Game
     {
         public Board Board { get; private set; }
         public bool IsActive { get; set; }
         public bool IsOver { get; private set; }
+        public event BoardChangeHandler OnAfterBoardChange;
         public event GameOverHandler OnAfterGameOver;
         public int Round
         {
@@ -80,34 +82,6 @@ namespace GothicChesters
                 return null;
             }
         }
-        public Box MarkedBox { get; set; }
-        public Move[] MovesMarkedBox
-        {
-            get
-            {
-                if (ForcedAttackBox is null)
-                {
-                    if (!(MarkedBox is null))
-                    {
-                        Move[] attacks = GetPossibleAttacks(Board, MarkedBox);
-                        if (attacks.Length > 0)
-                        {
-                            return attacks;
-                        }
-                        Move[] moves = GetPossibleMoves(Board, MarkedBox);
-                        if (moves.Length > 0)
-                        {
-                            return moves;
-                        }
-                    }
-                    return new Move[0];
-                }
-                else
-                {
-                    return GetPossibleAttacks(Board, ForcedAttackBox);
-                }
-            }
-        }
         public Box ForcedAttackBox { get; set; }
         public Game(int diff, Players whitePlayer, Players blackPlayer)
         {
@@ -164,11 +138,11 @@ namespace GothicChesters
                 if (OnAfterGameOver != null)
                     OnAfterGameOver();
             }
+            OnAfterBoardChange?.Invoke();
             if (PlayerOnMove is AI && IsActive && !IsOver)
             {
                 AI player = (AI)PlayerOnMove;
                 await player.PlayAsync(this);
-                //((AI)PlayerOnMove).Play(this);
             }
         }
 

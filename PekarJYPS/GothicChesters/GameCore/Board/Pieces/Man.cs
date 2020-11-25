@@ -16,19 +16,15 @@ namespace GothicChesters
             Value = 3;
 
             //Přiřazení ikony k figurce
-            Icon = new Image();
-            string uriString = "";
             switch (this.Color)
             {
                 case PieceColor.White:
-                    uriString = "Images/white_man.bmp";
+                    IconPath = "Images/white_man.bmp";
                     break;
                 case PieceColor.Black:
-                    uriString = "Images/black_man.bmp";
+                    IconPath = "Images/black_man.bmp";
                     break;
             }
-            Icon.Source = new BitmapImage(new Uri(uriString, UriKind.Relative));
-            Icon.SetValue(RenderOptions.BitmapScalingModeProperty, BitmapScalingMode.Fant);
         }
 
         public override object Clone()

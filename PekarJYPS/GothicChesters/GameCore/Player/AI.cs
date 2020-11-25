@@ -23,10 +23,10 @@ namespace GothicChesters
                     depth = 0;
                     break;
                 case 2: 
-                    depth = 1;
+                    depth = 3;
                     break;
                 case 3:
-                    depth = 2;
+                    depth = 5;
                     break;
             }
             Move bestMove = GameCore.Minimax.GetBestMove(game.Board, this, enemy, depth);

@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Shapes;
 
 namespace GothicChesters
 {
@@ -13,6 +15,35 @@ namespace GothicChesters
     {
         public Game Game { get; private set; }
         public MainWindow GUI { get; private set; }
+        public BoxUI[,] BoxesUI { get; private set; }
+        public BoxUI MarkedBox { get; set; }
+        public Move[] MovesMarkedBox
+        {
+            get
+            {
+                if (Game.ForcedAttackBox is null)
+                {
+                    if (!(MarkedBox is null))
+                    {
+                        Move[] attacks = Game.GetPossibleAttacks(Game.Board, MarkedBox.Box);
+                        if (attacks.Length > 0)
+                        {
+                            return attacks;
+                        }
+                        Move[] moves = Game.GetPossibleMoves(Game.Board, MarkedBox.Box);
+                        if (moves.Length > 0)
+                        {
+                            return moves;
+                        }
+                    }
+                    return new Move[0];
+                }
+                else
+                {
+                    return Game.GetPossibleAttacks(Game.Board, Game.ForcedAttackBox);
+                }
+            }
+        }
         private bool _isGameActive;
         public bool IsGameActive
         {
@@ -40,18 +71,35 @@ namespace GothicChesters
         {
             Game = game;
             GUI = gui;
-            
+
+            BoxesUI = new BoxUI[8, 8];
+            for (int i = 0; i <= 7; i++)
+            {
+                for (int j = 0; j <= 7; j++)
+                {
+                    BoxesUI[i, j] = new BoxUI(Game.Board.Boxes[i, j]);
+                }
+            }
+
             RedrawBoard(Game.Board);
 
-            Game.Board.OnAfterBoardChange += Refresh;
+            Game.OnAfterBoardChange += Refresh;
             Game.OnAfterGameOver += End;
         }
         public void DoMove(Move move)
         {
             if (Game.IsActive && !Game.IsOver)
             {
+                if (!(move.AttackedPosition is null) && move.AttackedPosition.Count() > 0)
+                {
+                    foreach (Box box in move.AttackedPosition)
+                    {
+                        if (!(BoxesUI[box.Coordinates.Row, box.Coordinates.Column].Grid is null))
+                            BoxesUI[box.Coordinates.Row, box.Coordinates.Column].Grid.Children.RemoveRange(0, BoxesUI[box.Coordinates.Row, box.Coordinates.Column].Grid.Children.Count);
+                    }
+                }
                 Game.DoMove(move);
-                RedrawPieces();
+                //RedrawPieces();
             }
             else
             {
@@ -76,8 +124,8 @@ namespace GothicChesters
             {
                 for (int j = 0; j <= 7; j++)
                 {
-                    if (board.Boxes[i, j].Grid.Children.Count > 0)
-                        board.Boxes[i, j].Grid.Children.RemoveRange(0, board.Boxes[i, j].Grid.Children.Count);
+                    if (BoxesUI[i, j].Grid.Children.Count > 0)
+                        BoxesUI[i, j].Grid.Children.RemoveRange(0, BoxesUI[i, j].Grid.Children.Count);
                 }
             }
             for (int i = 0; i <= 7; i++)
@@ -86,7 +134,7 @@ namespace GothicChesters
                 {
                     if (!(board.Boxes[i, j].Piece is null))
                     {
-                        board.Boxes[i, j].Grid.Children.Add(board.Boxes[i, j].Piece.Icon);
+                        BoxesUI[i, j].Grid.Children.Add(BoxesUI[i, j].Icon);
                     }
                 }
             }
@@ -104,26 +152,26 @@ namespace GothicChesters
                     for (int j = 0; j <= 7; j++)
                     {
                         // Tlačítka pro ovládání hrací desky v GUI
-                        board.Boxes[i, j].Button = new Button();
-                        board.Boxes[i, j].Button.SetValue(Grid.ColumnProperty, j);
-                        board.Boxes[i, j].Button.SetValue(Grid.RowProperty, 7-i);
-                        board.Boxes[i, j].Button.SetValue(Border.BorderThicknessProperty, new Thickness(0));
-                        board.Boxes[i, j].Button.Focusable = false;
-                        board.Boxes[i, j].Button.Padding = new Thickness(0);
+                        BoxesUI[i, j].Button = new Button();
+                        BoxesUI[i, j].Button.SetValue(Grid.ColumnProperty, j);
+                        BoxesUI[i, j].Button.SetValue(Grid.RowProperty, 7-i);
+                        BoxesUI[i, j].Button.SetValue(Border.BorderThicknessProperty, new Thickness(0));
+                        BoxesUI[i, j].Button.Focusable = false;
+                        BoxesUI[i, j].Button.Padding = new Thickness(0);
                         if (i % 2 != j % 2)
                         {
-                            board.Boxes[i, j].Button.Background = Brushes.Black;
+                            BoxesUI[i, j].Button.Background = Brushes.Black;
                         }
                         else
                         {
-                            board.Boxes[i, j].Button.Background = Brushes.White;
+                            BoxesUI[i, j].Button.Background = Brushes.White;
                         }
-                        GUI.grdBoard.Children.Add(Game.Board.Boxes[i, j].Button);
-                        board.Boxes[i, j].Button.Tag = Game.Board.Boxes[i, j].Coordinates;
+                        GUI.grdBoard.Children.Add(BoxesUI[i, j].Button);
+                        BoxesUI[i, j].Button.Tag = Game.Board.Boxes[i, j].Coordinates;
 
-                        board.Boxes[i, j].Grid = new Grid();
-                        board.Boxes[i, j].Grid.IsHitTestVisible = false;
-                        board.Boxes[i, j].Button.Content = board.Boxes[i, j].Grid;
+                        BoxesUI[i, j].Grid = new Grid();
+                        BoxesUI[i, j].Grid.IsHitTestVisible = false;
+                        BoxesUI[i, j].Button.Content = BoxesUI[i, j].Grid;
                     }
                 }
             }
@@ -160,6 +208,52 @@ namespace GothicChesters
         {
             GUI.cbOn.IsChecked = false;
             GUI.cbOn.IsEnabled = false;
+        }
+    }
+
+    public class BoxUI
+    {
+        public Image Icon
+        {
+            get
+            {
+                Image icon = new Image();
+                icon.Source = new BitmapImage(new Uri(Box.Piece.IconPath, UriKind.Relative));
+                icon.SetValue(RenderOptions.BitmapScalingModeProperty, BitmapScalingMode.Fant);
+                return icon;
+            }
+        }
+        public Box Box { get; private set; }
+        public Grid Grid { get; set; }
+        public Button Button { get; set; }
+
+        public BoxUI(Box box)
+        {
+            Box = box;
+
+        }
+
+        public void Mark()
+        {
+            Grid.Children.Add(MarkedBox(Brushes.Green));
+        }
+
+        private Rectangle MarkedBox(Brush color)
+        {
+            Rectangle rectangle = new Rectangle();
+            rectangle.Fill = color;
+            rectangle.Opacity = 0.3;
+            rectangle.Stretch = Stretch.UniformToFill;
+            rectangle.HorizontalAlignment = HorizontalAlignment.Stretch;
+            rectangle.IsHitTestVisible = false;
+            return rectangle;
+        }
+
+        public void Unmark()
+        {
+            Grid.Children.RemoveRange(0, Grid.Children.Count);
+            if (!(Box.Piece is null))
+                Grid.Children.Add(Icon);
         }
     }
 }
