@@ -17,6 +17,8 @@ namespace GothicChesters
         public MainWindow GUI { get; private set; }
         public BoxUI[,] BoxesUI { get; private set; }
         public BoxUI MarkedBox { get; set; }
+        public bool IsHelpOn { get; set; }
+        public bool IsViewMode { get; set; }
         public Move[] MovesMarkedBox
         {
             get
@@ -77,10 +79,11 @@ namespace GothicChesters
             {
                 for (int j = 0; j <= 7; j++)
                 {
-                    BoxesUI[i, j] = new BoxUI(Game.Board.Boxes[i, j]);
+                    BoxesUI[i, j] = new BoxUI();
+                    BoxesUI[i, j].Box = Game.Board.Boxes[i, j];
                 }
             }
-
+            IsHelpOn = false;
             RedrawBoard(Game.Board);
 
             Game.OnAfterBoardChange += Refresh;
@@ -99,18 +102,10 @@ namespace GothicChesters
                     }
                 }
                 Game.DoMove(move);
-                //RedrawPieces();
             }
             else
             {
                 throw new InvalidOperationException("Nelze udělat pohyb, když je hra ukončena, nebo pozastavena");
-            }
-
-            if (Game.PlayerOnMove is AI && Game.IsActive && !Game.IsOver)
-            {
-                //Thread thread = new Thread(() => ((AI)PlayerOnMove).Play(this));
-                //thread.Start();
-                //((AI)Game.PlayerOnMove).Play(Game);
             }
         }
         public void DrawBoard(Board board)
@@ -119,6 +114,7 @@ namespace GothicChesters
             GUI.txtWhiteOff.Text = Game.Board.WhiteDead.ToString();
             GUI.txtBlackOff.Text = Game.Board.BlackDead.ToString();
             GUI.txtRound.Text = Game.Round.ToString();
+            GUI.lsBxHistory.ItemsSource = Game.BoardHistory;
 
             for (int i = 0; i <= 7; i++)
             {
@@ -132,7 +128,7 @@ namespace GothicChesters
             {
                 for (int j = 0; j <= 7; j++)
                 {
-                    if (!(board.Boxes[i, j].Piece is null))
+                    if (!(BoxesUI[i, j].Box.Piece is null))
                     {
                         BoxesUI[i, j].Grid.Children.Add(BoxesUI[i, j].Icon);
                     }
@@ -152,6 +148,7 @@ namespace GothicChesters
                     for (int j = 0; j <= 7; j++)
                     {
                         // Tlačítka pro ovládání hrací desky v GUI
+                        BoxesUI[i, j].Box = board.Boxes[i, j];
                         BoxesUI[i, j].Button = new Button();
                         BoxesUI[i, j].Button.SetValue(Grid.ColumnProperty, j);
                         BoxesUI[i, j].Button.SetValue(Grid.RowProperty, 7-i);
@@ -167,7 +164,7 @@ namespace GothicChesters
                             BoxesUI[i, j].Button.Background = Brushes.White;
                         }
                         GUI.grdBoard.Children.Add(BoxesUI[i, j].Button);
-                        BoxesUI[i, j].Button.Tag = Game.Board.Boxes[i, j].Coordinates;
+                        BoxesUI[i, j].Button.Tag = board.Boxes[i, j].Coordinates;
 
                         BoxesUI[i, j].Grid = new Grid();
                         BoxesUI[i, j].Grid.IsHitTestVisible = false;
@@ -200,9 +197,25 @@ namespace GothicChesters
             }
                 
         }
-        void Refresh()
+        public void Refresh()
         {
             RedrawPieces();
+            if (!Game.IsOver)
+            {
+                IsGameActive = GUI.cbOn.IsChecked.HasValue ? GUI.cbOn.IsChecked.Value : false;
+
+                GUI.menuTah.IsEnabled = Game.PlayerOnMove is Human;
+                GUI.menuZpet.IsEnabled = Game.Round > 1 && Game.PlayerOnMove is Human ? true : false;
+                GUI.menuVratitZpet.IsEnabled = Game.BoardHistory.Count > 0 && Game.BoardHistory.Keys.Max() >= Game.Round && Game.PlayerOnMove is Human ? true : false;
+            }
+            else
+            {
+                GUI.menuTah.IsEnabled = false;
+                GUI.menuZpet.IsEnabled = false;
+                GUI.menuVratitZpet.IsEnabled = false;
+            }
+
+
         }
         void End()
         {
@@ -223,15 +236,9 @@ namespace GothicChesters
                 return icon;
             }
         }
-        public Box Box { get; private set; }
+        public Box Box { get; set; }
         public Grid Grid { get; set; }
         public Button Button { get; set; }
-
-        public BoxUI(Box box)
-        {
-            Box = box;
-
-        }
 
         public void Mark()
         {

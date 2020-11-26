@@ -16,7 +16,7 @@ namespace GothicChesters.GameCore
         /// <param name="enemy"></param>
         /// <param name="depth"></param>
         /// <returns>Nejlepší tah na desce, pokud žádný není, tak null</returns>
-        public static Move GetBestMove (Board board, Player player, Player enemy, int depth, bool isEnemy = false)
+        public static Move Search (Board board, Player player, Player enemy, int depth, bool isEnemy = false)
         {
             Board newBoard;
             List<Box> ownedBoxes = new List<Box>(player.GetBoxesWithOwnedPieces(board)); //Generování všech políček hrací desky, které obsahují hráčovu figurku
@@ -24,27 +24,27 @@ namespace GothicChesters.GameCore
                 return null;
             Move bestMove = null;
 
-            for (int i = 0; i < ownedBoxes.Count; i++) //Procházení všech políček hrací desky, které obsahují hráčovu figurku
+            foreach (Box box in ownedBoxes) //Procházení všech políček hrací desky, které obsahují hráčovu figurku
             {
                 
-                List<Move> movesBox = new List<Move>(board.GetPossibleAttacks(ownedBoxes[i]).Length > 0 ? board.GetPossibleAttacks(ownedBoxes[i]) : board.GetPossibleMoves(ownedBoxes[i])); //Generování všech možných tahů k hráčovým políčkům
-                for (int j = 0; j < movesBox.Count; j++) //Procházení všech možných tahů
+                List<Move> movesBox = new List<Move>(board.GetPossibleAttacks(box).Length > 0 ? board.GetPossibleAttacks(box) : board.GetPossibleMoves(box)); //Generování všech možných tahů k hráčovým políčkům
+                foreach (Move move in movesBox) //Procházení všech možných tahů
                 {
                     if (depth != 0) //Generování dalších větví stromu algoritmu
                     {
                         newBoard = (Board)board.Clone(); //Naklonování herní desky
-                        newBoard.DoMove(movesBox[j]); //Provedení tahu na naklonovanou herní desku
-                        Move tempMove = Minimax.GetBestMove(newBoard, player, enemy, depth-1); //isEnemy ? Minimax.GetBestMove(newBoard, player, enemy, depth--) : Minimax.GetBestMove(newBoard, enemy, player, depth, true);
+                        newBoard.DoMove(move); //Provedení tahu na naklonovanou herní desku
+                        Move tempMove = Minimax.Search(newBoard, player, enemy, depth-1); //isEnemy ? Minimax.GetBestMove(newBoard, player, enemy, depth--) : Minimax.GetBestMove(newBoard, enemy, player, depth, true);
                         if (bestMove is null || bestMove.Rank < tempMove.Rank)
                         {
-                            movesBox[j].Rank += tempMove.Rank;
-                            bestMove = movesBox[j];
+                            //BLBOSTmove.Rank += tempMove.Rank;
+                            bestMove = move;
                         }
                     }
                     else //Pokud je hloubka 0 - konec procházení
                     {
-                        if (bestMove is null || bestMove.Rank < movesBox[j].Rank)
-                            bestMove = movesBox[j];
+                        if (bestMove is null || bestMove.Rank < move.Rank)
+                            bestMove = move;
                     }
                 }
             }
@@ -52,11 +52,11 @@ namespace GothicChesters.GameCore
             return bestMove;
         }
 
-        public static Task<Move> GetBestMoveAsync(Board board, Player player, Player enemy, int depth, bool isEnemy = false)
+        public static Task<Move> SearchAsync(Board board, Player player, Player enemy, int depth, bool isEnemy = false)
         {
             return Task.Run(() =>
             {
-                return GetBestMove(board, player, enemy, depth, isEnemy);
+                return Search(board, player, enemy, depth, isEnemy);
             });
         }
     }

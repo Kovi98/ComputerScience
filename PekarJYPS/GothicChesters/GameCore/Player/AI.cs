@@ -29,7 +29,7 @@ namespace GothicChesters
                     depth = 5;
                     break;
             }
-            Move bestMove = GameCore.Minimax.GetBestMove(game.Board, this, enemy, depth);
+            Move bestMove = GameCore.Minimax.Search(game.Board, this, enemy, depth);
             game.DoMove(bestMove);
         }
 
@@ -49,7 +49,7 @@ namespace GothicChesters
                     depth = 2;
                     break;
             }
-            Move bestMove = await GameCore.Minimax.GetBestMoveAsync(game.Board, this, enemy, depth);
+            Move bestMove = await GameCore.Minimax.SearchAsync(game.Board, this, enemy, depth);
             game.DoMove(bestMove);
         }
     }

@@ -60,6 +60,12 @@ namespace GothicChesters
 
         private void grdBoard_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
+            if (GameUI.IsHelpOn)
+            {
+                GameUI.Refresh();
+                GameUI.IsHelpOn = false;
+                return;
+            }
             if (GameUI.IsGameActive)
             {
                 if ((GameUI.Game.WhitePlayer is Human && GameUI.Game.PlayerOnMove.Equals(GameUI.Game.WhitePlayer)) || (GameUI.Game.BlackPlayer is Human && GameUI.Game.PlayerOnMove.Equals(GameUI.Game.BlackPlayer)))
@@ -164,18 +170,65 @@ namespace GothicChesters
                             throw new InvalidOperationException("cmbPlayer nemá žádnou hodnotu");
                     }
                 }
-
-                    GameUI.IsGameActive = cbOn.IsChecked.HasValue ? cbOn.IsChecked.Value : false;
+                GameUI.Refresh();
+                if (GameUI.IsViewMode)
+                {
+                    GameUI.RedrawBoard(GameUI.Game.Board);
+                    GameUI.IsViewMode = false;
+                }
             }
         }
 
         private void lsBxHistory_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (!GameUI.Game.IsActive)
+            if (!(GameUI is null) && !GameUI.Game.IsActive)
             {
                 ListBox listBox = (ListBox)e.Source;
-                GameUI.DrawBoard(GameUI.Game.BoardHistory[(int)listBox.SelectedItem], true);
+                if (!(listBox.SelectedItem is null))
+                {
+                    GameUI.DrawBoard((Board)GameUI.Game.BoardHistory[(int)listBox.SelectedItem].Clone(), true);
+                    GameUI.IsViewMode = true;
+                }
             }
         }
+
+        private async void menuTah_Click(object sender, RoutedEventArgs e)
+        {
+            Player player = GameUI.Game.PlayerOnMove;
+            Player enemy = GameUI.Game.PlayerOnMove.Color is PieceColor.White ? GameUI.Game.BlackPlayer : GameUI.Game.WhitePlayer;
+            int depth = 0;
+            switch (GameUI.Game.Difficulty)
+            {
+                case 1:
+                    depth = 0;
+                    break;
+                case 2:
+                    depth = 1;
+                    break;
+                case 3:
+                    depth = 2;
+                    break;
+            }
+            Move bestMove = await GameCore.Minimax.SearchAsync(GameUI.Game.Board, player, enemy, depth);
+            GameUI.BoxesUI[bestMove.CurrentPosition.Coordinates.Row, bestMove.CurrentPosition.Coordinates.Column].Mark();
+            GameUI.BoxesUI[bestMove.NextPosition.Coordinates.Row, bestMove.NextPosition.Coordinates.Column].Mark();
+            GameUI.IsHelpOn = true;
         }
+
+        private void menuZpet_Click(object sender, RoutedEventArgs e)
+        {
+            GameUI.Game.Undo();
+            GameUI.Game.PlayerOnMove = GameUI.Game.WhitePlayer;
+            GameUI.RedrawBoard(Game.Board);
+            GameUI.Refresh();
+        }
+
+        private void menuVratitZpet_Click(object sender, RoutedEventArgs e)
+        {
+            GameUI.Game.Redo();
+            GameUI.Game.PlayerOnMove = GameUI.Game.WhitePlayer;
+            GameUI.RedrawBoard(Game.Board);
+            GameUI.Refresh();
+        }
+    }
     }

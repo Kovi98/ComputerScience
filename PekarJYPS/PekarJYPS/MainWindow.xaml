@@ -27,13 +27,13 @@
             <RowDefinition Height="25"/>
         </Grid.RowDefinitions>
         <Menu Grid.ColumnSpan="8" FontWeight="Bold" FontSize="17.5" Margin="0,-1,0,1">
-            <MenuItem Header="_Hra" IsHitTestVisible="True" FontSize="15">
-                <MenuItem FontSize="15" FontWeight="Normal" x:Name="zatimNic" Header="_Zpět" Click="closeWindow_Click" IsEnabled="False"/>
-                <MenuItem Header="_Vrátit zpět" IsEnabled="False" FontWeight="Normal"/>
+            <MenuItem x:Name="menuHra" Header="_Hra" IsHitTestVisible="True" FontSize="15">
+                <MenuItem FontSize="15" FontWeight="Normal" x:Name="menuZpet" Header="_Zpět" IsEnabled="False" Click="menuZpet_Click"/>
+                <MenuItem Header="_Vrátit zpět" IsEnabled="False" FontWeight="Normal" x:Name="menuVratitZpet" Click="menuVratitZpet_Click"/>
                 <MenuItem FontSize="15" FontWeight="Normal" x:Name="closeWindow" Header="_Zavřít okno" Foreground="Black" Click="closeWindow_Click"/>
             </MenuItem>
             <MenuItem Header="_Nápověda" FontSize="15">
-                <MenuItem Header="_Nejlepší tah" FontWeight="Normal"/>
+                <MenuItem x:Name="menuTah" Header="_Nejlepší tah" FontWeight="Normal" IsEnabled="False" Click="menuTah_Click"/>
                 <MenuItem Header="_Nápověda ke hře" FontWeight="Normal"/>
             </MenuItem>
         </Menu>

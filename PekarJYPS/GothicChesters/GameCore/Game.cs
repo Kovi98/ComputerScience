@@ -17,16 +17,7 @@ namespace GothicChesters
         public bool IsOver { get; private set; }
         public event BoardChangeHandler OnAfterBoardChange;
         public event GameOverHandler OnAfterGameOver;
-        public int Round
-        {
-            get => _round;
-            private set
-            {
-                BackupBoard();
-                _round = value;
-            }
-        }
-        private int _round = 1;
+        public int Round { get; private set; }
         public Dictionary<int, Board> BoardHistory { get; private set; }
         private int _difficulty;
         /// <summary>
@@ -70,7 +61,7 @@ namespace GothicChesters
             }
         }
         public int RoundWithoutDead { get; private set; }
-        public Player PlayerOnMove { get; private set; }
+        public Player PlayerOnMove { get; set; }
         public Player Winner
         {
             get
@@ -87,6 +78,7 @@ namespace GothicChesters
         {
             Difficulty = diff;
             Board = new Board();
+            Round = 0;
 
             switch (whitePlayer)
             {
@@ -111,12 +103,21 @@ namespace GothicChesters
             IsActive = true;
             BoardHistory = new Dictionary<int, Board>();
             PlayerOnMove = WhitePlayer;
+            BackupBoard();
+            Round++;
         }
 
         public async void DoMove(Move move)
         {
             if (IsActive && !IsOver)
             {
+                if (BoardHistory.ContainsKey(Round))
+                {
+                    for (int i = Round; i <= BoardHistory.Keys.Max(); i++)
+                    {
+                        BoardHistory.Remove(i);
+                    }
+                }
                 Board.DoMove(move);
                 if (!(!(move.AttackedPosition is null) && Board.GetPossibleAttacks(move.NextPosition).Length > 0))
                 {
@@ -155,8 +156,9 @@ namespace GothicChesters
             }
             else if (PlayerOnMove == BlackPlayer)
             {
-                PlayerOnMove = WhitePlayer;
+                BackupBoard();
                 Round++;
+                PlayerOnMove = WhitePlayer;
             }
             else
             {
@@ -169,7 +171,7 @@ namespace GothicChesters
         public void Undo()
         {
             Board newBoard;
-            if (!BoardHistory.TryGetValue(Round--, out newBoard))
+            if (!BoardHistory.TryGetValue(Round-2, out newBoard))
                 throw new InvalidOperationException("Nejdá dát UNDO když není v historii desek záznam s this.Round-1");
 
             Round--;
@@ -179,7 +181,7 @@ namespace GothicChesters
         public void Redo()
         {
             Board newBoard;
-            if (!BoardHistory.TryGetValue(Round++, out newBoard))
+            if (!BoardHistory.TryGetValue(Round, out newBoard))
                 throw new InvalidOperationException("Nejdá dát REDO když není v historii desek záznam s this.Round+1");
 
             Round++;
