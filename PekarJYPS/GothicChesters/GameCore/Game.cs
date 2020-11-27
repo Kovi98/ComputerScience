@@ -60,6 +60,20 @@ namespace GothicChesters
                     PlayerOnMove = value;
             }
         }
+        public Player EnemyPlayer
+        {
+            get
+            {
+                switch (PlayerOnMove.Color)
+                {
+                    case PieceColor.White:
+                        return BlackPlayer;
+                    case PieceColor.Black:
+                        return WhitePlayer;
+                }
+                return null;
+            }
+        }
         public int RoundWithoutDead { get; private set; }
         public Player PlayerOnMove { get; set; }
         public Player Winner

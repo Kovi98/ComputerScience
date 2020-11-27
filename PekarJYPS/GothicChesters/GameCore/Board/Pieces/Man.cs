@@ -13,7 +13,7 @@ namespace GothicChesters
     {
         public Man(Coordinates coordinates, PieceColor pieceColor) : base(coordinates, pieceColor)
         {
-            Value = 3;
+            Value = 9;
 
             //Přiřazení ikony k figurce
             switch (this.Color)

@@ -14,7 +14,7 @@ namespace GothicChesters
     {
         public King(Coordinates coordinates, PieceColor pieceColor) : base(coordinates, pieceColor)
         {
-            Value = 3;
+            Value = 15;
 
             //Přiřazení cesty ikony k figurce
             switch (this.Color)

@@ -20,13 +20,13 @@ namespace GothicChesters
             switch (game.Difficulty)
             {
                 case 1:
-                    depth = 0;
+                    depth = 2;
                     break;
                 case 2: 
-                    depth = 3;
+                    depth = 4;
                     break;
                 case 3:
-                    depth = 5;
+                    depth = 8;
                     break;
             }
             Move bestMove = GameCore.Minimax.Search(game.Board, this, enemy, depth);
@@ -40,13 +40,13 @@ namespace GothicChesters
             switch (game.Difficulty)
             {
                 case 1:
-                    depth = 0;
+                    depth = 2;
                     break;
                 case 2:
-                    depth = 1;
+                    depth = 3;
                     break;
                 case 3:
-                    depth = 2;
+                    depth = 8;
                     break;
             }
             Move bestMove = await GameCore.Minimax.SearchAsync(game.Board, this, enemy, depth);

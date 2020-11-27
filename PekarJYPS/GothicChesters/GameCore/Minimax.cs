@@ -8,6 +8,28 @@ namespace GothicChesters.GameCore
 {
     public class Minimax
     {
+        private static int SearchTree (Board board, Player player, Player enemy, int depth, int rank)
+        {
+            if (depth == 0)
+                return rank;
+            
+            List<Box> ownedBoxes = new List<Box>(player.GetBoxesWithOwnedPieces(board)); //Generování všech políček hrací desky, které obsahují hráčovu figurku
+            if (ownedBoxes.Count == 0) //Pokud hráč žádné políčko obsazené nemá, vrátit rank
+                return rank;
+
+            foreach (Box box in ownedBoxes) //Procházení všech políček hrací desky, které obsahují hráčovu figurku
+            {
+                List<Move> movesBox = new List<Move>(board.GetPossibleAttacks(box).Length > 0 ? board.GetPossibleAttacks(box) : board.GetPossibleMoves(box)); //Generování všech možných tahů k hráčovým políčkům
+                foreach (Move move in movesBox) //Procházení všech možných tahů
+                {
+                    Board clonedBoard = (Board)board.Clone();
+                    rank += move.Rank;
+                    clonedBoard.DoMove(move);
+                    rank += Minimax.SearchTree(clonedBoard, enemy, player, depth - 1, -move.Rank);
+                }
+            }
+            return rank;
+        }
         /// <summary>
         /// IMplementace algoritmu Minimax do statické metody
         /// </summary>
@@ -16,47 +38,37 @@ namespace GothicChesters.GameCore
         /// <param name="enemy"></param>
         /// <param name="depth"></param>
         /// <returns>Nejlepší tah na desce, pokud žádný není, tak null</returns>
-        public static Move Search (Board board, Player player, Player enemy, int depth, bool isEnemy = false)
+        public static Move Search (Board board, Player player, Player enemy, int depth)
         {
-            Board newBoard;
             List<Box> ownedBoxes = new List<Box>(player.GetBoxesWithOwnedPieces(board)); //Generování všech políček hrací desky, které obsahují hráčovu figurku
             if (ownedBoxes.Count == 0) //Pokud hráč žádné políčko obsazené nemá, vrátit null
                 return null;
             Move bestMove = null;
+            //TEST
+            List<Move> moves = new List<Move>();
 
             foreach (Box box in ownedBoxes) //Procházení všech políček hrací desky, které obsahují hráčovu figurku
             {
-                
                 List<Move> movesBox = new List<Move>(board.GetPossibleAttacks(box).Length > 0 ? board.GetPossibleAttacks(box) : board.GetPossibleMoves(box)); //Generování všech možných tahů k hráčovým políčkům
                 foreach (Move move in movesBox) //Procházení všech možných tahů
                 {
-                    if (depth != 0) //Generování dalších větví stromu algoritmu
-                    {
-                        newBoard = (Board)board.Clone(); //Naklonování herní desky
-                        newBoard.DoMove(move); //Provedení tahu na naklonovanou herní desku
-                        Move tempMove = Minimax.Search(newBoard, player, enemy, depth-1); //isEnemy ? Minimax.GetBestMove(newBoard, player, enemy, depth--) : Minimax.GetBestMove(newBoard, enemy, player, depth, true);
-                        if (bestMove is null || bestMove.Rank < tempMove.Rank)
-                        {
-                            //BLBOSTmove.Rank += tempMove.Rank;
-                            bestMove = move;
-                        }
-                    }
-                    else //Pokud je hloubka 0 - konec procházení
-                    {
-                        if (bestMove is null || bestMove.Rank < move.Rank)
-                            bestMove = move;
-                    }
+                    Board clonedBoard = (Board)board.Clone();
+                    clonedBoard.DoMove(move);
+                    int rank = Minimax.SearchTree(clonedBoard, player, enemy, depth, move.Rank);
+                    move.Rank = rank;
+                    if (bestMove is null || bestMove.Rank < move.Rank)
+                        bestMove = move;
+                    moves.Add(move);
                 }
             }
-
             return bestMove;
         }
 
-        public static Task<Move> SearchAsync(Board board, Player player, Player enemy, int depth, bool isEnemy = false)
+        public static Task<Move> SearchAsync(Board board, Player player, Player enemy, int depth)
         {
             return Task.Run(() =>
             {
-                return Search(board, player, enemy, depth, isEnemy);
+                return Search(board, player, enemy, depth);
             });
         }
     }
