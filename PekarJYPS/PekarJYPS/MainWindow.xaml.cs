@@ -169,6 +169,7 @@ namespace GothicChesters
                         default:
                             throw new InvalidOperationException("cmbPlayer nemá žádnou hodnotu");
                     }
+                    GameUI.Game.Difficulty = cmbDiff.SelectedIndex + 1;
                 }
                 GameUI.Refresh();
                 if (GameUI.IsViewMode)
@@ -176,6 +177,7 @@ namespace GothicChesters
                     GameUI.RedrawBoard(GameUI.Game.Board);
                     GameUI.IsViewMode = false;
                 }
+                GameUI.IsGameActive = cbOn.IsChecked.HasValue ? (bool)cbOn.IsChecked : false;
             }
         }
 

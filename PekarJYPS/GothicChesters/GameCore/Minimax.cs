@@ -44,11 +44,10 @@ namespace GothicChesters.GameCore
             if (ownedBoxes.Count == 0) //Pokud hráč žádné políčko obsazené nemá, vrátit null
                 return null;
             Move bestMove = null;
-            //TEST
-            List<Move> moves = new List<Move>();
 
             foreach (Box box in ownedBoxes) //Procházení všech políček hrací desky, které obsahují hráčovu figurku
             {
+
                 List<Move> movesBox = new List<Move>(board.GetPossibleAttacks(box).Length > 0 ? board.GetPossibleAttacks(box) : board.GetPossibleMoves(box)); //Generování všech možných tahů k hráčovým políčkům
                 foreach (Move move in movesBox) //Procházení všech možných tahů
                 {
@@ -58,7 +57,6 @@ namespace GothicChesters.GameCore
                     move.Rank = rank;
                     if (bestMove is null || bestMove.Rank < move.Rank)
                         bestMove = move;
-                    moves.Add(move);
                 }
             }
             return bestMove;

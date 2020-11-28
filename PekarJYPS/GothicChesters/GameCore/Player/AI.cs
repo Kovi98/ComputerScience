@@ -43,7 +43,7 @@ namespace GothicChesters
                     depth = 2;
                     break;
                 case 2:
-                    depth = 3;
+                    depth = 4;
                     break;
                 case 3:
                     depth = 8;

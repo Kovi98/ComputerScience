@@ -114,11 +114,11 @@ namespace GothicChesters
                     break;
             }
             IsOver = false;
-            IsActive = true;
             BoardHistory = new Dictionary<int, Board>();
             PlayerOnMove = WhitePlayer;
             BackupBoard();
             Round++;
+            IsActive = true;
         }
 
         public async void DoMove(Move move)
