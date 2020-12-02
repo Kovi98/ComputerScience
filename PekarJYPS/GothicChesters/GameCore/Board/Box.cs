@@ -21,7 +21,7 @@ namespace GothicChesters
             {
                 piece = value;
                 if (!(piece is null))
-                piece.Coordinates = Coordinates;
+                    piece.Coordinates = Coordinates;
             }
         }
 

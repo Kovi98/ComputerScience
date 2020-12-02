@@ -34,7 +34,8 @@
             </MenuItem>
             <MenuItem Header="_Nápověda" FontSize="15">
                 <MenuItem x:Name="menuTah" Header="_Nejlepší tah" FontWeight="Normal" IsEnabled="False" Click="menuTah_Click"/>
-                <MenuItem Header="_Nápověda ke hře" FontWeight="Normal"/>
+                <MenuItem Header="_Nápověda ke hře" FontWeight="Normal" Click="MenuItem_Click_1"/>
+                <MenuItem Header="_Pravidla hry" FontWeight="Normal" Click="MenuItem_Click"/>
             </MenuItem>
         </Menu>
         <Rectangle Fill="Gray" Grid.ColumnSpan="7" Grid.Row="1"/>

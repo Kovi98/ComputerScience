@@ -32,7 +32,10 @@ namespace GothicChesters
         {
             return new King(this.Coordinates, this.Color);
         }
-
+        public Man Devolve()
+        {
+            return new Man(Coordinates, Color);
+        }
         public override Move[] GetPossibleAttacks(Board board)
         {
             //Generický List možných pohybů

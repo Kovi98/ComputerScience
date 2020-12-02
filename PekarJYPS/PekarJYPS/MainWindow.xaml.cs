@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PekarJYPS;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -231,6 +232,18 @@ namespace GothicChesters
             GameUI.Game.PlayerOnMove = GameUI.Game.WhitePlayer;
             GameUI.RedrawBoard(Game.Board);
             GameUI.Refresh();
+        }
+
+        private void MenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            WindowRules window = new WindowRules();
+            window.ShowDialog();
+        }
+
+        private void MenuItem_Click_1(object sender, RoutedEventArgs e)
+        {
+            WindowHelp window = new WindowHelp();
+            window.ShowDialog();
         }
     }
     }

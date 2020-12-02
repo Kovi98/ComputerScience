@@ -12,6 +12,8 @@ namespace GothicChesters
         public Box NextPosition { get; private set; }
         public int Rank { get; set; }
         public Box[] AttackedPosition { get; private set; }
+        public Piece[] DroppedPiece { get; set; }
+        public bool HasEvolved { get; set; }
         public Move(Box currentPosition, Box nextPosition, Box[] attackedPosition = null)
         {
             CurrentPosition = currentPosition;
@@ -26,6 +28,8 @@ namespace GothicChesters
                     this.Rank += box.Piece.Value;
                 }
             }
+
+            HasEvolved = false;
         }
 
         public bool Equals(Move other)

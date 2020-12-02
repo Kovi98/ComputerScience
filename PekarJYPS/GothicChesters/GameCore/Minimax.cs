@@ -22,10 +22,11 @@ namespace GothicChesters.GameCore
                 List<Move> movesBox = new List<Move>(board.GetPossibleAttacks(box).Length > 0 ? board.GetPossibleAttacks(box) : board.GetPossibleMoves(box)); //Generování všech možných tahů k hráčovým políčkům
                 foreach (Move move in movesBox) //Procházení všech možných tahů
                 {
-                    Board clonedBoard = (Board)board.Clone();
+                    //Board clonedBoard = (Board)board.Clone();
                     rank += move.Rank;
-                    clonedBoard.DoMove(move);
-                    rank += Minimax.SearchTree(clonedBoard, enemy, player, depth - 1, -move.Rank);
+                    board.DoMove(move);
+                    rank += Minimax.SearchTree(board, enemy, player, depth - 1, -move.Rank);
+                    board.UndoMove(move);
                 }
             }
             return rank;
@@ -38,8 +39,9 @@ namespace GothicChesters.GameCore
         /// <param name="enemy"></param>
         /// <param name="depth"></param>
         /// <returns>Nejlepší tah na desce, pokud žádný není, tak null</returns>
-        public static Move Search (Board board, Player player, Player enemy, int depth)
+        public static Move Search (Board boardOriginal, Player player, Player enemy, int depth)
         {
+            Board board = (Board)boardOriginal.Clone();
             List<Box> ownedBoxes = new List<Box>(player.GetBoxesWithOwnedPieces(board)); //Generování všech políček hrací desky, které obsahují hráčovu figurku
             if (ownedBoxes.Count == 0) //Pokud hráč žádné políčko obsazené nemá, vrátit null
                 return null;
@@ -51,12 +53,13 @@ namespace GothicChesters.GameCore
                 List<Move> movesBox = new List<Move>(board.GetPossibleAttacks(box).Length > 0 ? board.GetPossibleAttacks(box) : board.GetPossibleMoves(box)); //Generování všech možných tahů k hráčovým políčkům
                 foreach (Move move in movesBox) //Procházení všech možných tahů
                 {
-                    Board clonedBoard = (Board)board.Clone();
-                    clonedBoard.DoMove(move);
-                    int rank = Minimax.SearchTree(clonedBoard, player, enemy, depth, move.Rank);
+                    //Board clonedBoard = (Board)board.Clone();
+                    board.DoMove(move);
+                    int rank = Minimax.SearchTree(board, player, enemy, depth, move.Rank);
                     move.Rank = rank;
                     if (bestMove is null || bestMove.Rank < move.Rank)
                         bestMove = move;
+                    board.UndoMove(move);
                 }
             }
             return bestMove;

@@ -39,6 +39,7 @@ namespace GothicChesters
         /// <param name="move"></param>
         public void DoMove(Move move)
         {
+            List<Piece> droppedPieces = new List<Piece>();
             Boxes[move.NextPosition.Coordinates.Row, move.NextPosition.Coordinates.Column].Piece = Boxes[move.CurrentPosition.Coordinates.Row, move.CurrentPosition.Coordinates.Column].Piece;
             Boxes[move.CurrentPosition.Coordinates.Row, move.CurrentPosition.Coordinates.Column].Piece = null;
 
@@ -46,16 +47,42 @@ namespace GothicChesters
             {
                 foreach (Box box in move.AttackedPosition)
                 {
+                    droppedPieces.Add(Boxes[box.Coordinates.Row, box.Coordinates.Column].Piece);
                     DropPiece(Boxes[box.Coordinates.Row, box.Coordinates.Column]);
                 }
             }
+            move.DroppedPiece = droppedPieces.ToArray();
 
             //Evoluce kámen -> dáma pokud je kámen na posledním řádku své barvy
             if ((move.NextPosition.Piece is Man) && ((move.NextPosition.Piece.Color.Equals(PieceColor.White) && move.NextPosition.Coordinates.Row == 7) || (move.NextPosition.Piece.Color.Equals(PieceColor.Black) && move.NextPosition.Coordinates.Row == 0)))
             {
                 Man man = (Man)move.NextPosition.Piece;
                 move.NextPosition.Piece = man.Evolve();
+                move.HasEvolved = true;
             }
+        }
+
+        /// <summary>
+        /// Undo kroku
+        /// </summary>
+        /// <param name="move"></param>
+        public void UndoMove(Move move)
+        {
+            //Evoluce kámen -> dáma pokud je kámen na posledním řádku své barvy
+            if (move.HasEvolved)
+            {
+                King king = (King)move.NextPosition.Piece;
+                move.NextPosition.Piece = king.Devolve();
+                move.HasEvolved = false;
+            }
+
+            foreach (Piece piece in move.DroppedPiece)
+            {
+                Boxes[piece.Coordinates.Row, piece.Coordinates.Column].Piece = piece;
+            }
+
+            Boxes[move.CurrentPosition.Coordinates.Row, move.CurrentPosition.Coordinates.Column].Piece = Boxes[move.NextPosition.Coordinates.Row, move.NextPosition.Coordinates.Column].Piece;
+            Boxes[move.NextPosition.Coordinates.Row, move.NextPosition.Coordinates.Column].Piece = null;
         }
 
         /// <summary>
