@@ -7,6 +7,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Shapes;
+using System.Xml.Linq;
 
 namespace GothicChesters
 {
@@ -42,6 +43,12 @@ namespace GothicChesters
         public bool Equals(Box other)
         {
             return this.Coordinates.Equals(other.Coordinates);
+        }
+
+        public static XElement GetXML(Box box)
+        {
+            XElement boardXML = new XElement("Box", "MISSING");
+            return boardXML;
         }
     }
 }

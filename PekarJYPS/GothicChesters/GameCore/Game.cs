@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Navigation;
+using System.Xml.Linq;
 
 namespace GothicChesters
 {
@@ -210,6 +211,33 @@ namespace GothicChesters
         public Move[] GetPossibleAttacks(Board board, Box box)
         {
             return board.GetPossibleAttacks(box);
+        }
+
+        public static XElement GetXML(Game game)
+        {
+            XElement gameXML = new XElement("Game",
+                new XElement("IsActive", game.IsActive),
+                new XElement("IsOver", game.IsOver),
+                new XElement("Round", game.Round),
+                new XElement("RoundWithoutDead", game.RoundWithoutDead),
+                new XElement("Difficulty", game.Difficulty),
+                new XElement("WhitePlayer", game.WhitePlayer.GetPlayerType()),
+                new XElement("BlackPlayer", game.BlackPlayer.GetPlayerType()),
+                new XElement("PlayerOnMove", game.PlayerOnMove.Color),
+                new XElement("Winner", game.Winner.Color),
+                new XElement("ForcedAttackBox", Box.GetXML(game.ForcedAttackBox)),
+                Board.GetXML(game.Board),
+                Game.GetXML(game.BoardHistory)
+                );
+
+            return gameXML;
+        }
+
+        public static XElement GetXML(Dictionary<int, Board> boardHistory)
+        {
+            XElement boardHistoryXML = new XElement("BoardHistory", "MISSING");
+
+            return boardHistoryXML;
         }
     }
 }

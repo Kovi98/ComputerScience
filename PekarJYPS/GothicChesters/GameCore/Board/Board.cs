@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Media;
+using System.Xml.Linq;
 
 namespace GothicChesters
 {
@@ -144,6 +145,12 @@ namespace GothicChesters
             {
                 return new Move[0];
             }
+        }
+
+        public static XElement GetXML(Board board)
+        {
+            XElement boardXML = new XElement("Board", "MISSING");
+            return boardXML;
         }
     }
 }

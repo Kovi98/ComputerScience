@@ -52,5 +52,10 @@ namespace GothicChesters
             Move bestMove = await GameCore.Minimax.SearchAsync(game.Board, this, enemy, depth);
             game.DoMove(bestMove);
         }
+
+        public override string GetPlayerType()
+        {
+            return "AI";
+        }
     }
 }

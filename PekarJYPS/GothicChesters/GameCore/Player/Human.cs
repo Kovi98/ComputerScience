@@ -13,5 +13,10 @@ namespace GothicChesters
         {
            
         }
+
+        public override string GetPlayerType()
+        {
+            return "Human";
+        }
     }
 }
