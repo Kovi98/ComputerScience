@@ -239,12 +239,20 @@ namespace GothicChesters
             Players blackPlayer = xml.Attribute("BlackPlayer").Value == "Human" ? Players.Human : Players.AI;
             Game game = new Game(diff, whitePlayer, blackPlayer);
 
-            game.Round = Int32.Parse(xml.Element("Round").Value);
+            game.Round = int.Parse(xml.Element("Round").Value);
             game.RoundWithoutDead = Int32.Parse(xml.Element("RoundWithoutDead").Value);
             game.IsActive = xml.Element("IsActive").Value == "true";
             game.IsOver = xml.Element("IsOver").Value == "true";
             game.PlayerOnMove = xml.Element("PlayerOnMove").Value == "White" ? game.WhitePlayer : game.BlackPlayer;
             game.ForcedAttackBox = xml.Element("ForcedAttackBox").HasElements ? Box.GetBoxFromXML(xml.Element("ForcedAttackBox")) : null;
+
+            IEnumerable<XElement> boardHistory = xml.Element("BoardHistory").Elements("Board");
+            int number = 1;
+            foreach (var board in boardHistory)
+            {
+                game.BoardHistory.Add(number, Board.GetBoardFromXML(board));
+                number++;
+            }
 
             return game;
         }

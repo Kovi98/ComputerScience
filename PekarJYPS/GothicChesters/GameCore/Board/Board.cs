@@ -160,5 +160,22 @@ namespace GothicChesters
 
             return boardXML;
         }
+
+        public static Board GetBoardFromXML(XElement xml)
+        {
+            Board board = new Board();
+
+            board.WhiteDead = int.Parse(xml.Element("WhiteDead").Value);
+            board.BlackDead = int.Parse(xml.Element("BlackDead").Value);
+
+            IEnumerable<XElement> boxes = xml.Elements("Box");
+            Box tempBox;
+            foreach (var box in boxes)
+            {
+                tempBox = Box.GetBoxFromXML(box);
+                board.Boxes[tempBox.Coordinates.Row, tempBox.Coordinates.Column] = tempBox;
+            }
+            return board;
+        }
     }
 }
