@@ -214,8 +214,15 @@ namespace GothicChesters
                 GUI.menuZpet.IsEnabled = false;
                 GUI.menuVratitZpet.IsEnabled = false;
             }
-
-
+            System.IO.Stream mySteam;
+            Microsoft.Win32.SaveFileDialog file = new Microsoft.Win32.SaveFileDialog();
+            file.Filter = "xml files (*.xml)|*.xml";
+            file.ShowDialog();
+                if ((mySteam = file.OpenFile()) != null)
+                {
+                Game.GetXML(Game).Save(mySteam);
+                    mySteam.Close();
+                }
         }
         void End()
         {

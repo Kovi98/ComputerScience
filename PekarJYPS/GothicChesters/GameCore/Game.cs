@@ -224,8 +224,7 @@ namespace GothicChesters
                 new XElement("WhitePlayer", game.WhitePlayer.GetPlayerType()),
                 new XElement("BlackPlayer", game.BlackPlayer.GetPlayerType()),
                 new XElement("PlayerOnMove", game.PlayerOnMove.Color),
-                new XElement("Winner", game.Winner.Color),
-                new XElement("ForcedAttackBox", Box.GetXML(game.ForcedAttackBox)),
+                new XElement("ForcedAttackBox", ((game.ForcedAttackBox is null) ? null : Box.GetXML(game.ForcedAttackBox))),
                 Board.GetXML(game.Board),
                 Game.GetXML(game.BoardHistory)
                 );
@@ -233,9 +232,32 @@ namespace GothicChesters
             return gameXML;
         }
 
+        public static Game GetGameFromXML(XElement xml)
+        {
+            int diff = Int32.Parse(xml.Element("Difficulty").Value);
+            Players whitePlayer = xml.Attribute("WhitePlayer").Value == "Human" ? Players.Human : Players.AI;
+            Players blackPlayer = xml.Attribute("BlackPlayer").Value == "Human" ? Players.Human : Players.AI;
+            Game game = new Game(diff, whitePlayer, blackPlayer);
+
+            game.Round = Int32.Parse(xml.Element("Round").Value);
+            game.RoundWithoutDead = Int32.Parse(xml.Element("RoundWithoutDead").Value);
+            game.IsActive = xml.Element("IsActive").Value == "true";
+            game.IsOver = xml.Element("IsOver").Value == "true";
+            game.PlayerOnMove = xml.Element("PlayerOnMove").Value == "White" ? game.WhitePlayer : game.BlackPlayer;
+            game.ForcedAttackBox = xml.Element("ForcedAttackBox").HasElements ? Box.GetBoxFromXML(xml.Element("ForcedAttackBox")) : null;
+
+            return game;
+        }
+
         public static XElement GetXML(Dictionary<int, Board> boardHistory)
         {
-            XElement boardHistoryXML = new XElement("BoardHistory", "MISSING");
+            XElement boardHistoryXML = new XElement("BoardHistory");
+
+            foreach (var board in boardHistory)
+            {
+                boardHistoryXML.Add(
+                    Board.GetXML(board.Value));
+            }
 
             return boardHistoryXML;
         }

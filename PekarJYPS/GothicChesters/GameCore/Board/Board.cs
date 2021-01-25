@@ -27,7 +27,7 @@ namespace GothicChesters
                     Coordinates coor = new Coordinates(i, j);
                     Boxes[i, j] = new Box(coor);
                     if (i == 0 || i == 1)
-                        Boxes[i, j].Piece = new King(coor, PieceColor.White);
+                        Boxes[i, j].Piece = new Man(coor, PieceColor.White);
                     if (i == 6 || i == 7)
                         Boxes[i, j].Piece = new Man(coor, PieceColor.Black);
                 }

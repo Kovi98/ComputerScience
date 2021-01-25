@@ -29,9 +29,9 @@ namespace GothicChesters
 
         public static XElement GetXML(Piece piece)
         {
-            string pieceKind = piece is Man ? "Man" : "King";
-            XElement boardXML = new XElement("Coordinates",
-                new XElement("Color", piece.Color.ToString()),
+            string pieceKind = piece is Man ? "Man" : (piece is King ? "King" : "NULL");
+            XElement boardXML = new XElement("Piece",
+                new XElement("Color", piece.Color),
                 new XElement("Kind", pieceKind));
             return boardXML;
         }
