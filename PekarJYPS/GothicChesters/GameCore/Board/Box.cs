@@ -47,7 +47,9 @@ namespace GothicChesters
 
         public static XElement GetXML(Box box)
         {
-            XElement boardXML = new XElement("Box", "MISSING");
+            XElement boardXML = new XElement("Box",
+                new XElement("Coordinates", Coordinates.GetXML(box.Coordinates)),
+                new XElement("Piece", Piece.GetXML(box.Piece)));
             return boardXML;
         }
     }

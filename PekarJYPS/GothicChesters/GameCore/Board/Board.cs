@@ -149,7 +149,15 @@ namespace GothicChesters
 
         public static XElement GetXML(Board board)
         {
-            XElement boardXML = new XElement("Board", "MISSING");
+            XElement boardXML = new XElement("Board",
+                new XElement("WhiteDead", board.WhiteDead),
+                new XElement("BlackDead", board.BlackDead));
+
+            foreach (Box box in board.Boxes)
+            {
+                boardXML.Add(Box.GetXML(box));
+            }
+
             return boardXML;
         }
     }

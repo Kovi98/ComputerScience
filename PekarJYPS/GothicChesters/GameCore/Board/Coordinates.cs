@@ -25,7 +25,9 @@ namespace GothicChesters
 
         public static XElement GetXML(Coordinates coordinates)
         {
-            XElement boardXML = new XElement("Coordinates", "MISSING");
+            XElement boardXML = new XElement("Coordinates", 
+                new XElement("Row", coordinates.Row),
+                new XElement("Column", coordinates.Column));
             return boardXML;
         }
     }
