@@ -202,11 +202,12 @@ namespace GothicChesters
 
         private void lsBxHistory_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (!(GameUI is null) && !GameUI.Game.IsActive)
+            if (!(GameUI is null) && !GameUI.Game.IsActive && !GameUI.IsLoadMode)
             {
                 ListBox listBox = (ListBox)e.Source;
                 if (!(listBox.SelectedItem is null) && listBox.Items.Count > 1)
                 {
+                    Board tempBoard = (Board)GameUI.Game.BoardHistory[(int)listBox.SelectedItem].Clone();
                     GameUI.DrawBoard((Board)GameUI.Game.BoardHistory[(int)listBox.SelectedItem].Clone(), true);
                     GameUI.IsViewMode = true;
                 }
@@ -314,17 +315,18 @@ namespace GothicChesters
             {
                 XElement xml = XElement.Load(openFileDialog.FileName);
                 NewGame(Game.GetGameFromXML(xml));
+                GameUI.IsLoadMode = true;
                 MessageBox.Show("Hra byla nahrána ze souboru " + openFileDialog.FileName);
-            }
-
-            cbOn.IsChecked = false;
-            GameUI.Refresh();
-            if (GameUI.Game.IsOver)
-            {
-                cbOn.IsEnabled = false;
-                GameUI.IsGameActive = false;
-                cmbDiff.IsEnabled = false;
-                cmbPlayer.IsEnabled = false;
+                cbOn.IsChecked = false;
+                GameUI.Refresh();
+                if (GameUI.Game.IsOver)
+                {
+                    cbOn.IsEnabled = false;
+                    GameUI.IsGameActive = false;
+                    cmbDiff.IsEnabled = false;
+                    cmbPlayer.IsEnabled = false;
+                }
+                GameUI.IsLoadMode = false;
             }
         }
     }

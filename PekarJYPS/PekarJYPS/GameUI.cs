@@ -19,6 +19,7 @@ namespace GothicChesters
         public BoxUI MarkedBox { get; set; }
         public bool IsHelpOn { get; set; }
         public bool IsViewMode { get; set; }
+        public bool IsLoadMode { get; set; }
         public Move[] MovesMarkedBox
         {
             get
@@ -84,6 +85,7 @@ namespace GothicChesters
                 }
             }
             IsHelpOn = false;
+            IsLoadMode = false;
             RedrawBoard(Game.Board);
 
             Game.OnAfterBoardChange += Refresh;

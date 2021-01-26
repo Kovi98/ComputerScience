@@ -243,11 +243,17 @@ namespace GothicChesters
 
             game.Round = Int32.Parse(xml.Element("Round").Value);
             game.RoundWithoutDead = Int32.Parse(xml.Element("RoundWithoutDead").Value);
-            game.IsActive = xml.Element("IsActive").Value == "true";
+            game.IsActive = false; // xml.Element("IsActive").Value == "true";
             game.IsOver = xml.Element("IsOver").Value == "true";
             game.PlayerOnMove = xml.Element("PlayerOnMove").Value == "White" ? game.WhitePlayer : game.BlackPlayer;
             game.ForcedAttackBox = xml.Element("ForcedAttackBox").HasElements ? Box.GetBoxFromXML(xml.Element("ForcedAttackBox")) : null;
-
+            game.BoardHistory = new Dictionary<int, Board>();
+            int round = 0;
+            foreach (XElement xElement in xml.Element("BoardHistory").Elements("Board"))
+            {
+                game.BoardHistory.Add(round, Board.GetBoardFromXML(xElement));
+                round++;
+            }
             return game;
         }
 
