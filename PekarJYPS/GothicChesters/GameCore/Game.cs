@@ -235,9 +235,11 @@ namespace GothicChesters
         public static Game GetGameFromXML(XElement xml)
         {
             int diff = Int32.Parse(xml.Element("Difficulty").Value);
-            Players whitePlayer = xml.Attribute("WhitePlayer").Value == "Human" ? Players.Human : Players.AI;
-            Players blackPlayer = xml.Attribute("BlackPlayer").Value == "Human" ? Players.Human : Players.AI;
+            Players whitePlayer = xml.Element("WhitePlayer").Value == "Human" ? Players.Human : Players.AI;
+            Players blackPlayer = xml.Element("BlackPlayer").Value == "Human" ? Players.Human : Players.AI;
             Game game = new Game(diff, whitePlayer, blackPlayer);
+
+            game.Board = Board.GetBoardFromXML(xml.Element("Board"));
 
             game.Round = Int32.Parse(xml.Element("Round").Value);
             game.RoundWithoutDead = Int32.Parse(xml.Element("RoundWithoutDead").Value);

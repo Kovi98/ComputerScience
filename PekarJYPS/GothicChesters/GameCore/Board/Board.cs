@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Media;
+using System.Xml.Linq;
 
 namespace GothicChesters
 {
@@ -160,6 +161,17 @@ namespace GothicChesters
             }
 
             return boardXML;
+        }
+
+        public static Board GetBoardFromXML(XElement xElement)
+        {
+            Board board = new Board();
+            foreach (XElement xml in xElement.Elements("Box"))
+            {
+                Box tempBox = Box.GetBoxFromXML(xml);
+                board.Boxes[tempBox.Coordinates.Row, tempBox.Coordinates.Column] = tempBox;
+            }
+            return board;
         }
     }
 }

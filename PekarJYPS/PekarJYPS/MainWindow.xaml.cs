@@ -14,6 +14,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Xml;
+using System.Xml.Linq;
 
 namespace GothicChesters
 {
@@ -282,8 +284,8 @@ namespace GothicChesters
             saveFileDialog.Filter = "XML Files|*.xml";
             if (saveFileDialog.ShowDialog() == true)
             {
-                string path = Game.SaveXML(GameUI.Game, saveFileDialog.FileName);
-                MessageBox.Show("Hra byla uložena do souboru " + path);
+                Game.GetXML(Game).Save(saveFileDialog.FileName);
+                MessageBox.Show("Hra byla uložena do souboru " + saveFileDialog.FileName);
             }
         }
 
@@ -310,8 +312,19 @@ namespace GothicChesters
             openFileDialog.Filter = "XML Files|*.xml";
             if (openFileDialog.ShowDialog() == true)
             {
-                NewGame(Game.LoadXML(openFileDialog.FileName));
+                XElement xml = XElement.Load(openFileDialog.FileName);
+                NewGame(Game.GetGameFromXML(xml));
                 MessageBox.Show("Hra byla nahrána ze souboru " + openFileDialog.FileName);
+            }
+
+            cbOn.IsChecked = false;
+            GameUI.Refresh();
+            if (GameUI.Game.IsOver)
+            {
+                cbOn.IsEnabled = false;
+                GameUI.IsGameActive = false;
+                cmbDiff.IsEnabled = false;
+                cmbPlayer.IsEnabled = false;
             }
         }
     }
