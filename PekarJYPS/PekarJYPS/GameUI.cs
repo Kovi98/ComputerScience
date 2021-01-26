@@ -214,6 +214,7 @@ namespace GothicChesters
                 GUI.menuZpet.IsEnabled = false;
                 GUI.menuVratitZpet.IsEnabled = false;
             }
+            GUI.menuSave.IsEnabled = !(Game is null);
 
 
         }
@@ -221,6 +222,12 @@ namespace GothicChesters
         {
             GUI.cbOn.IsChecked = false;
             GUI.cbOn.IsEnabled = false;
+            IsGameActive = false;
+            Game.BackupBoard();
+            GUI.cmbDiff.IsEnabled = false;
+            GUI.cmbPlayer.IsEnabled = false;
+            Refresh();
+            MessageBox.Show("Vyhrál hráč s barvou figurek: " + Game.Winner.ToString());
         }
     }
 

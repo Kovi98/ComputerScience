@@ -1,23 +1,21 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Windows.Navigation;
-
+using System.Xml;
 namespace GothicChesters
 {
     public delegate void BoardChangeHandler();
     public delegate void GameOverHandler();
+
     public class Game
     {
-        public Board Board { get; private set; }
+        public Board Board { get; set; }
         public bool IsActive { get; set; }
-        public bool IsOver { get; private set; }
+        public bool IsOver { get; set; }
         public event BoardChangeHandler OnAfterBoardChange;
         public event GameOverHandler OnAfterGameOver;
-        public int Round { get; private set; }
+        public int Round { get; set; }
         public Dictionary<int, Board> BoardHistory { get; private set; }
         private int _difficulty;
         /// <summary>
@@ -80,9 +78,9 @@ namespace GothicChesters
         {
             get
             {
-                if (Board.WhiteDead == 24)
+                if (Board.WhiteDead == 16)
                     return BlackPlayer;
-                if (Board.BlackDead == 24)
+                if (Board.BlackDead == 16)
                     return WhitePlayer;
                 return null;
             }
@@ -123,7 +121,7 @@ namespace GothicChesters
 
         public async void DoMove(Move move)
         {
-            if (IsActive && !IsOver)
+            if (IsActive && !IsOver && !(move is null))
             {
                 if (BoardHistory.ContainsKey(Round))
                 {
@@ -143,15 +141,13 @@ namespace GothicChesters
                     ForcedAttackBox = move.NextPosition;
                 }
             }
-            else
-            {
-                throw new InvalidOperationException("Nelze udělat pohyb, když je hra ukončena, nebo pozastavena");
-            }
             if (!(Winner is null))
             {
                 IsOver = true;
                 if (OnAfterGameOver != null)
                     OnAfterGameOver();
+                OnAfterBoardChange?.Invoke();
+                return;
             }
             OnAfterBoardChange?.Invoke();
             if (PlayerOnMove is AI && IsActive && !IsOver)
@@ -180,7 +176,7 @@ namespace GothicChesters
             }
         }
 
-        private void BackupBoard() => BoardHistory.Add(Round, (Board)Board.Clone());
+        public void BackupBoard() => BoardHistory.Add(Round, (Board)Board.Clone());
 
         public void Undo()
         {

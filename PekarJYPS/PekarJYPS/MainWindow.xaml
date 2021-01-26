@@ -30,6 +30,8 @@
             <MenuItem x:Name="menuHra" Header="_Hra" IsHitTestVisible="True" FontSize="15">
                 <MenuItem FontSize="15" FontWeight="Normal" x:Name="menuZpet" Header="_Zpět" IsEnabled="False" Click="menuZpet_Click"/>
                 <MenuItem Header="_Vrátit zpět" IsEnabled="False" FontWeight="Normal" x:Name="menuVratitZpet" Click="menuVratitZpet_Click"/>
+                <MenuItem x:Name="menuSave" Header="_Uložit hru" Click="MenuItem_Click_2" FontWeight="Normal" IsEnabled="False"/>
+                <MenuItem x:Name="menuLoad" Header="_Načíst hru" Click="MenuItem_Click_3" FontWeight="Normal"/>
                 <MenuItem FontSize="15" FontWeight="Normal" x:Name="closeWindow" Header="_Zavřít okno" Foreground="Black" Click="closeWindow_Click"/>
             </MenuItem>
             <MenuItem Header="_Nápověda" FontSize="15">

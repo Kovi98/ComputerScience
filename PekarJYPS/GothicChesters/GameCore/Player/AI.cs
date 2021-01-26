@@ -20,13 +20,13 @@ namespace GothicChesters
             switch (game.Difficulty)
             {
                 case 1:
-                    depth = 2;
+                    depth = 1;
                     break;
                 case 2: 
-                    depth = 4;
+                    depth = 2;
                     break;
                 case 3:
-                    depth = 8;
+                    depth = 3;
                     break;
             }
             Move bestMove = GameCore.Minimax.Search(game.Board, this, enemy, depth);
@@ -35,22 +35,25 @@ namespace GothicChesters
 
         public async Task PlayAsync(Game game)
         {
-            Player enemy = game.WhitePlayer.Equals(this) ? game.BlackPlayer : game.WhitePlayer;
-            int depth = 0;
-            switch (game.Difficulty)
+            if (game.IsActive && !game.IsOver)
             {
-                case 1:
-                    depth = 2;
-                    break;
-                case 2:
-                    depth = 4;
-                    break;
-                case 3:
-                    depth = 8;
-                    break;
+                Player enemy = game.WhitePlayer.Equals(this) ? game.BlackPlayer : game.WhitePlayer;
+                int depth = 0;
+                switch (game.Difficulty)
+                {
+                    case 1:
+                        depth = 1;
+                        break;
+                    case 2:
+                        depth = 2;
+                        break;
+                    case 3:
+                        depth = 3;
+                        break;
+                }
+                Move bestMove = await GameCore.Minimax.SearchAsync(game.Board, this, enemy, depth);
+                game.DoMove(bestMove);
             }
-            Move bestMove = await GameCore.Minimax.SearchAsync(game.Board, this, enemy, depth);
-            game.DoMove(bestMove);
         }
     }
 }
