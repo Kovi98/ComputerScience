@@ -55,5 +55,10 @@ namespace GothicChesters
                 game.DoMove(bestMove);
             }
         }
+
+        public override string GetPlayerType()
+        {
+            return "AI";
+        }
     }
 }

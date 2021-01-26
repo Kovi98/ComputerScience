@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace GothicChesters
 {
@@ -20,6 +21,14 @@ namespace GothicChesters
         public bool Equals(Coordinates other)
         {
             return this.Row == other.Row && this.Column == other.Column;
+        }
+
+        public static XElement GetXML(Coordinates coordinates)
+        {
+            XElement boardXML = new XElement("Coordinates", 
+                new XElement("Row", coordinates.Row),
+                new XElement("Column", coordinates.Column));
+            return boardXML;
         }
     }
 }

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
+using System.Xml.Linq;
 
 namespace GothicChesters
 {
@@ -25,6 +26,15 @@ namespace GothicChesters
         public abstract Move[] GetPossibleAttacks(Board board);
 
         public abstract object Clone();
+
+        public static XElement GetXML(Piece piece)
+        {
+            string pieceKind = piece is Man ? "Man" : (piece is King ? "King" : "NULL");
+            XElement boardXML = new XElement("Piece",
+                new XElement("Color", piece.Color),
+                new XElement("Kind", pieceKind));
+            return boardXML;
+        }
     }
 
     public enum PieceColor

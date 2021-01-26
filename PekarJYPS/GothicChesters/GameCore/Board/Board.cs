@@ -1,6 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Controls;
+using System.Windows.Media;
 
 namespace GothicChesters
 {
@@ -22,7 +26,7 @@ namespace GothicChesters
                     Coordinates coor = new Coordinates(i, j);
                     Boxes[i, j] = new Box(coor);
                     if (i == 0 || i == 1)
-                        Boxes[i, j].Piece = new King(coor, PieceColor.White);
+                        Boxes[i, j].Piece = new Man(coor, PieceColor.White);
                     if (i == 6 || i == 7)
                         Boxes[i, j].Piece = new Man(coor, PieceColor.Black);
                 }
@@ -142,6 +146,20 @@ namespace GothicChesters
             {
                 return new Move[0];
             }
+        }
+
+        public static XElement GetXML(Board board)
+        {
+            XElement boardXML = new XElement("Board",
+                new XElement("WhiteDead", board.WhiteDead),
+                new XElement("BlackDead", board.BlackDead));
+
+            foreach (Box box in board.Boxes)
+            {
+                boardXML.Add(Box.GetXML(box));
+            }
+
+            return boardXML;
         }
     }
 }

@@ -2,7 +2,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Xml;
+using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Windows.Navigation;
+using System.Xml.Linq;
+
 namespace GothicChesters
 {
     public delegate void BoardChangeHandler();
@@ -206,6 +211,55 @@ namespace GothicChesters
         public Move[] GetPossibleAttacks(Board board, Box box)
         {
             return board.GetPossibleAttacks(box);
+        }
+
+        public static XElement GetXML(Game game)
+        {
+            XElement gameXML = new XElement("Game",
+                new XElement("IsActive", game.IsActive),
+                new XElement("IsOver", game.IsOver),
+                new XElement("Round", game.Round),
+                new XElement("RoundWithoutDead", game.RoundWithoutDead),
+                new XElement("Difficulty", game.Difficulty),
+                new XElement("WhitePlayer", game.WhitePlayer.GetPlayerType()),
+                new XElement("BlackPlayer", game.BlackPlayer.GetPlayerType()),
+                new XElement("PlayerOnMove", game.PlayerOnMove.Color),
+                new XElement("ForcedAttackBox", ((game.ForcedAttackBox is null) ? null : Box.GetXML(game.ForcedAttackBox))),
+                Board.GetXML(game.Board),
+                Game.GetXML(game.BoardHistory)
+                );
+
+            return gameXML;
+        }
+
+        public static Game GetGameFromXML(XElement xml)
+        {
+            int diff = Int32.Parse(xml.Element("Difficulty").Value);
+            Players whitePlayer = xml.Attribute("WhitePlayer").Value == "Human" ? Players.Human : Players.AI;
+            Players blackPlayer = xml.Attribute("BlackPlayer").Value == "Human" ? Players.Human : Players.AI;
+            Game game = new Game(diff, whitePlayer, blackPlayer);
+
+            game.Round = Int32.Parse(xml.Element("Round").Value);
+            game.RoundWithoutDead = Int32.Parse(xml.Element("RoundWithoutDead").Value);
+            game.IsActive = xml.Element("IsActive").Value == "true";
+            game.IsOver = xml.Element("IsOver").Value == "true";
+            game.PlayerOnMove = xml.Element("PlayerOnMove").Value == "White" ? game.WhitePlayer : game.BlackPlayer;
+            game.ForcedAttackBox = xml.Element("ForcedAttackBox").HasElements ? Box.GetBoxFromXML(xml.Element("ForcedAttackBox")) : null;
+
+            return game;
+        }
+
+        public static XElement GetXML(Dictionary<int, Board> boardHistory)
+        {
+            XElement boardHistoryXML = new XElement("BoardHistory");
+
+            foreach (var board in boardHistory)
+            {
+                boardHistoryXML.Add(
+                    Board.GetXML(board.Value));
+            }
+
+            return boardHistoryXML;
         }
     }
 }

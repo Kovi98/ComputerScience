@@ -27,6 +27,8 @@ namespace GothicChesters
                         select box;
             return boxes.ToArray();
         }
+
+        public abstract string GetPlayerType();
     }
 
     public enum Players
