@@ -14,6 +14,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Xml;
+using System.Xml.Linq;
 
 namespace GothicChesters
 {
@@ -57,6 +59,17 @@ namespace GothicChesters
                     throw new InvalidOperationException("cmbPlayer nemá žádnou hodnotu");
             }
             GameUI = new GameUI(this, newGame);
+        }
+        public void NewGame(Game game)
+        {
+            if (game.WhitePlayer is Human && game.BlackPlayer is Human)
+                cmbPlayer.SelectedIndex = 0;
+            if (game.WhitePlayer is Human && game.BlackPlayer is AI)
+                cmbPlayer.SelectedIndex = 1;
+            if (game.WhitePlayer is AI && game.BlackPlayer is AI)
+                cmbPlayer.SelectedIndex = 2;
+            cmbDiff.SelectedIndex = game.Difficulty - 1;
+            GameUI = new GameUI(this, game);
         }
 
         private void grdBoard_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -137,7 +150,7 @@ namespace GothicChesters
             }
         }
 
-        private void cbOn_Click(object sender, RoutedEventArgs e)
+        private async void cbOn_Click(object sender, RoutedEventArgs e)
         {
             if (cbOn.IsEnabled)
             {
@@ -179,16 +192,22 @@ namespace GothicChesters
                     GameUI.IsViewMode = false;
                 }
                 GameUI.IsGameActive = cbOn.IsChecked.HasValue ? (bool)cbOn.IsChecked : false;
+                if (GameUI.Game.IsActive && !GameUI.Game.IsOver && GameUI.Game.PlayerOnMove is AI)
+                {
+                    AI player = (AI)GameUI.Game.PlayerOnMove;
+                    await player.PlayAsync(GameUI.Game);
+                }
             }
         }
 
         private void lsBxHistory_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (!(GameUI is null) && !GameUI.Game.IsActive)
+            if (!(GameUI is null) && !GameUI.Game.IsActive && !GameUI.IsLoadMode)
             {
                 ListBox listBox = (ListBox)e.Source;
-                if (!(listBox.SelectedItem is null))
+                if (!(listBox.SelectedItem is null) && listBox.Items.Count > 1)
                 {
+                    Board tempBoard = (Board)GameUI.Game.BoardHistory[(int)listBox.SelectedItem].Clone();
                     GameUI.DrawBoard((Board)GameUI.Game.BoardHistory[(int)listBox.SelectedItem].Clone(), true);
                     GameUI.IsViewMode = true;
                 }
@@ -244,6 +263,71 @@ namespace GothicChesters
         {
             WindowHelp window = new WindowHelp();
             window.ShowDialog();
+        }
+
+        private void MenuItem_Click_2(object sender, RoutedEventArgs e)
+        {
+            /*try
+            {
+                Microsoft.Win32.SaveFileDialog saveFileDialog = new Microsoft.Win32.SaveFileDialog();
+                saveFileDialog.Filter = "XML Files|*.xml";
+                if (saveFileDialog.ShowDialog() == true)
+                {
+                    string path = Game.SaveXML(GameUI.Game, saveFileDialog.FileName);
+                    MessageBox.Show("Hra byla uložena do souboru " + path);
+                }
+            }
+            catch (Exception error)
+            {
+                MessageBox.Show(error.Message);
+            }*/
+            Microsoft.Win32.SaveFileDialog saveFileDialog = new Microsoft.Win32.SaveFileDialog();
+            saveFileDialog.Filter = "XML Files|*.xml";
+            if (saveFileDialog.ShowDialog() == true)
+            {
+                Game.GetXML(Game).Save(saveFileDialog.FileName);
+                MessageBox.Show("Hra byla uložena do souboru " + saveFileDialog.FileName);
+            }
+        }
+
+        private void MenuItem_Click_3(object sender, RoutedEventArgs e)
+        {
+            /*try
+             {
+                 Microsoft.Win32.OpenFileDialog openFileDialog = new Microsoft.Win32.OpenFileDialog();
+             openFileDialog.Filter = "XML Files|*.xml";
+             if (openFileDialog.ShowDialog() == true)
+             {
+                 NewGame(Game.LoadXML(openFileDialog.FileName));
+                 MessageBox.Show("Hra byla nahrána ze souboru " + openFileDialog.FileName);
+             }
+
+         }
+         catch (Exception error)
+         {
+             MessageBox.Show(error.Message);
+         }
+             */
+
+            Microsoft.Win32.OpenFileDialog openFileDialog = new Microsoft.Win32.OpenFileDialog();
+            openFileDialog.Filter = "XML Files|*.xml";
+            if (openFileDialog.ShowDialog() == true)
+            {
+                XElement xml = XElement.Load(openFileDialog.FileName);
+                NewGame(Game.GetGameFromXML(xml));
+                GameUI.IsLoadMode = true;
+                MessageBox.Show("Hra byla nahrána ze souboru " + openFileDialog.FileName);
+                cbOn.IsChecked = false;
+                GameUI.Refresh();
+                if (GameUI.Game.IsOver)
+                {
+                    cbOn.IsEnabled = false;
+                    GameUI.IsGameActive = false;
+                    cmbDiff.IsEnabled = false;
+                    cmbPlayer.IsEnabled = false;
+                }
+                GameUI.IsLoadMode = false;
+            }
         }
     }
     }

@@ -61,7 +61,7 @@ namespace GothicChesters
             Coordinates coor = new Coordinates(row, column);
             Box box = new Box(coor);
 
-            if (xml.Element("Piece").HasElements)
+            if (!(xml.Element("Piece") is null) && xml.Element("Piece").HasElements)
             {
                 PieceColor pieceColor = xml.Element("Piece").Element("Color").Value == "White" ? PieceColor.White : PieceColor.Black;
                 if (xml.Element("Piece").Element("Kind").Value == "Man")

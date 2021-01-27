@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,14 +12,15 @@ namespace GothicChesters
 {
     public delegate void BoardChangeHandler();
     public delegate void GameOverHandler();
+
     public class Game
     {
-        public Board Board { get; private set; }
+        public Board Board { get; set; }
         public bool IsActive { get; set; }
-        public bool IsOver { get; private set; }
+        public bool IsOver { get; set; }
         public event BoardChangeHandler OnAfterBoardChange;
         public event GameOverHandler OnAfterGameOver;
-        public int Round { get; private set; }
+        public int Round { get; set; }
         public Dictionary<int, Board> BoardHistory { get; private set; }
         private int _difficulty;
         /// <summary>
@@ -81,9 +83,9 @@ namespace GothicChesters
         {
             get
             {
-                if (Board.WhiteDead == 24)
+                if (Board.WhiteDead == 16)
                     return BlackPlayer;
-                if (Board.BlackDead == 24)
+                if (Board.BlackDead == 16)
                     return WhitePlayer;
                 return null;
             }
@@ -124,7 +126,7 @@ namespace GothicChesters
 
         public async void DoMove(Move move)
         {
-            if (IsActive && !IsOver)
+            if (IsActive && !IsOver && !(move is null))
             {
                 if (BoardHistory.ContainsKey(Round))
                 {
@@ -144,15 +146,13 @@ namespace GothicChesters
                     ForcedAttackBox = move.NextPosition;
                 }
             }
-            else
-            {
-                throw new InvalidOperationException("Nelze udělat pohyb, když je hra ukončena, nebo pozastavena");
-            }
             if (!(Winner is null))
             {
                 IsOver = true;
                 if (OnAfterGameOver != null)
                     OnAfterGameOver();
+                OnAfterBoardChange?.Invoke();
+                return;
             }
             OnAfterBoardChange?.Invoke();
             if (PlayerOnMove is AI && IsActive && !IsOver)
@@ -181,7 +181,7 @@ namespace GothicChesters
             }
         }
 
-        private void BackupBoard() => BoardHistory.Add(Round, (Board)Board.Clone());
+        public void BackupBoard() => BoardHistory.Add(Round, (Board)Board.Clone());
 
         public void Undo()
         {
@@ -235,25 +235,25 @@ namespace GothicChesters
         public static Game GetGameFromXML(XElement xml)
         {
             int diff = Int32.Parse(xml.Element("Difficulty").Value);
-            Players whitePlayer = xml.Attribute("WhitePlayer").Value == "Human" ? Players.Human : Players.AI;
-            Players blackPlayer = xml.Attribute("BlackPlayer").Value == "Human" ? Players.Human : Players.AI;
+            Players whitePlayer = xml.Element("WhitePlayer").Value == "Human" ? Players.Human : Players.AI;
+            Players blackPlayer = xml.Element("BlackPlayer").Value == "Human" ? Players.Human : Players.AI;
             Game game = new Game(diff, whitePlayer, blackPlayer);
 
             game.Round = int.Parse(xml.Element("Round").Value);
+            game.Board = Board.GetBoardFromXML(xml.Element("Board"));
+
             game.RoundWithoutDead = Int32.Parse(xml.Element("RoundWithoutDead").Value);
-            game.IsActive = xml.Element("IsActive").Value == "true";
+            game.IsActive = false; // xml.Element("IsActive").Value == "true";
             game.IsOver = xml.Element("IsOver").Value == "true";
             game.PlayerOnMove = xml.Element("PlayerOnMove").Value == "White" ? game.WhitePlayer : game.BlackPlayer;
             game.ForcedAttackBox = xml.Element("ForcedAttackBox").HasElements ? Box.GetBoxFromXML(xml.Element("ForcedAttackBox")) : null;
-
-            IEnumerable<XElement> boardHistory = xml.Element("BoardHistory").Elements("Board");
-            int number = 1;
-            foreach (var board in boardHistory)
+            game.BoardHistory = new Dictionary<int, Board>();
+            int round = 0;
+            foreach (XElement xElement in xml.Element("BoardHistory").Elements("Board"))
             {
-                game.BoardHistory.Add(number, Board.GetBoardFromXML(board));
-                number++;
+                game.BoardHistory.Add(round, Board.GetBoardFromXML(xElement));
+                round++;
             }
-
             return game;
         }
 

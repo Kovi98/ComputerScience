@@ -12,8 +12,8 @@ namespace GothicChesters
     public class Board : ICloneable
     {
         public Box[,] Boxes { get; private set; }
-        public int WhiteDead { get; private set; }
-        public int BlackDead { get; private set; }
+        public int WhiteDead { get; set; }
+        public int BlackDead { get; set; }
         public Board()
         {
             WhiteDead = 0;
@@ -40,6 +40,8 @@ namespace GothicChesters
         /// <param name="move"></param>
         public void DoMove(Move move)
         {
+            if (move is null)
+                return;
             List<Piece> droppedPieces = new List<Piece>();
             Boxes[move.NextPosition.Coordinates.Row, move.NextPosition.Coordinates.Column].Piece = Boxes[move.CurrentPosition.Coordinates.Row, move.CurrentPosition.Coordinates.Column].Piece;
             Boxes[move.CurrentPosition.Coordinates.Row, move.CurrentPosition.Coordinates.Column].Piece = null;

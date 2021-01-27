@@ -19,6 +19,7 @@ namespace GothicChesters
         public BoxUI MarkedBox { get; set; }
         public bool IsHelpOn { get; set; }
         public bool IsViewMode { get; set; }
+        public bool IsLoadMode { get; set; }
         public Move[] MovesMarkedBox
         {
             get
@@ -84,6 +85,7 @@ namespace GothicChesters
                 }
             }
             IsHelpOn = false;
+            IsLoadMode = false;
             RedrawBoard(Game.Board);
 
             Game.OnAfterBoardChange += Refresh;
@@ -214,20 +216,20 @@ namespace GothicChesters
                 GUI.menuZpet.IsEnabled = false;
                 GUI.menuVratitZpet.IsEnabled = false;
             }
-            System.IO.Stream mySteam;
-            Microsoft.Win32.SaveFileDialog file = new Microsoft.Win32.SaveFileDialog();
-            file.Filter = "xml files (*.xml)|*.xml";
-            file.ShowDialog();
-                if ((mySteam = file.OpenFile()) != null)
-                {
-                Game.GetXML(Game).Save(mySteam);
-                    mySteam.Close();
-                }
+            GUI.menuSave.IsEnabled = !(Game is null);
+
+
         }
         void End()
         {
             GUI.cbOn.IsChecked = false;
             GUI.cbOn.IsEnabled = false;
+            IsGameActive = false;
+            Game.BackupBoard();
+            GUI.cmbDiff.IsEnabled = false;
+            GUI.cmbPlayer.IsEnabled = false;
+            Refresh();
+            MessageBox.Show("Vyhrál hráč s barvou figurek: " + Game.Winner.ToString());
         }
     }
 
