@@ -268,68 +268,52 @@ namespace GothicChesters
 
         private void MenuItem_Click_2(object sender, RoutedEventArgs e)
         {
-            /*try
+            try
             {
                 Microsoft.Win32.SaveFileDialog saveFileDialog = new Microsoft.Win32.SaveFileDialog();
                 saveFileDialog.Filter = "XML Files|*.xml";
                 if (saveFileDialog.ShowDialog() == true)
                 {
-                    string path = Game.SaveXML(GameUI.Game, saveFileDialog.FileName);
-                    MessageBox.Show("Hra byla uložena do souboru " + path);
+                    Game.GetXML(Game).Save(saveFileDialog.FileName);
+                    MessageBox.Show("Hra byla uložena do souboru " + saveFileDialog.FileName);
                 }
             }
             catch (Exception error)
             {
                 MessageBox.Show(error.Message);
-            }*/
-            Microsoft.Win32.SaveFileDialog saveFileDialog = new Microsoft.Win32.SaveFileDialog();
-            saveFileDialog.Filter = "XML Files|*.xml";
-            if (saveFileDialog.ShowDialog() == true)
-            {
-                Game.GetXML(Game).Save(saveFileDialog.FileName);
-                MessageBox.Show("Hra byla uložena do souboru " + saveFileDialog.FileName);
             }
         }
 
         private void MenuItem_Click_3(object sender, RoutedEventArgs e)
         {
-            /*try
-             {
-                 Microsoft.Win32.OpenFileDialog openFileDialog = new Microsoft.Win32.OpenFileDialog();
-             openFileDialog.Filter = "XML Files|*.xml";
-             if (openFileDialog.ShowDialog() == true)
-             {
-                 NewGame(Game.LoadXML(openFileDialog.FileName));
-                 MessageBox.Show("Hra byla nahrána ze souboru " + openFileDialog.FileName);
-             }
-
-         }
-         catch (Exception error)
-         {
-             MessageBox.Show(error.Message);
-         }
-             */
-
-            Microsoft.Win32.OpenFileDialog openFileDialog = new Microsoft.Win32.OpenFileDialog();
-            openFileDialog.Filter = "XML Files|*.xml";
-            if (openFileDialog.ShowDialog() == true)
+            try
             {
-                XElement xml = XElement.Load(openFileDialog.FileName);
-                NewGame(Game.GetGameFromXML(xml));
-                GameUI.IsGameActive = false;
-                GameUI.IsLoadMode = true;
-                MessageBox.Show("Hra byla nahrána ze souboru " + openFileDialog.FileName);
-                cbOn.IsChecked = false;
-                GameUI.Refresh();
-                if (GameUI.Game.IsOver)
+                Microsoft.Win32.OpenFileDialog openFileDialog = new Microsoft.Win32.OpenFileDialog();
+                openFileDialog.Filter = "XML Files|*.xml";
+                if (openFileDialog.ShowDialog() == true)
                 {
-                    cbOn.IsEnabled = false;
+                    XElement xml = XElement.Load(openFileDialog.FileName);
+                    NewGame(Game.GetGameFromXML(xml));
                     GameUI.IsGameActive = false;
-                    cmbDiff.IsEnabled = false;
-                    cmbPlayer.IsEnabled = false;
+                    GameUI.IsLoadMode = true;
+                    MessageBox.Show("Hra byla nahrána ze souboru " + openFileDialog.FileName);
+                    cbOn.IsChecked = false;
+                    GameUI.Refresh();
+                    if (GameUI.Game.IsOver)
+                    {
+                        cbOn.IsEnabled = false;
+                        GameUI.IsGameActive = false;
+                        cmbDiff.IsEnabled = false;
+                        cmbPlayer.IsEnabled = false;
+                    }
+                    GameUI.IsLoadMode = false;
                 }
-                GameUI.IsLoadMode = false;
+
             }
+            catch (Exception error)
+             {
+                 MessageBox.Show("Nepodařilo se načíst soubor! Chyba: " + error.Message);
+             }
         }
     }
     }
