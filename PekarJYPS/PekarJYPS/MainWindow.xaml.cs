@@ -207,8 +207,9 @@ namespace GothicChesters
                 ListBox listBox = (ListBox)e.Source;
                 if (!(listBox.SelectedItem is null) && listBox.Items.Count > 1)
                 {
-                    Board tempBoard = (Board)GameUI.Game.BoardHistory[(int)listBox.SelectedItem].Clone();
-                    GameUI.DrawBoard((Board)GameUI.Game.BoardHistory[(int)listBox.SelectedItem].Clone(), true);
+                    int number = (int)listBox.SelectedItem;
+                    Board tempBoard = (Board)GameUI.Game.BoardHistory[number].Clone();
+                    GameUI.DrawBoard(tempBoard, true);
                     GameUI.IsViewMode = true;
                 }
             }
@@ -315,6 +316,7 @@ namespace GothicChesters
             {
                 XElement xml = XElement.Load(openFileDialog.FileName);
                 NewGame(Game.GetGameFromXML(xml));
+                GameUI.IsGameActive = false;
                 GameUI.IsLoadMode = true;
                 MessageBox.Show("Hra byla nahrána ze souboru " + openFileDialog.FileName);
                 cbOn.IsChecked = false;

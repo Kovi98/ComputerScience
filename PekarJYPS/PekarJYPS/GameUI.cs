@@ -116,8 +116,7 @@ namespace GothicChesters
             GUI.txtWhiteOff.Text = Game.Board.WhiteDead.ToString();
             GUI.txtBlackOff.Text = Game.Board.BlackDead.ToString();
             GUI.txtRound.Text = Game.Round.ToString();
-            GUI.lsBxHistory.ItemsSource = Game.BoardHistory;
-
+            
             for (int i = 0; i <= 7; i++)
             {
                 for (int j = 0; j <= 7; j++)
