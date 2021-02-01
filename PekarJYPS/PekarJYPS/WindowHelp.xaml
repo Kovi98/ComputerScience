@@ -7,7 +7,11 @@
         mc:Ignorable="d"
         Title="Ovládání hry" Height="450" Width="800">
     <Grid>
-        <ScrollViewer HorizontalAlignment="Center" Height="419" VerticalAlignment="Center" Width="792"/>
-        <Image HorizontalAlignment="Left" Height="450" VerticalAlignment="Top" Width="790" Source="Images/help_01.png"/>
+        <ScrollViewer HorizontalAlignment="Center" Height="810" VerticalAlignment="Top" Width="780">
+            <StackPanel HorizontalAlignment="Left" Height="810" Width="600">
+                <Image Height="400" Source="Images/help_01.png"/>
+                <Image Height="400" Source="Images/help_02.png"/>
+            </StackPanel>
+        </ScrollViewer>
     </Grid>
 </Window>

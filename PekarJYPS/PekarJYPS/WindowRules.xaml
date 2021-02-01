@@ -7,8 +7,8 @@
         mc:Ignorable="d"
         Title="Pravidla hry" Height="450" Width="800">
     <Grid>
-        <ScrollViewer HorizontalAlignment="Center" Height="419" VerticalAlignment="Center" Width="792">
-            <RichTextBox HorizontalAlignment="Left" Height="600" VerticalAlignment="Center" Width="792">
+        <ScrollViewer HorizontalAlignment="Center" Height="419" VerticalAlignment="Center" Width="790">
+            <RichTextBox HorizontalAlignment="Left" Height="600" VerticalAlignment="Center" Width="790">
                 <FlowDocument>
                     <Paragraph>
                         <Run Text="● Hraje se na desce 8x8 polí."/>
