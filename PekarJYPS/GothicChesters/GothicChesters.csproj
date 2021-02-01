@@ -84,6 +84,7 @@
     <Compile Include="GameCore\Game.cs" />
     <Compile Include="GameCore\Minimax.cs" />
     <Compile Include="GameCore\Move.cs" />
+    <Compile Include="GameCore\ParseException.cs" />
     <Compile Include="GameCore\Player\AI.cs" />
     <Compile Include="GameCore\Player\Human.cs" />
     <Compile Include="GameCore\Player\Player.cs" />

@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using GothicChesters.GameCore;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,6 +7,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Navigation;
+using System.Xml;
 using System.Xml.Linq;
 
 namespace GothicChesters
@@ -215,7 +217,9 @@ namespace GothicChesters
 
         public static XElement GetXML(Game game)
         {
-            XElement gameXML = new XElement("Game",
+            try
+            {
+                XElement gameXML = new XElement("Game",
                 new XElement("IsActive", game.IsActive),
                 new XElement("IsOver", game.IsOver),
                 new XElement("Round", game.Round),
@@ -229,32 +233,44 @@ namespace GothicChesters
                 Game.GetXML(game.BoardHistory)
                 );
 
-            return gameXML;
+                return gameXML;
+            }
+            catch
+            {
+                throw new ParseException("Chyba při ukládání stavu hry do XML!");
+            }
         }
 
         public static Game GetGameFromXML(XElement xml)
         {
-            int diff = Int32.Parse(xml.Element("Difficulty").Value);
-            Players whitePlayer = xml.Element("WhitePlayer").Value == "Human" ? Players.Human : Players.AI;
-            Players blackPlayer = xml.Element("BlackPlayer").Value == "Human" ? Players.Human : Players.AI;
-            Game game = new Game(diff, whitePlayer, blackPlayer);
-
-            game.Round = int.Parse(xml.Element("Round").Value);
-            game.Board = Board.GetBoardFromXML(xml.Element("Board"));
-
-            game.RoundWithoutDead = Int32.Parse(xml.Element("RoundWithoutDead").Value);
-            game.IsActive = false; // xml.Element("IsActive").Value == "true";
-            game.IsOver = xml.Element("IsOver").Value == "true";
-            game.PlayerOnMove = xml.Element("PlayerOnMove").Value == "White" ? game.WhitePlayer : game.BlackPlayer;
-            game.ForcedAttackBox = xml.Element("ForcedAttackBox").HasElements ? Box.GetBoxFromXML(xml.Element("ForcedAttackBox")) : null;
-            game.BoardHistory = new Dictionary<int, Board>();
-            int round = 0;
-            foreach (XElement xElement in xml.Element("BoardHistory").Elements("Board"))
+            try
             {
-                game.BoardHistory.Add(round, Board.GetBoardFromXML(xElement));
-                round++;
+                int diff = Int32.Parse(xml.Element("Difficulty").Value);
+                Players whitePlayer = xml.Element("WhitePlayer").Value == "Human" ? Players.Human : Players.AI;
+                Players blackPlayer = xml.Element("BlackPlayer").Value == "Human" ? Players.Human : Players.AI;
+                Game game = new Game(diff, whitePlayer, blackPlayer);
+
+                game.Round = int.Parse(xml.Element("Round").Value);
+                game.Board = Board.GetBoardFromXML(xml.Element("Board"));
+
+                game.RoundWithoutDead = Int32.Parse(xml.Element("RoundWithoutDead").Value);
+                game.IsActive = false; // xml.Element("IsActive").Value == "true";
+                game.IsOver = xml.Element("IsOver").Value == "true";
+                game.PlayerOnMove = xml.Element("PlayerOnMove").Value == "White" ? game.WhitePlayer : game.BlackPlayer;
+                game.ForcedAttackBox = xml.Element("ForcedAttackBox").HasElements ? Box.GetBoxFromXML(xml.Element("ForcedAttackBox")) : null;
+                game.BoardHistory = new Dictionary<int, Board>();
+                int round = 0;
+                foreach (XElement xElement in xml.Element("BoardHistory").Elements("Board"))
+                {
+                    game.BoardHistory.Add(round, Board.GetBoardFromXML(xElement));
+                    round++;
+                }
+                return game;
             }
-            return game;
+            catch
+            {
+                throw new ParseException("Chyba při načítání stavu hry z XML!");
+            }
         }
 
         public static XElement GetXML(Dictionary<int, Board> boardHistory)

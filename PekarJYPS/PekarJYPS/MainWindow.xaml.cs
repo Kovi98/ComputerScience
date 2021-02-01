@@ -1,4 +1,5 @@
-﻿using PekarJYPS;
+﻿using GothicChesters.GameCore;
+using PekarJYPS;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -209,8 +210,8 @@ namespace GothicChesters
                 {
                     int number = (int)listBox.SelectedItem;
                     Board tempBoard = (Board)GameUI.Game.BoardHistory[number].Clone();
-                    GameUI.DrawBoard(tempBoard, true);
                     GameUI.IsViewMode = true;
+                    GameUI.DrawBoard(tempBoard, true);
                 }
             }
         }
@@ -280,7 +281,7 @@ namespace GothicChesters
             }
             catch (Exception error)
             {
-                MessageBox.Show(error.Message);
+                MessageBox.Show("Nepodařilo se uložit soubor! " + error.Message);
             }
         }
 
@@ -312,7 +313,7 @@ namespace GothicChesters
             }
             catch (Exception error)
              {
-                 MessageBox.Show("Nepodařilo se načíst soubor! Chyba: " + error.Message);
+                 MessageBox.Show("Nepodařilo se načíst soubor! " + error.Message);
              }
         }
     }

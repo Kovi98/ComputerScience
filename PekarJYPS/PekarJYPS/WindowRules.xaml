@@ -16,7 +16,7 @@
                     <Paragraph>
                         <Run Text="● Na začátku hry stojí figurky ve dvou krajních"/>
                         <Run Text=" "/>
-                        <Run Text="řadách (viz obrázek). "/>
+                        <Run Text="řadách. "/>
                     </Paragraph>
                     <Paragraph>
                         <Run Text="● Hráči se v tazích pravidelně střídají."/>
@@ -24,40 +24,34 @@
                     <Paragraph>
                         <Run Text="● Hráč na tahu smí posunout svůj obyčejný kámen o jedno pole na sousední volné pole a to"/>
                         <Run Text=" "/>
-                        <Run Text="směrem vpřed, do stran nebo diagonálně vpřed. Nesmí diagonálně ani ortogonálně vzad."/>
+                        <Run Text="směrem vpřed, do stran nebo diagonálně vpřed."/>
+                        <Run Text=" "/>
+                        <Run Text="Nesmí diagonálně ani ortogonálně vzad."/>
                     </Paragraph>
                     <Paragraph>
                         <Run Text="● Obyčejný kámen může také zajmout přeskočením kámen soupeře. Soupeřův kámen musí"/>
-                        <Run Text=" "/>
-                        <Run Text="ležet na sousedním poli a bezprostředně za tímto přeskakovaným kamenem musí být volné"/>
+                        <Run Text=" ležet na sousedním poli a bezprostředně za tímto přeskakovaným kamenem musí být volné"/>
                         <Run Text=" "/>
                         <Run Text="pole. Kámen je při realizaci skoku přemístěn na toto volné pole a přeskočený soupeřův"/>
-                        <Run Text=" "/>
-                        <Run Text="kámen je odstraněn z desky. Obyčejný kámen smí skákat také pouze vpřed, diagonálně"/>
-                        <Run Text=" "/>
-                        <Run Text="vpřed a do stran."/>
+                        <Run Text=" kámen je odstraněn z desky. Obyčejný kámen smí skákat také pouze vpřed, diagonálně"/>
+                        <Run Text=" vpřed a do stran."/>
                     </Paragraph>
                     <Paragraph>
                         <Run Text="● Vícenásobné skoky jsou dovoleny."/>
                     </Paragraph>
                     <Paragraph>
                         <Run Text="● Pokud obyčejný kámen ukončí svůj tah v poslední řadě na protější straně desky, je povýšen"/>
-                        <Run Text=" "/>
-                        <Run Text="na dámu."/>
+                        <Run Text=" na dámu."/>
                     </Paragraph>
                     <Paragraph>
                         <Run Text="● Dáma se smí pohybovat všemi směry (i vzad) o libovolný počet volných polí. Dáma může"/>
-                        <Run Text=" "/>
-                        <Run Text="zajímat kámen soupeře přeskočením, přičemž může přeskočit libovolný počet volných polí"/>
-                        <Run Text=" "/>
-                        <Run Text="před kamenem, zajímaný kámen a libovolný počet volných polí za tímto kamenem (podobně"/>
-                        <Run Text=" "/>
-                        <Run Text="jako v klasické dámě)."/>
+                        <Run Text=" zajímat kámen soupeře přeskočením, přičemž může přeskočit libovolný počet volných polí"/>
+                        <Run Text=" před kamenem, zajímaný kámen a libovolný počet volných polí za tímto kamenem (podobně"/>
+                        <Run Text=" jako v klasické dámě)."/>
                     </Paragraph>
                     <Paragraph>
                         <Run Text="● Zajímání soupeřových kamenů je povinné a hráč musí zajmout co nejvíce kamenů, pokud"/>
-                        <Run Text=" "/>
-                        <Run Text="má více možností jak skákat."/>
+                        <Run Text=" má více možností jak skákat."/>
                     </Paragraph>
                     <Paragraph>
                         <Run Text="● Pokud některý hráč nemůže provést žádný tah, pokračuje ve hře jeho soupeř."/>

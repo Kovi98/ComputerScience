@@ -134,8 +134,11 @@ namespace GothicChesters
                     }
                 }
             }
-            GUI.lsBxHistory.ItemsSource = null;
-            GUI.lsBxHistory.ItemsSource = Game.BoardHistory.Keys;
+            if (!IsViewMode)
+            {
+                GUI.lsBxHistory.ItemsSource = null;
+                GUI.lsBxHistory.ItemsSource = Game.BoardHistory.Keys.OrderBy(f => f);
+            }
         }
 
         public void DrawBoard(Board board, bool HasToDrawAllBoard)

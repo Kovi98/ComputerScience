@@ -7,65 +7,7 @@
         mc:Ignorable="d"
         Title="Ovládání hry" Height="450" Width="800">
     <Grid>
-        <ScrollViewer HorizontalAlignment="Center" Height="419" VerticalAlignment="Center" Width="792">
-            <RichTextBox HorizontalAlignment="Left" Height="600" VerticalAlignment="Center" Width="792">
-                <FlowDocument>
-                    <Paragraph>
-                        <Run Text="● Hráči se v tazích pravidelně střídají."/>
-                    </Paragraph>
-                    <Paragraph>
-                        <Run Text="● Hráč na tahu smí posunout svůj obyčejný kámen o jedno pole na sousední volné pole a to"/>
-                    </Paragraph>
-                    <Paragraph>
-                        <Run Text="směrem vpřed, do stran nebo diagonálně vpřed. Nesmí diagonálně ani ortogonálně vzad."/>
-                    </Paragraph>
-                    <Paragraph>
-                        <Run Text="● Obyčejný kámen může také zajmout přeskočením kámen soupeře. Soupeřův kámen musí"/>
-                    </Paragraph>
-                    <Paragraph>
-                        <Run Text="ležet na sousedním poli a bezprostředně za tímto přeskakovaným kamenem musí být volné"/>
-                    </Paragraph>
-                    <Paragraph>
-                        <Run Text="pole. Kámen je při realizaci skoku přemístěn na toto volné pole a přeskočený soupeřův"/>
-                    </Paragraph>
-                    <Paragraph>
-                        <Run Text="kámen je odstraněn z desky. Obyčejný kámen smí skákat také pouze vpřed, diagonálně"/>
-                    </Paragraph>
-                    <Paragraph>
-                        <Run Text="vpřed a do stran."/>
-                    </Paragraph>
-                    <Paragraph>
-                        <Run Text="● Vícenásobné skoky jsou dovoleny."/>
-                    </Paragraph>
-                    <Paragraph>
-                        <Run Text="● Pokud obyčejný kámen ukončí svůj tah v poslední řadě na protější straně desky, je povýšen"/>
-                    </Paragraph>
-                    <Paragraph>
-                        <Run Text="na dámu."/>
-                    </Paragraph>
-                    <Paragraph>
-                        <Run Text="● Dáma se smí pohybovat všemi směry (i vzad) o libovolný počet volných polí. Dáma může"/>
-                    </Paragraph>
-                    <Paragraph>
-                        <Run Text="zajímat kámen soupeře přeskočením, přičemž může přeskočit libovolný počet volných polí"/>
-                    </Paragraph>
-                    <Paragraph>
-                        <Run Text="před kamenem, zajímaný kámen a libovolný počet volných polí za tímto kamenem (podobně"/>
-                    </Paragraph>
-                    <Paragraph>
-                        <Run Text="jako v klasické dámě)."/>
-                    </Paragraph>
-                    <Paragraph>
-                        <Run Text="● Zajímání soupeřových kamenů je povinné a hráč musí zajmout co nejvíce kamenů, pokud"/>
-                    </Paragraph>
-                    <Paragraph>
-                        <Run Text="má více možností jak skákat."/>
-                    </Paragraph>
-                    <Paragraph>
-                        <Run Text="● Pokud některý hráč nemůže provést žádný tah, pokračuje ve hře jeho soupeř."/>
-                    </Paragraph>
-                </FlowDocument>
-            </RichTextBox>
-        </ScrollViewer>
+        <ScrollViewer HorizontalAlignment="Center" Height="419" VerticalAlignment="Center" Width="792"/>
+        <Image HorizontalAlignment="Left" Height="450" VerticalAlignment="Top" Width="790" Source="Images/help_01.png"/>
     </Grid>
 </Window>
