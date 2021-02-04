@@ -41,229 +41,299 @@ namespace GothicChesters
 
         public void NewGame()
         {
-            int diff = cmbDiff.SelectedIndex + 1;
-            Game newGame;
-
-            switch (cmbPlayer.SelectedIndex)
+            try
             {
-                case 0:
-                    newGame = new Game(diff, Players.Human, Players.Human);
-                    break;
-                case 1:
-                    newGame = new Game(diff, Players.Human, Players.AI);
-                    break;
-                case 2:
-                    newGame = new Game(diff, Players.AI, Players.AI);
-                    break;
-                default:
-                    throw new InvalidOperationException("cmbPlayer nemá žádnou hodnotu");
+                int diff = cmbDiff.SelectedIndex + 1;
+                Game newGame;
+
+                switch (cmbPlayer.SelectedIndex)
+                {
+                    case 0:
+                        newGame = new Game(diff, Players.Human, Players.Human);
+                        break;
+                    case 1:
+                        newGame = new Game(diff, Players.Human, Players.AI);
+                        break;
+                    case 2:
+                        newGame = new Game(diff, Players.AI, Players.AI);
+                        break;
+                    default:
+                        throw new InvalidOperationException("cmbPlayer nemá žádnou hodnotu");
+                }
+                GameUI = new GameUI(this, newGame);
             }
-            GameUI = new GameUI(this, newGame);
+            catch (Exception except)
+            {
+                MessageBox.Show(except.Message);
+            }
         }
         public void NewGame(Game game)
         {
-            if (game.WhitePlayer is Human && game.BlackPlayer is Human)
-                cmbPlayer.SelectedIndex = 0;
-            if (game.WhitePlayer is Human && game.BlackPlayer is AI)
-                cmbPlayer.SelectedIndex = 1;
-            if (game.WhitePlayer is AI && game.BlackPlayer is AI)
-                cmbPlayer.SelectedIndex = 2;
-            cmbDiff.SelectedIndex = game.Difficulty - 1;
-            GameUI = new GameUI(this, game);
+            try
+            {
+                if (game.WhitePlayer is Human && game.BlackPlayer is Human)
+                    cmbPlayer.SelectedIndex = 0;
+                if (game.WhitePlayer is Human && game.BlackPlayer is AI)
+                    cmbPlayer.SelectedIndex = 1;
+                if (game.WhitePlayer is AI && game.BlackPlayer is AI)
+                    cmbPlayer.SelectedIndex = 2;
+                cmbDiff.SelectedIndex = game.Difficulty - 1;
+                GameUI = new GameUI(this, game);
+            }
+            catch (Exception except)
+            {
+                MessageBox.Show(except.Message);
+            }
         }
 
         private void grdBoard_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            if (GameUI.IsHelpOn)
+            try
             {
-                GameUI.Refresh();
-                GameUI.IsHelpOn = false;
-                return;
-            }
-            if (GameUI.IsGameActive)
-            {
-                if ((GameUI.Game.WhitePlayer is Human && GameUI.Game.PlayerOnMove.Equals(GameUI.Game.WhitePlayer)) || (GameUI.Game.BlackPlayer is Human && GameUI.Game.PlayerOnMove.Equals(GameUI.Game.BlackPlayer)))
+                if (GameUI.IsHelpOn)
                 {
-                    if (e.Source is Button)
+                    GameUI.Refresh();
+                    GameUI.IsHelpOn = false;
+                    return;
+                }
+                if (GameUI.IsGameActive)
+                {
+                    if ((GameUI.Game.WhitePlayer is Human && GameUI.Game.PlayerOnMove.Equals(GameUI.Game.WhitePlayer)) || (GameUI.Game.BlackPlayer is Human && GameUI.Game.PlayerOnMove.Equals(GameUI.Game.BlackPlayer)))
                     {
-                        Button button = (Button)e.Source;
-
-                        //Označení figurky + možných skoků
-                        if (GameUI.MarkedBox is null)
+                        if (e.Source is Button)
                         {
-                            if (!(GameUI.BoxesUI[((Coordinates)button.Tag).Row, ((Coordinates)button.Tag).Column].Box.Piece is null) && GameUI.BoxesUI[((Coordinates)button.Tag).Row, ((Coordinates)button.Tag).Column].Box.Piece.Color.Equals(GameUI.Game.PlayerOnMove.Color))
+                            Button button = (Button)e.Source;
+
+                            //Označení figurky + možných skoků
+                            if (GameUI.MarkedBox is null)
                             {
-                                if (GameUI.Game.ForcedAttackBox is null)
+                                if (!(GameUI.BoxesUI[((Coordinates)button.Tag).Row, ((Coordinates)button.Tag).Column].Box.Piece is null) && GameUI.BoxesUI[((Coordinates)button.Tag).Row, ((Coordinates)button.Tag).Column].Box.Piece.Color.Equals(GameUI.Game.PlayerOnMove.Color))
                                 {
-                                    GameUI.MarkedBox = GameUI.BoxesUI[((Coordinates)button.Tag).Row, ((Coordinates)button.Tag).Column];
+                                    if (GameUI.Game.ForcedAttackBox is null)
+                                    {
+                                        GameUI.MarkedBox = GameUI.BoxesUI[((Coordinates)button.Tag).Row, ((Coordinates)button.Tag).Column];
+                                    }
+                                    else
+                                    {
+                                        GameUI.MarkedBox = GameUI.BoxesUI[GameUI.Game.ForcedAttackBox.Coordinates.Row, GameUI.Game.ForcedAttackBox.Coordinates.Column];
+                                    }
+
+                                    toMark.Add(GameUI.MarkedBox.Box);
+                                    toMark.AddRange(GameUI.MovesMarkedBox.Select(x => x.NextPosition));
+                                    foreach (Box box in toMark)
+                                    {
+                                        GameUI.BoxesUI[box.Coordinates.Row, box.Coordinates.Column].Mark();
+                                    }
+                                }
+                                return;
+                            }
+
+                            var result = from m in GameUI.MovesMarkedBox
+                                         where (m.CurrentPosition.Equals(GameUI.MarkedBox.Box)) && (m.NextPosition.Coordinates.Row == ((Coordinates)button.Tag).Row) && (m.NextPosition.Coordinates.Column == ((Coordinates)button.Tag).Column)
+                                         select m;
+
+                            if (!(GameUI.MarkedBox is null))
+                            {
+                                if (result.Count() == 1)
+                                {
+                                    foreach (Box box in toMark)
+                                    {
+                                        GameUI.BoxesUI[box.Coordinates.Row, box.Coordinates.Column].Unmark();
+                                    }
+
+                                    Move move = result.First();
+
+                                    toMark.RemoveRange(0, toMark.Count);
+                                    GameUI.MarkedBox = null;
+                                    GameUI.DoMove(move);
+                                }
+                                else if (result.Count() == 0)
+                                {
+                                    foreach (Box box in toMark)
+                                    {
+                                        GameUI.BoxesUI[box.Coordinates.Row, box.Coordinates.Column].Unmark();
+                                    }
+                                    toMark.RemoveRange(0, toMark.Count);
+                                    GameUI.MarkedBox = null;
                                 }
                                 else
                                 {
-                                    GameUI.MarkedBox = GameUI.BoxesUI[GameUI.Game.ForcedAttackBox.Coordinates.Row, GameUI.Game.ForcedAttackBox.Coordinates.Column];
+                                    throw new InvalidOperationException("výsledkem dotazu result musí být vždy jen 1 pohyb!");
                                 }
-
-                                toMark.Add(GameUI.MarkedBox.Box);
-                                toMark.AddRange(GameUI.MovesMarkedBox.Select(x => x.NextPosition));
-                                foreach (Box box in toMark)
-                                {
-                                    GameUI.BoxesUI[box.Coordinates.Row, box.Coordinates.Column].Mark();
-                                }
-                            }
-                            return;
-                        }
-
-                        var result = from m in GameUI.MovesMarkedBox
-                                     where (m.CurrentPosition.Equals(GameUI.MarkedBox.Box)) && (m.NextPosition.Coordinates.Row == ((Coordinates)button.Tag).Row) && (m.NextPosition.Coordinates.Column == ((Coordinates)button.Tag).Column)
-                                     select m;
-
-                        if (!(GameUI.MarkedBox is null))
-                        {
-                            if (result.Count() == 1)
-                            {
-                                foreach (Box box in toMark)
-                                {
-                                    GameUI.BoxesUI[box.Coordinates.Row, box.Coordinates.Column].Unmark();
-                                }
-
-                                Move move = result.First();
-
-                                toMark.RemoveRange(0, toMark.Count);
-                                GameUI.MarkedBox = null;
-                                GameUI.DoMove(move);
-                            }
-                            else if (result.Count() == 0)
-                            {
-                                foreach (Box box in toMark)
-                                {
-                                    GameUI.BoxesUI[box.Coordinates.Row, box.Coordinates.Column].Unmark();
-                                }
-                                toMark.RemoveRange(0, toMark.Count);
-                                GameUI.MarkedBox = null;
-                            }
-                            else
-                            {
-                                throw new InvalidOperationException("výsledkem dotazu result musí být vždy jen 1 pohyb!");
                             }
                         }
                     }
                 }
+            }
+            catch (Exception except)
+            {
+                MessageBox.Show(except.Message);
             }
         }
 
         private async void cbOn_Click(object sender, RoutedEventArgs e)
         {
-            if (cbOn.IsEnabled)
+            try
             {
-                if (GameUI is null)
+                if (cbOn.IsEnabled)
                 {
-                    NewGame();
-                }
-                else
-                {
-                    switch (cmbPlayer.SelectedIndex)
+                    if (GameUI is null)
                     {
-                        case 0:
-                            if (!(GameUI.Game.WhitePlayer is Human))
-                                GameUI.Game.WhitePlayer = new Human(PieceColor.White);
-                            if (!(GameUI.Game.BlackPlayer is Human))
-                                GameUI.Game.BlackPlayer = new Human(PieceColor.Black);
-                            break;
-                        case 1:
-                            if (!(GameUI.Game.WhitePlayer is Human))
-                                GameUI.Game.WhitePlayer = new Human(PieceColor.White);
-                            if (!(GameUI.Game.BlackPlayer is AI))
-                                GameUI.Game.BlackPlayer = new AI(PieceColor.Black);
-                            break;
-                        case 2:
-                            if (!(GameUI.Game.WhitePlayer is AI))
-                                GameUI.Game.WhitePlayer = new AI(PieceColor.White);
-                            if (!(GameUI.Game.BlackPlayer is AI))
-                                GameUI.Game.BlackPlayer = new AI(PieceColor.Black);
-                            break;
-                        default:
-                            throw new InvalidOperationException("cmbPlayer nemá žádnou hodnotu");
+                        NewGame();
                     }
-                    GameUI.Game.Difficulty = cmbDiff.SelectedIndex + 1;
+                    else
+                    {
+                        switch (cmbPlayer.SelectedIndex)
+                        {
+                            case 0:
+                                if (!(GameUI.Game.WhitePlayer is Human))
+                                    GameUI.Game.WhitePlayer = new Human(PieceColor.White);
+                                if (!(GameUI.Game.BlackPlayer is Human))
+                                    GameUI.Game.BlackPlayer = new Human(PieceColor.Black);
+                                break;
+                            case 1:
+                                if (!(GameUI.Game.WhitePlayer is Human))
+                                    GameUI.Game.WhitePlayer = new Human(PieceColor.White);
+                                if (!(GameUI.Game.BlackPlayer is AI))
+                                    GameUI.Game.BlackPlayer = new AI(PieceColor.Black);
+                                break;
+                            case 2:
+                                if (!(GameUI.Game.WhitePlayer is AI))
+                                    GameUI.Game.WhitePlayer = new AI(PieceColor.White);
+                                if (!(GameUI.Game.BlackPlayer is AI))
+                                    GameUI.Game.BlackPlayer = new AI(PieceColor.Black);
+                                break;
+                            default:
+                                throw new InvalidOperationException("cmbPlayer nemá žádnou hodnotu");
+                        }
+                        GameUI.Game.Difficulty = cmbDiff.SelectedIndex + 1;
+                    }
+                    GameUI.Refresh();
+                    if (GameUI.IsViewMode)
+                    {
+                        GameUI.RedrawBoard(GameUI.Game.Board);
+                        GameUI.IsViewMode = false;
+                    }
+                    GameUI.IsGameActive = cbOn.IsChecked.HasValue ? (bool)cbOn.IsChecked : false;
+                    if (GameUI.Game.IsActive && !GameUI.Game.IsOver && GameUI.Game.PlayerOnMove is AI)
+                    {
+                        AI player = (AI)GameUI.Game.PlayerOnMove;
+                        await player.PlayAsync(GameUI.Game);
+                    }
                 }
-                GameUI.Refresh();
-                if (GameUI.IsViewMode)
-                {
-                    GameUI.RedrawBoard(GameUI.Game.Board);
-                    GameUI.IsViewMode = false;
-                }
-                GameUI.IsGameActive = cbOn.IsChecked.HasValue ? (bool)cbOn.IsChecked : false;
-                if (GameUI.Game.IsActive && !GameUI.Game.IsOver && GameUI.Game.PlayerOnMove is AI)
-                {
-                    AI player = (AI)GameUI.Game.PlayerOnMove;
-                    await player.PlayAsync(GameUI.Game);
-                }
+            }
+            catch (Exception except)
+            {
+                MessageBox.Show(except.Message);
             }
         }
 
         private void lsBxHistory_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (!(GameUI is null) && !GameUI.Game.IsActive && !GameUI.IsLoadMode)
+            try
             {
-                ListBox listBox = (ListBox)e.Source;
-                if (!(listBox.SelectedItem is null) && listBox.Items.Count > 1)
+                if (!(GameUI is null) && !GameUI.Game.IsActive && !GameUI.IsLoadMode)
                 {
-                    int number = (int)listBox.SelectedItem;
-                    Board tempBoard = (Board)GameUI.Game.BoardHistory[number].Clone();
-                    GameUI.DrawBoard(tempBoard, true);
-                    GameUI.IsViewMode = true;
+                    ListBox listBox = (ListBox)e.Source;
+                    if (!(listBox.SelectedItem is null) && listBox.Items.Count > 1)
+                    {
+                        int number = (int)listBox.SelectedItem;
+                        Board tempBoard = (Board)GameUI.Game.BoardHistory[number].Clone();
+                        GameUI.DrawBoard(tempBoard, true);
+                        GameUI.IsViewMode = true;
+                    }
                 }
+            }
+            catch (Exception except)
+            {
+                MessageBox.Show(except.Message);
             }
         }
 
         private async void menuTah_Click(object sender, RoutedEventArgs e)
         {
-            Player player = GameUI.Game.PlayerOnMove;
-            Player enemy = GameUI.Game.PlayerOnMove.Color is PieceColor.White ? GameUI.Game.BlackPlayer : GameUI.Game.WhitePlayer;
-            int depth = 0;
-            switch (GameUI.Game.Difficulty)
+            try
             {
-                case 1:
-                    depth = 0;
-                    break;
-                case 2:
-                    depth = 1;
-                    break;
-                case 3:
-                    depth = 2;
-                    break;
+                Player player = GameUI.Game.PlayerOnMove;
+                Player enemy = GameUI.Game.PlayerOnMove.Color is PieceColor.White ? GameUI.Game.BlackPlayer : GameUI.Game.WhitePlayer;
+                int depth = 0;
+                switch (GameUI.Game.Difficulty)
+                {
+                    case 1:
+                        depth = 0;
+                        break;
+                    case 2:
+                        depth = 1;
+                        break;
+                    case 3:
+                        depth = 2;
+                        break;
+                }
+                Move bestMove = await GameCore.Minimax.SearchAsync(GameUI.Game.Board, player, enemy, depth);
+                GameUI.BoxesUI[bestMove.CurrentPosition.Coordinates.Row, bestMove.CurrentPosition.Coordinates.Column].Mark();
+                GameUI.BoxesUI[bestMove.NextPosition.Coordinates.Row, bestMove.NextPosition.Coordinates.Column].Mark();
+                GameUI.IsHelpOn = true;
             }
-            Move bestMove = await GameCore.Minimax.SearchAsync(GameUI.Game.Board, player, enemy, depth);
-            GameUI.BoxesUI[bestMove.CurrentPosition.Coordinates.Row, bestMove.CurrentPosition.Coordinates.Column].Mark();
-            GameUI.BoxesUI[bestMove.NextPosition.Coordinates.Row, bestMove.NextPosition.Coordinates.Column].Mark();
-            GameUI.IsHelpOn = true;
+            catch (Exception except)
+            {
+                MessageBox.Show(except.Message);
+            }
         }
 
         private void menuZpet_Click(object sender, RoutedEventArgs e)
         {
-            GameUI.Game.Undo();
-            GameUI.Game.PlayerOnMove = GameUI.Game.WhitePlayer;
-            GameUI.RedrawBoard(Game.Board);
-            GameUI.Refresh();
+            try
+            {
+                GameUI.Game.Undo();
+                GameUI.Game.PlayerOnMove = GameUI.Game.WhitePlayer;
+                GameUI.RedrawBoard(Game.Board);
+                GameUI.Refresh();
+            }
+            catch (Exception except)
+            {
+                MessageBox.Show(except.Message);
+            }
         }
 
         private void menuVratitZpet_Click(object sender, RoutedEventArgs e)
         {
-            GameUI.Game.Redo();
-            GameUI.Game.PlayerOnMove = GameUI.Game.WhitePlayer;
-            GameUI.RedrawBoard(Game.Board);
-            GameUI.Refresh();
+            try
+            {
+                GameUI.Game.Redo();
+                GameUI.Game.PlayerOnMove = GameUI.Game.WhitePlayer;
+                GameUI.RedrawBoard(Game.Board);
+                GameUI.Refresh();
+            }
+            catch (Exception except)
+            {
+                MessageBox.Show(except.Message);
+            }
         }
 
         private void MenuItem_Click(object sender, RoutedEventArgs e)
         {
-            WindowRules window = new WindowRules();
-            window.ShowDialog();
+            try
+            {
+                WindowRules window = new WindowRules();
+                window.ShowDialog();
+            }
+            catch (Exception except)
+            {
+                MessageBox.Show(except.Message);
+            }
         }
 
         private void MenuItem_Click_1(object sender, RoutedEventArgs e)
         {
-            WindowHelp window = new WindowHelp();
-            window.ShowDialog();
+            try
+            {
+                WindowHelp window = new WindowHelp();
+                window.ShowDialog();
+            }
+            catch (Exception except)
+            {
+                MessageBox.Show(except.Message);
+            }
         }
 
         private void MenuItem_Click_2(object sender, RoutedEventArgs e)
