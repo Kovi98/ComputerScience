@@ -28,7 +28,9 @@ namespace GothicChesters
                     this.Rank += box.Piece.Value;
                 }
             }
-
+            //Snaha táhnout figurky vpřed - aby se necyklili namístě, když ještě nevidí protivníka
+            if ((currentPosition.Piece.Color == PieceColor.White && currentPosition.Coordinates.Row < nextPosition.Coordinates.Row) || (currentPosition.Piece.Color == PieceColor.Black && currentPosition.Coordinates.Row > nextPosition.Coordinates.Row))
+                Rank++;
             HasEvolved = false;
         }
 
