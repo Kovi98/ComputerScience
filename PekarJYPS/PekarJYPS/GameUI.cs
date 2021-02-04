@@ -226,12 +226,14 @@ namespace GothicChesters
         {
             GUI.cbOn.IsChecked = false;
             GUI.cbOn.IsEnabled = false;
-            IsGameActive = false;
             Game.BackupBoard();
             GUI.cmbDiff.IsEnabled = false;
             GUI.cmbPlayer.IsEnabled = false;
             Refresh();
-            MessageBox.Show("Vyhrál hráč s barvou figurek: " + Game.Winner.ToString());
+            IsGameActive = false;
+
+            if (MessageBox.Show("Vyhrál hráč s barvou figurek: " + Game.Winner.ToString() + "." + Environment.NewLine + "Přejete si hru uložit?", "Konec hry", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+                GUI.SaveGame();
         }
     }
 

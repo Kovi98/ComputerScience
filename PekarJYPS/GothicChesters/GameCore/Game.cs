@@ -150,10 +150,10 @@ namespace GothicChesters
             }
             if (!(Winner is null))
             {
+                OnAfterBoardChange?.Invoke();
                 IsOver = true;
                 if (OnAfterGameOver != null)
                     OnAfterGameOver();
-                OnAfterBoardChange?.Invoke();
                 return;
             }
             OnAfterBoardChange?.Invoke();

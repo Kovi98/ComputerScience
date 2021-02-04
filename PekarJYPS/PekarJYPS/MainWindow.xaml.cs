@@ -231,15 +231,18 @@ namespace GothicChesters
 
         private void lsBxHistory_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (!(GameUI is null) && !GameUI.Game.IsActive && !GameUI.IsLoadMode)
+            try
             {
-                ListBox listBox = (ListBox)e.Source;
-                if (!(listBox.SelectedItem is null) && listBox.Items.Count > 1)
+                if (!(GameUI is null) && !GameUI.Game.IsActive && !GameUI.IsLoadMode)
                 {
-                    int number = (int)listBox.SelectedItem;
-                    Board tempBoard = (Board)GameUI.Game.BoardHistory[number].Clone();
-                    GameUI.IsViewMode = true;
-                    GameUI.DrawBoard(tempBoard, true);
+                    ListBox listBox = (ListBox)e.Source;
+                    if (!(listBox.SelectedItem is null) && listBox.Items.Count > 1)
+                    {
+                        int number = (int)listBox.SelectedItem;
+                        Board tempBoard = (Board)GameUI.Game.BoardHistory[number].Clone();
+                        GameUI.IsViewMode = true;
+                        GameUI.DrawBoard(tempBoard, true);
+                    }
                 }
             }
             catch (Exception except)
@@ -336,6 +339,10 @@ namespace GothicChesters
 
         private void MenuItem_Click_2(object sender, RoutedEventArgs e)
         {
+            SaveGame();
+        }
+        public void SaveGame()
+        {
             try
             {
                 Microsoft.Win32.SaveFileDialog saveFileDialog = new Microsoft.Win32.SaveFileDialog();
@@ -353,6 +360,10 @@ namespace GothicChesters
         }
 
         private void MenuItem_Click_3(object sender, RoutedEventArgs e)
+        {
+            LoadGame();
+        }
+        public void LoadGame()
         {
             try
             {
@@ -379,9 +390,9 @@ namespace GothicChesters
 
             }
             catch (Exception error)
-             {
-                 MessageBox.Show("Nepodařilo se načíst soubor! " + error.Message);
-             }
+            {
+                MessageBox.Show("Nepodařilo se načíst soubor! " + error.Message);
+            }
         }
     }
     }
