@@ -152,7 +152,7 @@ namespace GothicChesters
             List<Move> moves = new List<Move>();
 
             //Man se nesmí nacházet na poslední pozici (řádku) - dle barev
-            if ((Color.Equals(PieceColor.White) && Coordinates.Row < 8) || ((Color.Equals(PieceColor.Black) && Coordinates.Row > 0)))
+            if ((Color.Equals(PieceColor.White) && Coordinates.Row < 7) || ((Color.Equals(PieceColor.Black) && Coordinates.Row > 0)))
             {
                 //Větev, pokud je figurka bílá - figurky dole
                 if (Color.Equals(PieceColor.White))
