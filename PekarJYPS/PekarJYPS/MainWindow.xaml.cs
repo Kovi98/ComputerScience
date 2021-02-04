@@ -1,4 +1,5 @@
-﻿using PekarJYPS;
+﻿using GothicChesters.GameCore;
+using PekarJYPS;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -230,18 +231,15 @@ namespace GothicChesters
 
         private void lsBxHistory_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            try
+            if (!(GameUI is null) && !GameUI.Game.IsActive && !GameUI.IsLoadMode)
             {
-                if (!(GameUI is null) && !GameUI.Game.IsActive && !GameUI.IsLoadMode)
+                ListBox listBox = (ListBox)e.Source;
+                if (!(listBox.SelectedItem is null) && listBox.Items.Count > 1)
                 {
-                    ListBox listBox = (ListBox)e.Source;
-                    if (!(listBox.SelectedItem is null) && listBox.Items.Count > 1)
-                    {
-                        int number = (int)listBox.SelectedItem;
-                        Board tempBoard = (Board)GameUI.Game.BoardHistory[number].Clone();
-                        GameUI.DrawBoard(tempBoard, true);
-                        GameUI.IsViewMode = true;
-                    }
+                    int number = (int)listBox.SelectedItem;
+                    Board tempBoard = (Board)GameUI.Game.BoardHistory[number].Clone();
+                    GameUI.IsViewMode = true;
+                    GameUI.DrawBoard(tempBoard, true);
                 }
             }
             catch (Exception except)
@@ -350,7 +348,7 @@ namespace GothicChesters
             }
             catch (Exception error)
             {
-                MessageBox.Show(error.Message);
+                MessageBox.Show("Nepodařilo se uložit soubor! " + error.Message);
             }
         }
 
@@ -382,7 +380,7 @@ namespace GothicChesters
             }
             catch (Exception error)
              {
-                 MessageBox.Show("Nepodařilo se načíst soubor! Chyba: " + error.Message);
+                 MessageBox.Show("Nepodařilo se načíst soubor! " + error.Message);
              }
         }
     }
