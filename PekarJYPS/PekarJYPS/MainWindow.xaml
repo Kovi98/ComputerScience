@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:GothicChesters"
         xmlns:local1="clr-namespace:GothicChesters;assembly=GothicChesters" x:Class="GothicChesters.MainWindow"
         mc:Ignorable="d"
-        Title="Gotická dáma" Height="580" Width="740" WindowStartupLocation="CenterScreen" FontSize="15" BorderBrush="Black" Icon="Images/favicon.ico">
+        Title="Gotická dáma" Height="580" Width="740" WindowStartupLocation="CenterScreen" FontSize="15" BorderBrush="Black" Icon="Images/favicon.ico" Closing="Window_Closing">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="0"/>

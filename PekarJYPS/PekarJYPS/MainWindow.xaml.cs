@@ -394,5 +394,17 @@ namespace GothicChesters
                 MessageBox.Show("Nepodařilo se načíst soubor! " + error.Message);
             }
         }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            if (MessageBox.Show("Opravdu chcete hru ukončit?", "Konec hry", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.No)
+            {
+                e.Cancel = true;
+            }
+            else
+            {
+                e.Cancel = false;
+            }
+        }
     }
     }
