@@ -76,11 +76,12 @@ namespace GothicChesters
             }
             move.DroppedPiece = droppedPieces.ToArray();
 
+            Box nextPosition = Boxes[move.NextPosition.Coordinates.Row, move.NextPosition.Coordinates.Column];
             //Evoluce kámen -> dáma pokud je kámen na posledním řádku své barvy
-            if ((move.NextPosition.Piece is Man) && ((move.NextPosition.Piece.Color.Equals(PieceColor.White) && move.NextPosition.Coordinates.Row == 7) || (move.NextPosition.Piece.Color.Equals(PieceColor.Black) && move.NextPosition.Coordinates.Row == 0)))
+            if ((nextPosition.Piece is Man) && ((nextPosition.Piece.Color.Equals(PieceColor.White) && nextPosition.Coordinates.Row == 7) || (nextPosition.Piece.Color.Equals(PieceColor.Black) && nextPosition.Coordinates.Row == 0)))
             {
-                Man man = (Man)move.NextPosition.Piece;
-                move.NextPosition.Piece = man.Evolve();
+                Man man = (Man)nextPosition.Piece;
+                nextPosition.Piece = man.Evolve();
                 move.HasEvolved = true;
             }
         }
@@ -94,8 +95,9 @@ namespace GothicChesters
             //Evoluce kámen -> dáma pokud je kámen na posledním řádku své barvy
             if (move.HasEvolved)
             {
-                King king = (King)move.NextPosition.Piece;
-                move.NextPosition.Piece = king.Devolve();
+                Box nextPosition = Boxes[move.NextPosition.Coordinates.Row, move.NextPosition.Coordinates.Column];
+                King king = (King)nextPosition.Piece;
+                nextPosition.Piece = king.Devolve();
                 move.HasEvolved = false;
             }
 

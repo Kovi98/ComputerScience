@@ -202,7 +202,7 @@ namespace GothicChesters
             }
             else
             {
-                throw new InvalidOperationException("Nemůže se změnit hráč, když žádný není");
+                throw new InvalidOperationException("Není žádný hráč na tahu!");
             }
         }
 
@@ -212,7 +212,7 @@ namespace GothicChesters
         {
             Board newBoard;
             if (!BoardHistory.TryGetValue(Round-2, out newBoard))
-                throw new InvalidOperationException("Nejdá dát UNDO když není v historii desek záznam s this.Round-1");
+                throw new InvalidOperationException("V historii desek není žádný záznam s Round-1");
 
             Round--;
             Board = (Board)newBoard.Clone();
@@ -222,7 +222,7 @@ namespace GothicChesters
         {
             Board newBoard;
             if (!BoardHistory.TryGetValue(Round, out newBoard))
-                throw new InvalidOperationException("Nejdá dát REDO když není v historii desek záznam s this.Round+1");
+                throw new InvalidOperationException("V historii desek není žádný záznam s Round+1");
 
             Round++;
             Board = (Board)newBoard.Clone();
