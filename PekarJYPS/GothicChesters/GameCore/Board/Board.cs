@@ -20,6 +20,25 @@ namespace GothicChesters
             BlackDead = 0;
 
             Boxes = new Box[8, 8];
+
+            //Pouze pro testování
+            /*
+            for (int i = 0; i <= 7; i++)
+            {
+                for (int j = 0; j <= 7; j++)
+                {
+                    Coordinates coor = new Coordinates(i, j);
+                    Boxes[i, j] = new Box(coor);
+                    if (i == 2 && j == 1)
+                        Boxes[i, j].Piece = new Man(coor, PieceColor.White);
+                    if (i == 5 && (j == 1 || j == 5))
+                        Boxes[i, j].Piece = new Man(coor, PieceColor.Black);
+                }
+            }
+            return;
+            */
+
+            //Tato část kódu je pro release
             for (int i = 0; i <= 7; i++)
             {
                 for (int j = 0; j <= 7; j++)

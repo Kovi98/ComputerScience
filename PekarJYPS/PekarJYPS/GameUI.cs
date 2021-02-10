@@ -232,8 +232,17 @@ namespace GothicChesters
             Refresh();
             IsGameActive = false;
 
-            if (MessageBox.Show("Vyhrál hráč s barvou figurek: " + Game.Winner.ToString() + "." + Environment.NewLine + "Přejete si hru uložit?", "Konec hry", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
-                GUI.SaveGame();
+            if (!(Game.Winner is null))
+            {
+                if (MessageBox.Show("Vyhrál hráč s barvou figurek: " + Game.Winner.ToString() + "." + Environment.NewLine + "Přejete si hru uložit?", "Konec hry", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+                    GUI.SaveGame();
+            }
+            else
+            {
+                if (MessageBox.Show("Hra byla ukončena, jelikož se už 30 kol nesebrala žádná figurka" + "." + Environment.NewLine + "Přejete si hru uložit?", "Konec hry", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+                    GUI.SaveGame();
+            }
+            
         }
     }
 

@@ -138,10 +138,32 @@ namespace GothicChesters
                     }
                 }
                 Board.DoMove(move);
+                //30 RoundWithoutDead
+                if (RoundWithoutDead > 30)
+                {
+                    OnAfterBoardChange?.Invoke();
+                    IsOver = true;
+                    if (OnAfterGameOver != null)
+                        OnAfterGameOver();
+                    return;
+                }
+
                 if (!(!(move.AttackedPosition is null) && Board.GetPossibleAttacks(move.NextPosition).Length > 0))
                 {
                     ForcedAttackBox = null;
+                    if (PlayerOnMove==BlackPlayer)
+                    {
+                        if (!(move.AttackedPosition is null) && move.AttackedPosition.Count() > 0)
+                        {
+                            RoundWithoutDead = 0;
+                        }
+                        else
+                        {
+                            RoundWithoutDead++;
+                        }
+                    }
                     ChangePlayer();
+
                 }
                 else
                 {

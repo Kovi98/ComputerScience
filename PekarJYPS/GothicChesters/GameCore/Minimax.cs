@@ -8,7 +8,9 @@ namespace GothicChesters.GameCore
 {
     public class Minimax
     {
-        private static int SearchTree (Board board, Player player, Player enemy, int depth, int rank)
+        //proměnná pro modifikátor ranku
+        private static double _rankModifier = 1;
+        private static double SearchTree (Board board, Player player, Player enemy, int depth, double rank, Player playerOnMove = null)
         {
             if (depth == 0)
                 return rank;
@@ -16,20 +18,22 @@ namespace GothicChesters.GameCore
             List<Box> ownedBoxes = new List<Box>(player.GetBoxesWithOwnedPieces(board)); //Generování všech políček hrací desky, které obsahují hráčovu figurku
             if (ownedBoxes.Count == 0) //Pokud hráč žádné políčko obsazené nemá, vrátit rank
                 return rank;
-
+            double result = 0;
             foreach (Box box in ownedBoxes) //Procházení všech políček hrací desky, které obsahují hráčovu figurku
             {
                 List<Move> movesBox = new List<Move>(board.GetPossibleAttacks(box).Length > 0 ? board.GetPossibleAttacks(box) : board.GetPossibleMoves(box)); //Generování všech možných tahů k hráčovým políčkům
                 foreach (Move move in movesBox) //Procházení všech možných tahů
                 {
                     //Board clonedBoard = (Board)board.Clone();
+                    if (player == playerOnMove)
+                        move.Modifier = _rankModifier;
                     rank += move.Rank;
                     board.DoMove(move);
-                    rank += Minimax.SearchTree(board, enemy, player, depth - 1, -move.Rank);
+                    result += -Minimax.SearchTree(board, enemy, player, depth - 1, -rank, playerOnMove);
                     board.UndoMove(move);
                 }
             }
-            return rank;
+            return result;
         }
         /// <summary>
         /// IMplementace algoritmu Minimax do statické metody
@@ -53,10 +57,8 @@ namespace GothicChesters.GameCore
                 List<Move> movesBox = new List<Move>(board.GetPossibleAttacks(box).Length > 0 ? board.GetPossibleAttacks(box) : board.GetPossibleMoves(box)); //Generování všech možných tahů k hráčovým políčkům
                 foreach (Move move in movesBox) //Procházení všech možných tahů
                 {
-                    //Board clonedBoard = (Board)board.Clone();
                     board.DoMove(move);
-                    int rank = Minimax.SearchTree(board, player, enemy, depth, move.Rank);
-                    move.Rank = rank;
+                    move.Rank = -Minimax.SearchTree(board, enemy, player, depth, -move.Rank);
                     if (bestMove is null || bestMove.Rank < move.Rank)
                         bestMove = move;
                     board.UndoMove(move);
