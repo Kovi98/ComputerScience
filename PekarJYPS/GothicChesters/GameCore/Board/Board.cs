@@ -37,6 +37,7 @@ namespace GothicChesters
             }
             return;
             */
+            
 
             //Tato část kódu je pro release
             for (int i = 0; i <= 7; i++)

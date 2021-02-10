@@ -139,7 +139,7 @@ namespace GothicChesters
                 }
                 Board.DoMove(move);
                 //30 RoundWithoutDead
-                if (RoundWithoutDead > 30)
+                if (RoundWithoutDead >= 30)
                 {
                     OnAfterBoardChange?.Invoke();
                     IsOver = true;
@@ -163,7 +163,6 @@ namespace GothicChesters
                         }
                     }
                     ChangePlayer();
-
                 }
                 else
                 {
@@ -179,6 +178,8 @@ namespace GothicChesters
                 return;
             }
             OnAfterBoardChange?.Invoke();
+            if (move is null)
+                ChangePlayer();
             if (PlayerOnMove is AI && IsActive && !IsOver)
             {
                 AI player = (AI)PlayerOnMove;
