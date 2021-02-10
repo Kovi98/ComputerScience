@@ -29,7 +29,7 @@ namespace GothicChesters.GameCore
                         move.Modifier = _rankModifier;
                     rank += move.Rank;
                     board.DoMove(move);
-                    result += -Minimax.SearchTree(board, enemy, player, depth - 1, -rank, playerOnMove);
+                    result += Minimax.SearchTree(board, enemy, player, depth - 1, -rank, playerOnMove);
                     board.UndoMove(move);
                 }
             }
