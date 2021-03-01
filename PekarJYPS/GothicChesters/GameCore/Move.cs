@@ -42,6 +42,11 @@ namespace GothicChesters
 
         public void RecalculateRank()
         {
+            Rank = 0;
+            //Snaha táhnout figurky vpřed - aby se necyklili namístě, když ještě nevidí protivníka
+            if ((CurrentPosition.Piece.Color == PieceColor.White && CurrentPosition.Coordinates.Row < NextPosition.Coordinates.Row) || (CurrentPosition.Piece.Color == PieceColor.Black && CurrentPosition.Coordinates.Row > NextPosition.Coordinates.Row))
+                Rank += 1 * Modifier;
+            //Výpočet
             if (!(AttackedPosition is null))
             {
                 foreach (Box box in AttackedPosition)
@@ -49,9 +54,6 @@ namespace GothicChesters
                     this.Rank += box.Piece.Value * Modifier;
                 }
             }
-            //Snaha táhnout figurky vpřed - aby se necyklili namístě, když ještě nevidí protivníka
-            if ((CurrentPosition.Piece.Color == PieceColor.White && CurrentPosition.Coordinates.Row < NextPosition.Coordinates.Row) || (CurrentPosition.Piece.Color == PieceColor.Black && CurrentPosition.Coordinates.Row > NextPosition.Coordinates.Row))
-                Rank++;
         }
     }
 }

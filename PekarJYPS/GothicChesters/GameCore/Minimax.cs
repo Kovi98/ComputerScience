@@ -9,7 +9,8 @@ namespace GothicChesters.GameCore
     public class Minimax
     {
         //proměnná pro modifikátor ranku
-        private static double _rankModifier = 1;
+        private static double _rankModifier = 1.3;
+        private static Random _randomRankModifier = new Random();
         private static double SearchTree (Board board, Player player, Player enemy, int depth, double rank, Player playerOnMove = null)
         {
             if (depth == 0)
@@ -68,7 +69,7 @@ namespace GothicChesters.GameCore
                     move.Modifier = _rankModifier;
                     board.DoMove(move);
                     move.Rank = -Minimax.SearchTree(board, enemy, player, depth, -move.Rank, player);
-                    if (bestMove is null || bestMove.Rank < move.Rank || (bestMove.Rank == move.Rank && random.Next(1,2) == 1))
+                    if (bestMove is null || bestMove.Rank < move.Rank || (bestMove.Rank == move.Rank && random.Next(1,3) == 1))
                         bestMove = move;
                     board.UndoMove(move);
                 }
