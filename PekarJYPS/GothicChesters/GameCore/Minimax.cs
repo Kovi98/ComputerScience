@@ -8,7 +8,10 @@ namespace GothicChesters.GameCore
 {
     public class Minimax
     {
-        private static int SearchTree (Board board, Player player, Player enemy, int depth, int rank)
+        //proměnná pro modifikátor ranku
+        private static double _rankModifier = 1.3;
+        private static Random _randomRankModifier = new Random();
+        private static double SearchTree (Board board, Player player, Player enemy, int depth, double rank, Player playerOnMove = null)
         {
             if (depth == 0)
                 return rank;
@@ -17,19 +20,28 @@ namespace GothicChesters.GameCore
             if (ownedBoxes.Count == 0) //Pokud hráč žádné políčko obsazené nemá, vrátit rank
                 return rank;
 
+            double? bestRank = null;
+            Random random = new Random();
+
             foreach (Box box in ownedBoxes) //Procházení všech políček hrací desky, které obsahují hráčovu figurku
             {
                 List<Move> movesBox = new List<Move>(board.GetPossibleAttacks(box).Length > 0 ? board.GetPossibleAttacks(box) : board.GetPossibleMoves(box)); //Generování všech možných tahů k hráčovým políčkům
+                if (movesBox.Count == 0)
+                    continue;
                 foreach (Move move in movesBox) //Procházení všech možných tahů
                 {
                     //Board clonedBoard = (Board)board.Clone();
+                    if (player == playerOnMove)
+                        move.Modifier = _rankModifier;
                     rank += move.Rank;
                     board.DoMove(move);
-                    rank += Minimax.SearchTree(board, enemy, player, depth - 1, -move.Rank);
+                    rank += Minimax.SearchTree(board, enemy, player, depth - 1, -rank, playerOnMove);
+                    if (bestRank is null || bestRank < rank || (bestRank == rank && random.Next(1, 2) == 1))
+                        bestRank = rank;
                     board.UndoMove(move);
                 }
             }
-            return rank;
+            return bestRank.HasValue ? bestRank.Value : rank;
         }
         /// <summary>
         /// IMplementace algoritmu Minimax do statické metody
@@ -42,6 +54,7 @@ namespace GothicChesters.GameCore
         public static Move Search (Board boardOriginal, Player player, Player enemy, int depth)
         {
             Board board = (Board)boardOriginal.Clone();
+            Random random = new Random();
             List<Box> ownedBoxes = new List<Box>(player.GetBoxesWithOwnedPieces(board)); //Generování všech políček hrací desky, které obsahují hráčovu figurku
             if (ownedBoxes.Count == 0) //Pokud hráč žádné políčko obsazené nemá, vrátit null
                 return null;
@@ -53,11 +66,10 @@ namespace GothicChesters.GameCore
                 List<Move> movesBox = new List<Move>(board.GetPossibleAttacks(box).Length > 0 ? board.GetPossibleAttacks(box) : board.GetPossibleMoves(box)); //Generování všech možných tahů k hráčovým políčkům
                 foreach (Move move in movesBox) //Procházení všech možných tahů
                 {
-                    //Board clonedBoard = (Board)board.Clone();
+                    move.Modifier = _rankModifier;
                     board.DoMove(move);
-                    int rank = Minimax.SearchTree(board, player, enemy, depth, move.Rank);
-                    move.Rank = rank;
-                    if (bestMove is null || bestMove.Rank < move.Rank)
+                    move.Rank = -Minimax.SearchTree(board, enemy, player, depth, -move.Rank, player);
+                    if (bestMove is null || bestMove.Rank < move.Rank || (bestMove.Rank == move.Rank && random.Next(1,3) == 1))
                         bestMove = move;
                     board.UndoMove(move);
                 }

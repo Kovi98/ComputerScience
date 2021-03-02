@@ -20,6 +20,26 @@ namespace GothicChesters
             BlackDead = 0;
 
             Boxes = new Box[8, 8];
+
+            //Pouze pro testování
+            /*
+            for (int i = 0; i <= 7; i++)
+            {
+                for (int j = 0; j <= 7; j++)
+                {
+                    Coordinates coor = new Coordinates(i, j);
+                    Boxes[i, j] = new Box(coor);
+                    if (i == 2 && j == 1)
+                        Boxes[i, j].Piece = new Man(coor, PieceColor.White);
+                    if (i == 5 && (j == 1 || j == 5))
+                        Boxes[i, j].Piece = new Man(coor, PieceColor.Black);
+                }
+            }
+            return;
+            */
+            
+
+            //Tato část kódu je pro release
             for (int i = 0; i <= 7; i++)
             {
                 for (int j = 0; j <= 7; j++)
@@ -56,11 +76,12 @@ namespace GothicChesters
             }
             move.DroppedPiece = droppedPieces.ToArray();
 
+            Box nextPosition = Boxes[move.NextPosition.Coordinates.Row, move.NextPosition.Coordinates.Column];
             //Evoluce kámen -> dáma pokud je kámen na posledním řádku své barvy
-            if ((move.NextPosition.Piece is Man) && ((move.NextPosition.Piece.Color.Equals(PieceColor.White) && move.NextPosition.Coordinates.Row == 7) || (move.NextPosition.Piece.Color.Equals(PieceColor.Black) && move.NextPosition.Coordinates.Row == 0)))
+            if ((nextPosition.Piece is Man) && ((nextPosition.Piece.Color.Equals(PieceColor.White) && nextPosition.Coordinates.Row == 7) || (nextPosition.Piece.Color.Equals(PieceColor.Black) && nextPosition.Coordinates.Row == 0)))
             {
-                Man man = (Man)move.NextPosition.Piece;
-                move.NextPosition.Piece = man.Evolve();
+                Man man = (Man)nextPosition.Piece;
+                nextPosition.Piece = man.Evolve();
                 move.HasEvolved = true;
             }
         }
@@ -74,8 +95,9 @@ namespace GothicChesters
             //Evoluce kámen -> dáma pokud je kámen na posledním řádku své barvy
             if (move.HasEvolved)
             {
-                King king = (King)move.NextPosition.Piece;
-                move.NextPosition.Piece = king.Devolve();
+                Box nextPosition = Boxes[move.NextPosition.Coordinates.Row, move.NextPosition.Coordinates.Column];
+                King king = (King)nextPosition.Piece;
+                nextPosition.Piece = king.Devolve();
                 move.HasEvolved = false;
             }
 

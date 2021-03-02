@@ -138,9 +138,30 @@ namespace GothicChesters
                     }
                 }
                 Board.DoMove(move);
+                //30 RoundWithoutDead
+                if (RoundWithoutDead >= 30)
+                {
+                    OnAfterBoardChange?.Invoke();
+                    IsOver = true;
+                    if (OnAfterGameOver != null)
+                        OnAfterGameOver();
+                    return;
+                }
+
                 if (!(!(move.AttackedPosition is null) && Board.GetPossibleAttacks(move.NextPosition).Length > 0))
                 {
                     ForcedAttackBox = null;
+                    if (PlayerOnMove==BlackPlayer)
+                    {
+                        if (!(move.AttackedPosition is null) && move.AttackedPosition.Count() > 0)
+                        {
+                            RoundWithoutDead = 0;
+                        }
+                        else
+                        {
+                            RoundWithoutDead++;
+                        }
+                    }
                     ChangePlayer();
                 }
                 else
@@ -157,6 +178,8 @@ namespace GothicChesters
                 return;
             }
             OnAfterBoardChange?.Invoke();
+            if (move is null)
+                ChangePlayer();
             if (PlayerOnMove is AI && IsActive && !IsOver)
             {
                 AI player = (AI)PlayerOnMove;
@@ -179,7 +202,7 @@ namespace GothicChesters
             }
             else
             {
-                throw new InvalidOperationException("Nemůže se změnit hráč, když žádný není");
+                throw new InvalidOperationException("Není žádný hráč na tahu!");
             }
         }
 
@@ -189,7 +212,7 @@ namespace GothicChesters
         {
             Board newBoard;
             if (!BoardHistory.TryGetValue(Round-2, out newBoard))
-                throw new InvalidOperationException("Nejdá dát UNDO když není v historii desek záznam s this.Round-1");
+                throw new InvalidOperationException("V historii desek není žádný záznam s Round-1");
 
             Round--;
             Board = (Board)newBoard.Clone();
@@ -199,7 +222,7 @@ namespace GothicChesters
         {
             Board newBoard;
             if (!BoardHistory.TryGetValue(Round, out newBoard))
-                throw new InvalidOperationException("Nejdá dát REDO když není v historii desek záznam s this.Round+1");
+                throw new InvalidOperationException("V historii desek není žádný záznam s Round+1");
 
             Round++;
             Board = (Board)newBoard.Clone();
