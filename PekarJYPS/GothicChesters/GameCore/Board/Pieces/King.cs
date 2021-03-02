@@ -58,6 +58,9 @@ namespace GothicChesters
 
                         if (!(board.Boxes[i, Coordinates.Column].Piece is null) && board.Boxes[i, Coordinates.Column].Piece.Color.Equals(PieceColor.Black) && i < 7)
                             attackedBoxes.Add(board.Boxes[i, Coordinates.Column]);
+
+                        if (!(board.Boxes[i, Coordinates.Column].Piece is null) && board.Boxes[i, Coordinates.Column].Piece.Color.Equals(PieceColor.White) && i < 7)
+                            break;
                     }
                     attackedBoxes.RemoveRange(0, attackedBoxes.Count());
                 }
@@ -72,6 +75,9 @@ namespace GothicChesters
 
                         if (!(board.Boxes[i, Coordinates.Column].Piece is null) && board.Boxes[i, Coordinates.Column].Piece.Color.Equals(PieceColor.Black) && i > 0)
                             attackedBoxes.Add(board.Boxes[i, Coordinates.Column]);
+
+                        if (!(board.Boxes[i, Coordinates.Column].Piece is null) && board.Boxes[i, Coordinates.Column].Piece.Color.Equals(PieceColor.White) && i > 0)
+                            break;
                     }
                     attackedBoxes.RemoveRange(0, attackedBoxes.Count());
                 }
@@ -86,6 +92,9 @@ namespace GothicChesters
 
                         if (!(board.Boxes[Coordinates.Row, i].Piece is null) && board.Boxes[Coordinates.Row, i].Piece.Color.Equals(PieceColor.Black) && i < 7)
                             attackedBoxes.Add(board.Boxes[Coordinates.Row, i]);
+
+                        if (!(board.Boxes[Coordinates.Row, i].Piece is null) && board.Boxes[Coordinates.Row, i].Piece.Color.Equals(PieceColor.White) && i < 7)
+                            break;
                     }
                     attackedBoxes.RemoveRange(0, attackedBoxes.Count());
                 }
@@ -100,6 +109,9 @@ namespace GothicChesters
 
                         if (!(board.Boxes[Coordinates.Row, i].Piece is null) && board.Boxes[Coordinates.Row, i].Piece.Color.Equals(PieceColor.Black) && i > 0)
                             attackedBoxes.Add(board.Boxes[Coordinates.Row, i]);
+
+                        if (!(board.Boxes[Coordinates.Row, i].Piece is null) && board.Boxes[Coordinates.Row, i].Piece.Color.Equals(PieceColor.White) && i > 0)
+                            break;
                     }
                     attackedBoxes.RemoveRange(0, attackedBoxes.Count());
                 }
@@ -114,6 +126,9 @@ namespace GothicChesters
 
                         if (!(board.Boxes[i, j].Piece is null) && board.Boxes[i, j].Piece.Color.Equals(PieceColor.Black) && i < 7 && j < 7)
                             attackedBoxes.Add(board.Boxes[i, j]);
+
+                        if (!(board.Boxes[i, j].Piece is null) && board.Boxes[i, j].Piece.Color.Equals(PieceColor.White) && i < 7 && j < 7)
+                            break;
                     }
                     attackedBoxes.RemoveRange(0, attackedBoxes.Count());
                 }
@@ -128,6 +143,9 @@ namespace GothicChesters
 
                         if (!(board.Boxes[i, j].Piece is null) && board.Boxes[i, j].Piece.Color.Equals(PieceColor.Black) && i > 0 && j < 7)
                             attackedBoxes.Add(board.Boxes[i, j]);
+
+                        if (!(board.Boxes[i, j].Piece is null) && board.Boxes[i, j].Piece.Color.Equals(PieceColor.White) && i > 0 && j < 7)
+                            break;
                     }
                     attackedBoxes.RemoveRange(0, attackedBoxes.Count());
                 }
@@ -142,6 +160,9 @@ namespace GothicChesters
 
                         if (!(board.Boxes[i, j].Piece is null) && board.Boxes[i, j].Piece.Color.Equals(PieceColor.Black) && i > 0 && j > 0)
                             attackedBoxes.Add(board.Boxes[i, j]);
+
+                        if (!(board.Boxes[i, j].Piece is null) && board.Boxes[i, j].Piece.Color.Equals(PieceColor.White) && i > 0 && j > 0)
+                            break;
                     }
                     attackedBoxes.RemoveRange(0, attackedBoxes.Count());
                 }
@@ -156,6 +177,9 @@ namespace GothicChesters
 
                         if (!(board.Boxes[i, j].Piece is null) && board.Boxes[i, j].Piece.Color.Equals(PieceColor.Black) && i < 7 && j > 0)
                             attackedBoxes.Add(board.Boxes[i, j]);
+
+                        if (!(board.Boxes[i, j].Piece is null) && board.Boxes[i, j].Piece.Color.Equals(PieceColor.White) && i < 7 && j > 0)
+                            break;
                     }
                     attackedBoxes.RemoveRange(0, attackedBoxes.Count());
                 }
@@ -174,6 +198,9 @@ namespace GothicChesters
 
                         if (!(board.Boxes[i, Coordinates.Column].Piece is null) && board.Boxes[i, Coordinates.Column].Piece.Color.Equals(PieceColor.White) && i < 7)
                             attackedBoxes.Add(board.Boxes[i, Coordinates.Column]);
+
+                        if (!(board.Boxes[i, Coordinates.Column].Piece is null) && board.Boxes[i, Coordinates.Column].Piece.Color.Equals(PieceColor.Black) && i < 7)
+                            break;
                     }
                     attackedBoxes.RemoveRange(0, attackedBoxes.Count());
                 }
@@ -188,6 +215,9 @@ namespace GothicChesters
 
                         if (!(board.Boxes[i, Coordinates.Column].Piece is null) && board.Boxes[i, Coordinates.Column].Piece.Color.Equals(PieceColor.White) && i > 0)
                             attackedBoxes.Add(board.Boxes[i, Coordinates.Column]);
+
+                        if (!(board.Boxes[i, Coordinates.Column].Piece is null) && board.Boxes[i, Coordinates.Column].Piece.Color.Equals(PieceColor.Black) && i > 0)
+                            break;
                     }
                     attackedBoxes.RemoveRange(0, attackedBoxes.Count());
                 }
@@ -202,6 +232,9 @@ namespace GothicChesters
 
                         if (!(board.Boxes[Coordinates.Row, i].Piece is null) && board.Boxes[Coordinates.Row, i].Piece.Color.Equals(PieceColor.White) && i < 7)
                             attackedBoxes.Add(board.Boxes[Coordinates.Row, i]);
+
+                        if (!(board.Boxes[Coordinates.Row, i].Piece is null) && board.Boxes[Coordinates.Row, i].Piece.Color.Equals(PieceColor.Black) && i < 7)
+                            break;
                     }
                     attackedBoxes.RemoveRange(0, attackedBoxes.Count());
                 }
@@ -216,6 +249,9 @@ namespace GothicChesters
 
                         if (!(board.Boxes[Coordinates.Row, i].Piece is null) && board.Boxes[Coordinates.Row, i].Piece.Color.Equals(PieceColor.White) && i > 0)
                             attackedBoxes.Add(board.Boxes[Coordinates.Row, i]);
+
+                        if (!(board.Boxes[Coordinates.Row, i].Piece is null) && board.Boxes[Coordinates.Row, i].Piece.Color.Equals(PieceColor.Black) && i > 0)
+                            break;
                     }
                     attackedBoxes.RemoveRange(0, attackedBoxes.Count());
                 }
@@ -230,6 +266,9 @@ namespace GothicChesters
 
                         if (!(board.Boxes[i, j].Piece is null) && board.Boxes[i, j].Piece.Color.Equals(PieceColor.White) && i < 7 && j < 7)
                             attackedBoxes.Add(board.Boxes[i, j]);
+
+                        if (!(board.Boxes[i, j].Piece is null) && board.Boxes[i, j].Piece.Color.Equals(PieceColor.Black) && i < 7 && j < 7)
+                            break;
                     }
                     attackedBoxes.RemoveRange(0, attackedBoxes.Count());
                 }
@@ -244,6 +283,9 @@ namespace GothicChesters
 
                         if (!(board.Boxes[i, j].Piece is null) && board.Boxes[i, j].Piece.Color.Equals(PieceColor.White) && i > 0 && j < 7)
                             attackedBoxes.Add(board.Boxes[i, j]);
+
+                        if (!(board.Boxes[i, j].Piece is null) && board.Boxes[i, j].Piece.Color.Equals(PieceColor.Black) && i > 0 && j < 7)
+                            break;
                     }
                     attackedBoxes.RemoveRange(0, attackedBoxes.Count());
                 }
@@ -258,6 +300,9 @@ namespace GothicChesters
 
                         if (!(board.Boxes[i, j].Piece is null) && board.Boxes[i, j].Piece.Color.Equals(PieceColor.White) && i > 0 && j > 0)
                             attackedBoxes.Add(board.Boxes[i, j]);
+
+                        if (!(board.Boxes[i, j].Piece is null) && board.Boxes[i, j].Piece.Color.Equals(PieceColor.Black) && i > 0 && j > 0)
+                            break;
                     }
                     attackedBoxes.RemoveRange(0, attackedBoxes.Count());
                 }
@@ -272,6 +317,9 @@ namespace GothicChesters
 
                         if (!(board.Boxes[i, j].Piece is null) && board.Boxes[i, j].Piece.Color.Equals(PieceColor.White) && i < 7 && j > 0)
                             attackedBoxes.Add(board.Boxes[i, j]);
+
+                        if (!(board.Boxes[i, j].Piece is null) && board.Boxes[i, j].Piece.Color.Equals(PieceColor.Black) && i < 7 && j > 0)
+                            break;
                     }
                     attackedBoxes.RemoveRange(0, attackedBoxes.Count());
                 }
@@ -294,7 +342,7 @@ namespace GothicChesters
                 {
                     for (i = Coordinates.Row + 1; i <= 7; i++)
                     {
-                        if (!(board.Boxes[i, Coordinates.Column].Piece is null) && board.Boxes[i, Coordinates.Column].Piece.Color.Equals(PieceColor.Black))
+                        if (!(board.Boxes[i, Coordinates.Column].Piece is null))
                             break;
 
                         if (board.Boxes[i, Coordinates.Column].Piece is null)
@@ -307,7 +355,7 @@ namespace GothicChesters
                 {
                     for (i = Coordinates.Row - 1; i >= 0; i--)
                     {
-                        if (!(board.Boxes[i, Coordinates.Column].Piece is null) && board.Boxes[i, Coordinates.Column].Piece.Color.Equals(PieceColor.Black))
+                        if (!(board.Boxes[i, Coordinates.Column].Piece is null))
                             break;
 
                         if (board.Boxes[i, Coordinates.Column].Piece is null)
@@ -320,7 +368,7 @@ namespace GothicChesters
                 {
                     for (i = Coordinates.Column + 1; i <= 7; i++)
                     {
-                        if (!(board.Boxes[Coordinates.Row, i].Piece is null) && board.Boxes[Coordinates.Row, i].Piece.Color.Equals(PieceColor.Black))
+                        if (!(board.Boxes[Coordinates.Row, i].Piece is null))
                             break;
 
                         if (board.Boxes[Coordinates.Row, i].Piece is null)
@@ -333,7 +381,7 @@ namespace GothicChesters
                 {
                     for (i = Coordinates.Column - 1; i >= 0; i--)
                     {
-                        if (!(board.Boxes[Coordinates.Row, i].Piece is null) && board.Boxes[Coordinates.Row, i].Piece.Color.Equals(PieceColor.Black))
+                        if (!(board.Boxes[Coordinates.Row, i].Piece is null))
                             break;
 
                         if (board.Boxes[Coordinates.Row, i].Piece is null)
@@ -346,7 +394,7 @@ namespace GothicChesters
                 {
                     for (i = Coordinates.Row + 1, j = Coordinates.Column + 1; i <= 7 && j <= 7; i++, j++)
                     {
-                        if (!(board.Boxes[i, j].Piece is null) && board.Boxes[i, j].Piece.Color.Equals(PieceColor.Black))
+                        if (!(board.Boxes[i, j].Piece is null))
                             break;
 
                         if (board.Boxes[i, j].Piece is null)
@@ -359,7 +407,7 @@ namespace GothicChesters
                 {
                     for (i = Coordinates.Row - 1, j = Coordinates.Column + 1; i >= 0 && j <= 7; i--, j++)
                     {
-                        if (!(board.Boxes[i, j].Piece is null) && board.Boxes[i, j].Piece.Color.Equals(PieceColor.Black))
+                        if (!(board.Boxes[i, j].Piece is null))
                             break;
 
                         if (board.Boxes[i, j].Piece is null)
@@ -372,7 +420,7 @@ namespace GothicChesters
                 {
                     for (i = Coordinates.Row - 1, j = Coordinates.Column - 1; i >= 0 && j >= 0; i--, j--)
                     {
-                        if (!(board.Boxes[i, j].Piece is null) && board.Boxes[i, j].Piece.Color.Equals(PieceColor.Black))
+                        if (!(board.Boxes[i, j].Piece is null))
                             break;
 
                         if (board.Boxes[i, j].Piece is null)
@@ -385,7 +433,7 @@ namespace GothicChesters
                 {
                     for (i = Coordinates.Row + 1, j = Coordinates.Column - 1; i <= 7 && j >= 0; i++, j--)
                     {
-                        if (!(board.Boxes[i, j].Piece is null) && board.Boxes[i, j].Piece.Color.Equals(PieceColor.Black))
+                        if (!(board.Boxes[i, j].Piece is null))
                             break;
 
                         if (board.Boxes[i, j].Piece is null)
@@ -402,7 +450,7 @@ namespace GothicChesters
                 {
                     for (i = Coordinates.Row + 1; i <= 7; i++)
                     {
-                        if (!(board.Boxes[i, Coordinates.Column].Piece is null) && board.Boxes[i, Coordinates.Column].Piece.Color.Equals(PieceColor.White))
+                        if (!(board.Boxes[i, Coordinates.Column].Piece is null))
                             break;
 
                         if (board.Boxes[i, Coordinates.Column].Piece is null)
@@ -415,7 +463,7 @@ namespace GothicChesters
                 {
                     for (i = Coordinates.Row - 1; i >= 0; i--)
                     {
-                        if (!(board.Boxes[i, Coordinates.Column].Piece is null) && board.Boxes[i, Coordinates.Column].Piece.Color.Equals(PieceColor.White))
+                        if (!(board.Boxes[i, Coordinates.Column].Piece is null))
                             break;
 
                         if (board.Boxes[i, Coordinates.Column].Piece is null)
@@ -428,7 +476,7 @@ namespace GothicChesters
                 {
                     for (i = Coordinates.Column + 1; i <= 7; i++)
                     {
-                        if (!(board.Boxes[Coordinates.Row, i].Piece is null) && board.Boxes[Coordinates.Row, i].Piece.Color.Equals(PieceColor.White))
+                        if (!(board.Boxes[Coordinates.Row, i].Piece is null))
                             break;
 
                         if (board.Boxes[Coordinates.Row, i].Piece is null)
@@ -441,7 +489,7 @@ namespace GothicChesters
                 {
                     for (i = Coordinates.Column - 1; i >= 0; i--)
                     {
-                        if (!(board.Boxes[Coordinates.Row, i].Piece is null) && board.Boxes[Coordinates.Row, i].Piece.Color.Equals(PieceColor.White))
+                        if (!(board.Boxes[Coordinates.Row, i].Piece is null))
                             break;
 
                         if (board.Boxes[Coordinates.Row, i].Piece is null)
@@ -454,7 +502,7 @@ namespace GothicChesters
                 {
                     for (i = Coordinates.Row + 1, j = Coordinates.Column + 1; i <= 7 && j <= 7; i++, j++)
                     {
-                        if (!(board.Boxes[i, j].Piece is null) && board.Boxes[i, j].Piece.Color.Equals(PieceColor.White))
+                        if (!(board.Boxes[i, j].Piece is null))
                             break;
 
                         if (board.Boxes[i, j].Piece is null)
@@ -467,7 +515,7 @@ namespace GothicChesters
                 {
                     for (i = Coordinates.Row - 1, j = Coordinates.Column + 1; i >= 0 && j <= 7; i--, j++)
                     {
-                        if (!(board.Boxes[i, j].Piece is null) && board.Boxes[i, j].Piece.Color.Equals(PieceColor.White))
+                        if (!(board.Boxes[i, j].Piece is null))
                             break;
 
                         if (board.Boxes[i, j].Piece is null)
@@ -480,7 +528,7 @@ namespace GothicChesters
                 {
                     for (i = Coordinates.Row - 1, j = Coordinates.Column - 1; i >= 0 && j >= 0; i--, j--)
                     {
-                        if (!(board.Boxes[i, j].Piece is null) && board.Boxes[i, j].Piece.Color.Equals(PieceColor.White))
+                        if (!(board.Boxes[i, j].Piece is null))
                             break;
 
                         if (board.Boxes[i, j].Piece is null)
@@ -493,7 +541,7 @@ namespace GothicChesters
                 {
                     for (i = Coordinates.Row + 1, j = Coordinates.Column - 1; i <= 7 && j >= 0; i++, j--)
                     {
-                        if (!(board.Boxes[i, j].Piece is null) && board.Boxes[i, j].Piece.Color.Equals(PieceColor.White))
+                        if (!(board.Boxes[i, j].Piece is null))
                             break;
 
                         if (board.Boxes[i, j].Piece is null)
