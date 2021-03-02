@@ -265,7 +265,7 @@ namespace GothicChesters
                     game.BoardHistory.Add(round, Board.GetBoardFromXML(xElement));
                     round++;
                 }
-                bool validationError = (game.RoundWithoutDead > game.Round) || (game.RoundWithoutDead > 30) || (game.WhitePlayer.Color != PieceColor.White) || (game.WhitePlayer.Color != PieceColor.Black) || (true);
+                bool validationError = (game.RoundWithoutDead > game.Round) || (game.RoundWithoutDead > 30) || (game.WhitePlayer.Color != PieceColor.White) || (game.WhitePlayer.Color != PieceColor.Black);
                 if (validationError)
                     throw new ParseException("XML soubor je poškozený a neprošel validací!");
 
