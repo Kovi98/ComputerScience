@@ -53,6 +53,10 @@ namespace GothicChesters
                 {
                     for (i = Coordinates.Row + 1; i <= 7; i++)
                     {
+                        //Pokud už jsem jednou přeskočil nepřítele a narazil na dalšího nepřítele, dál už nemůžu
+                        if (attackedBoxes.Count() > 0 && !(board.Boxes[i, Coordinates.Column].Piece is null) && board.Boxes[i, Coordinates.Column].Piece.Color.Equals(PieceColor.Black))
+                            break;
+
                         if (attackedBoxes.Count() > 0 && board.Boxes[i, Coordinates.Column].Piece is null)
                             moves.Add(new Move(board.Boxes[Coordinates.Row, Coordinates.Column], board.Boxes[i, Coordinates.Column], attackedBoxes.ToArray()));
 
@@ -67,6 +71,10 @@ namespace GothicChesters
                 {
                     for (i = Coordinates.Row - 1; i >= 0; i--)
                     {
+                        //Pokud už jsem jednou přeskočil nepřítele a narazil na dalšího nepřítele, dál už nemůžu
+                        if (attackedBoxes.Count() > 0 && !(board.Boxes[i, Coordinates.Column].Piece is null) && board.Boxes[i, Coordinates.Column].Piece.Color.Equals(PieceColor.Black))
+                            break;
+
                         if (attackedBoxes.Count() > 0 && board.Boxes[i, Coordinates.Column].Piece is null)
                             moves.Add(new Move(board.Boxes[Coordinates.Row, Coordinates.Column], board.Boxes[i, Coordinates.Column], attackedBoxes.ToArray()));
 
@@ -81,6 +89,10 @@ namespace GothicChesters
                 {
                     for (i = Coordinates.Column + 1; i <= 7; i++)
                     {
+                        //Pokud už jsem jednou přeskočil nepřítele a narazil na dalšího nepřítele, dál už nemůžu
+                        if (attackedBoxes.Count() > 0 && !(board.Boxes[Coordinates.Row, i].Piece is null) && board.Boxes[Coordinates.Row, i].Piece.Color.Equals(PieceColor.Black))
+                            break;
+
                         if (attackedBoxes.Count() > 0 && board.Boxes[Coordinates.Row, i].Piece is null)
                             moves.Add(new Move(board.Boxes[Coordinates.Row, Coordinates.Column], board.Boxes[Coordinates.Row, i], attackedBoxes.ToArray()));
 
@@ -95,6 +107,10 @@ namespace GothicChesters
                 {
                     for (i = Coordinates.Column - 1; i >= 0; i--)
                     {
+                        //Pokud už jsem jednou přeskočil nepřítele a narazil na dalšího nepřítele, dál už nemůžu
+                        if (attackedBoxes.Count() > 0 && !(board.Boxes[Coordinates.Row, i].Piece is null) && board.Boxes[Coordinates.Row, i].Piece.Color.Equals(PieceColor.Black))
+                            break;
+
                         if (attackedBoxes.Count() > 0 && board.Boxes[Coordinates.Row, i].Piece is null)
                             moves.Add(new Move(board.Boxes[Coordinates.Row, Coordinates.Column], board.Boxes[Coordinates.Row, i], attackedBoxes.ToArray()));
 
@@ -109,6 +125,10 @@ namespace GothicChesters
                 {
                     for (i = Coordinates.Row + 1, j = Coordinates.Column + 1; i <= 7 && j <= 7; i++, j++)
                     {
+                        //Pokud už jsem jednou přeskočil nepřítele a narazil na dalšího nepřítele, dál už nemůžu
+                        if (attackedBoxes.Count() > 0 && !(board.Boxes[i, j].Piece is null) && board.Boxes[i, j].Piece.Color.Equals(PieceColor.Black))
+                            break;
+
                         if (attackedBoxes.Count() > 0 && board.Boxes[i, j].Piece is null)
                             moves.Add(new Move(board.Boxes[Coordinates.Row, Coordinates.Column], board.Boxes[i, j], attackedBoxes.ToArray()));
 
@@ -123,6 +143,10 @@ namespace GothicChesters
                 {
                     for (i = Coordinates.Row - 1, j = Coordinates.Column + 1; i >= 0 && j <= 7; i--, j++)
                     {
+                        //Pokud už jsem jednou přeskočil nepřítele a narazil na dalšího nepřítele, dál už nemůžu
+                        if (attackedBoxes.Count() > 0 && !(board.Boxes[i, j].Piece is null) && board.Boxes[i, j].Piece.Color.Equals(PieceColor.Black))
+                            break;
+
                         if (attackedBoxes.Count() > 0 && board.Boxes[i, j].Piece is null)
                             moves.Add(new Move(board.Boxes[Coordinates.Row, Coordinates.Column], board.Boxes[i, j], attackedBoxes.ToArray()));
 
@@ -137,6 +161,10 @@ namespace GothicChesters
                 {
                     for (i = Coordinates.Row - 1, j = Coordinates.Column - 1; i >= 0 && j >= 0; i--, j--)
                     {
+                        //Pokud už jsem jednou přeskočil nepřítele a narazil na dalšího nepřítele, dál už nemůžu
+                        if (attackedBoxes.Count() > 0 && !(board.Boxes[i, j].Piece is null) && board.Boxes[i, j].Piece.Color.Equals(PieceColor.Black))
+                            break;
+
                         if (attackedBoxes.Count() > 0 && board.Boxes[i, j].Piece is null)
                             moves.Add(new Move(board.Boxes[Coordinates.Row, Coordinates.Column], board.Boxes[i, j], attackedBoxes.ToArray()));
 
@@ -151,6 +179,10 @@ namespace GothicChesters
                 {
                     for (i = Coordinates.Row + 1, j = Coordinates.Column - 1; i <= 7 && j >= 0; i++, j--)
                     {
+                        //Pokud už jsem jednou přeskočil nepřítele a narazil na dalšího nepřítele, dál už nemůžu
+                        if (attackedBoxes.Count() > 0 && !(board.Boxes[i, j].Piece is null) && board.Boxes[i, j].Piece.Color.Equals(PieceColor.Black))
+                            break;
+
                         if (attackedBoxes.Count() > 0 && board.Boxes[i, j].Piece is null)
                             moves.Add(new Move(board.Boxes[Coordinates.Row, Coordinates.Column], board.Boxes[i, j], attackedBoxes.ToArray()));
 
@@ -169,6 +201,10 @@ namespace GothicChesters
                 {
                     for (i = Coordinates.Row + 1; i <= 7; i++)
                     {
+                        //Pokud už jsem jednou přeskočil nepřítele a narazil na dalšího nepřítele, dál už nemůžu
+                        if (attackedBoxes.Count() > 0 && !(board.Boxes[i, Coordinates.Column].Piece is null) && board.Boxes[i, Coordinates.Column].Piece.Color.Equals(PieceColor.White))
+                            break;
+
                         if (attackedBoxes.Count() > 0 && board.Boxes[i, Coordinates.Column].Piece is null)
                             moves.Add(new Move(board.Boxes[Coordinates.Row, Coordinates.Column], board.Boxes[i, Coordinates.Column], attackedBoxes.ToArray()));
 
@@ -183,6 +219,10 @@ namespace GothicChesters
                 {
                     for (i = Coordinates.Row - 1; i >= 0; i--)
                     {
+                        //Pokud už jsem jednou přeskočil nepřítele a narazil na dalšího nepřítele, dál už nemůžu
+                        if (attackedBoxes.Count() > 0 && !(board.Boxes[i, Coordinates.Column].Piece is null) && board.Boxes[i, Coordinates.Column].Piece.Color.Equals(PieceColor.White))
+                            break;
+
                         if (attackedBoxes.Count() > 0 && board.Boxes[i, Coordinates.Column].Piece is null)
                             moves.Add(new Move(board.Boxes[Coordinates.Row, Coordinates.Column], board.Boxes[i, Coordinates.Column], attackedBoxes.ToArray()));
 
@@ -197,6 +237,10 @@ namespace GothicChesters
                 {
                     for (i = Coordinates.Column + 1; i <= 7; i++)
                     {
+                        //Pokud už jsem jednou přeskočil nepřítele a narazil na dalšího nepřítele, dál už nemůžu
+                        if (attackedBoxes.Count() > 0 && !(board.Boxes[Coordinates.Row, i].Piece is null) && board.Boxes[Coordinates.Row, i].Piece.Color.Equals(PieceColor.White))
+                            break;
+
                         if (attackedBoxes.Count() > 0 && board.Boxes[Coordinates.Row, i].Piece is null)
                             moves.Add(new Move(board.Boxes[Coordinates.Row, Coordinates.Column], board.Boxes[Coordinates.Row, i], attackedBoxes.ToArray()));
 
@@ -211,6 +255,10 @@ namespace GothicChesters
                 {
                     for (i = Coordinates.Column - 1; i >= 0; i--)
                     {
+                        //Pokud už jsem jednou přeskočil nepřítele a narazil na dalšího nepřítele, dál už nemůžu
+                        if (attackedBoxes.Count() > 0 && !(board.Boxes[Coordinates.Row, i].Piece is null) && board.Boxes[Coordinates.Row, i].Piece.Color.Equals(PieceColor.White))
+                            break;
+
                         if (attackedBoxes.Count() > 0 && board.Boxes[Coordinates.Row, i].Piece is null)
                             moves.Add(new Move(board.Boxes[Coordinates.Row, Coordinates.Column], board.Boxes[Coordinates.Row, i], attackedBoxes.ToArray()));
 
@@ -225,6 +273,10 @@ namespace GothicChesters
                 {
                     for (i = Coordinates.Row + 1, j = Coordinates.Column + 1; i <= 7 && j <= 7; i++, j++)
                     {
+                        //Pokud už jsem jednou přeskočil nepřítele a narazil na dalšího nepřítele, dál už nemůžu
+                        if (attackedBoxes.Count() > 0 && !(board.Boxes[i, j].Piece is null) && board.Boxes[i, j].Piece.Color.Equals(PieceColor.White))
+                            break;
+
                         if (attackedBoxes.Count() > 0 && board.Boxes[i, j].Piece is null)
                             moves.Add(new Move(board.Boxes[Coordinates.Row, Coordinates.Column], board.Boxes[i, j], attackedBoxes.ToArray()));
 
@@ -239,6 +291,10 @@ namespace GothicChesters
                 {
                     for (i = Coordinates.Row - 1, j = Coordinates.Column + 1; i >= 0 && j <= 7; i--, j++)
                     {
+                        //Pokud už jsem jednou přeskočil nepřítele a narazil na dalšího nepřítele, dál už nemůžu
+                        if (attackedBoxes.Count() > 0 && !(board.Boxes[i, j].Piece is null) && board.Boxes[i, j].Piece.Color.Equals(PieceColor.White))
+                            break;
+
                         if (attackedBoxes.Count() > 0 && board.Boxes[i, j].Piece is null)
                             moves.Add(new Move(board.Boxes[Coordinates.Row, Coordinates.Column], board.Boxes[i, j], attackedBoxes.ToArray()));
 
@@ -253,6 +309,10 @@ namespace GothicChesters
                 {
                     for (i = Coordinates.Row - 1, j = Coordinates.Column - 1; i >= 0 && j >= 0; i--, j--)
                     {
+                        //Pokud už jsem jednou přeskočil nepřítele a narazil na dalšího nepřítele, dál už nemůžu
+                        if (attackedBoxes.Count() > 0 && !(board.Boxes[i, j].Piece is null) && board.Boxes[i, j].Piece.Color.Equals(PieceColor.White))
+                            break;
+
                         if (attackedBoxes.Count() > 0 && board.Boxes[i, j].Piece is null)
                             moves.Add(new Move(board.Boxes[Coordinates.Row, Coordinates.Column], board.Boxes[i, j], attackedBoxes.ToArray()));
 
@@ -267,6 +327,10 @@ namespace GothicChesters
                 {
                     for (i = Coordinates.Row + 1, j = Coordinates.Column - 1; i <= 7 && j >= 0; i++, j--)
                     {
+                        //Pokud už jsem jednou přeskočil nepřítele a narazil na dalšího nepřítele, dál už nemůžu
+                        if (attackedBoxes.Count() > 0 && !(board.Boxes[i, j].Piece is null) && board.Boxes[i, j].Piece.Color.Equals(PieceColor.White))
+                            break;
+
                         if (attackedBoxes.Count() > 0 && board.Boxes[i, j].Piece is null)
                             moves.Add(new Move(board.Boxes[Coordinates.Row, Coordinates.Column], board.Boxes[i, j], attackedBoxes.ToArray()));
 
