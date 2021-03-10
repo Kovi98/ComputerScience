@@ -36,7 +36,7 @@ namespace GothicChesters.GameCore
                     rank += move.Rank;
                     board.DoMove(move);
                     rank += Minimax.SearchTree(board, enemy, player, depth - 1, -rank, playerOnMove);
-                    if (bestRank is null || bestRank < rank || (bestRank == rank && random.Next(1, 2) == 1))
+                    if (bestRank is null || (playerOnMove==player ? bestRank < rank : bestRank>rank) || (bestRank == rank && random.Next(1, 2) == 1))
                         bestRank = rank;
                     board.UndoMove(move);
                 }
